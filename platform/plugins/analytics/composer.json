@@ -1,0 +1,9 @@
+{
+    "name": "botble/analytics",
+    "description": "Analytics plugin",
+    "type": "package",
+    "require": {
+        "google/apiclient": "^2.2",
+        "psr/cache": "^1.0"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "name": "Social Login",
+    "namespace": "Botble\\SocialLogin\\",
+    "provider": "Botble\\SocialLogin\\Providers\\SocialLoginServiceProvider",
+    "author": "Botble Technologies",
+    "url": "https://botble.com",
+    "version": "5.4",
+    "description": "Social login for Botble CMS"
+}

@@ -1,0 +1,10 @@
+{
+    "name": "{Theme}",
+    "namespace": "Theme\\{Theme}\\",
+    "description": "This is a basic theme",
+    "author": "Botble Technologies",
+    "version": "1.0",
+    "required_plugins": [
+
+    ]
+}

@@ -1,0 +1,1 @@
+<i class="fa fa-unlock"></i> {{ trans('core/base::tables.activate') }}

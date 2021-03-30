@@ -1,0 +1,46 @@
+// Global settings
+@import '_variables';
+@import 'components/_mixins';
+// General CSS Reset
+@import 'components/_reset-general';
+// Material Design Components
+@import 'components/_md';
+// General Components  
+@import 'components/_typography';
+@import 'components/_utils';
+@import 'components/_grid';
+@import 'components/_font-icons';
+@import 'components/_badges';
+@import 'components/_buttons';
+@import 'components/_close';
+@import 'components/_dropdowns';
+@import 'components/_form-layouts';
+@import 'components/_inputs';
+@import 'components/_icon-buttons';
+@import 'components/_input-icons';
+@import 'components/_labels';
+@import 'components/_list-groups';
+@import 'components/_loaders';
+@import 'components/_modals';
+@import 'components/_notes';
+@import 'components/_pagination';
+@import 'components/_panels';
+@import 'components/_popovers';
+@import 'components/_portlets';
+@import 'components/_progress-bars';
+@import 'components/_statistic-blocks';
+@import 'components/_tables';
+@import 'components/_tabs';
+@import 'components/_wells';
+@import 'components/_widgets';
+@import 'components/_animate';
+@import 'components/_headings';
+@import 'components/_app-widgets';
+// Apply flat UI colors to all components
+@import 'components/_colors';
+// System components
+@import 'components/cookie-consent';
+@import 'components/sidebar';
+@import 'components/card';
+@import 'components/overlay';
+@import 'components/social-icons';

@@ -1,0 +1,19 @@
+{
+  "name": "botble/{theme}",
+  "type": "botble-theme",
+  "description": "Example theme for Botble CMS",
+  "homepage": "http://botble.com",
+  "authors": [
+    {
+      "name": "Botble",
+      "homepage": "http://botble.com"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Theme\\{Theme}\\": "src/"
+    }
+  }
+}

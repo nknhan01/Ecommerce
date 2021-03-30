@@ -1,0 +1,1 @@
+<i class="fa fa-lock"></i> {{ trans('core/base::tables.deactivate') }}

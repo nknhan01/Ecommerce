@@ -1,0 +1,39 @@
+os: linux
+dist: xenial
+sudo: required
+language: php
+addons:
+  mariadb: "10.4"
+
+php:
+  - '7.2'
+before_script:
+  - phpenv config-rm xdebug.ini
+script:
+  - ./vendor/bin/phpunit
+cache:
+  directories:
+    - node_modules
+    - vendor
+before_install:
+  - sudo mysql -e "create database forge;"
+  - sudo mysql -e "CREATE USER 'forge'@'localhost';"
+  - sudo mysql -e "GRANT ALL PRIVILEGES ON * . * TO 'forge'@'localhost';"
+  - touch .env
+  - echo "APP_ENV=testing" >> .env
+  - echo "APP_URL=http://localhost:8000" >> .env
+  - echo "APP_KEY=base64:fJVVjyHtJfEW7hfV1ctTxePJzRPK5Dx/GfX1vxfKYoU=" >> .env
+  - echo "APP_DEBUG=true" >> .env
+  - echo "DB_CONNECTION=mysql" >> .env
+  - echo "DB_HOST=localhost" >> .env
+  - echo "DB_DATABASE=forge" >> .env
+  - echo "DB_USERNAME=forge" >> .env
+  - echo "DB_PASSWORD=" >> .env
+  - composer self-update
+  - composer install --prefer-source --no-interaction
+  - php artisan migrate --no-interaction -vvv
+  - php artisan key:generate --force --no-interaction
+  - php artisan optimize:clear
+  - vendor/bin/phpcs --standard=platform/packages/dev-tool/phpcs.xml --ignore=*/database/*,*/public/libraries/*,*/public/js/*,*/public/css/*,*/assets/*,*/plugins/slider/*,*/vendor/*,*/public/media/*  platform/core/ platform/plugins/ platform/packages/ -n
+  - vendor/bin/phpmd platform/core/,platform/plugins/,platform/packages/ text platform/packages/dev-tool/phpmd.xml --exclude */database/*,*/public/libraries/*,*/public/js/*,*/public/css/*,*/assets/*,*/plugins/slider/*,*/vendor/*,*/public/media/*
+  - php artisan migrate:fresh && php artisan cms:theme:activate ripple

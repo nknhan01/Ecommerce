@@ -1,0 +1,1 @@
+<span class="custom-filter-button"><i class="fa fa-filter"></i> {{ __('Filter') }}</span>
