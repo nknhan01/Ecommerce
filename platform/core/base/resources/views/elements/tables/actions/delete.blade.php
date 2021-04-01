@@ -1,1 +1,0 @@
-<i class="fa fa-trash"></i> {{ trans('core/base::tables.delete') }}

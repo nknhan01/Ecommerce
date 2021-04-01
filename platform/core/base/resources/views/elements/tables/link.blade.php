@@ -1,1 +1,0 @@
-<a class="text-left" href="{{ $link }}" title="{{ $name }}" {!! $options !!}>{{ $name }}</a>

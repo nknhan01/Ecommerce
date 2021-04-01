@@ -1,7 +1,0 @@
-<?php
-
-return [
-    'name'   => '{++Names}',
-    'create' => 'New {++name}',
-    'edit'   => 'Edit {++name}',
-];

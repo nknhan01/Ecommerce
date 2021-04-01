@@ -1,1 +1,0 @@
-{!! render_editor($name, $value, Arr::get($attributes, 'with-short-code', false), $attributes) !!}
