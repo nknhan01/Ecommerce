@@ -1,0 +1,23 @@
+{
+    "name": "platform/api",
+    "description": "API package for Laravel CMS application",
+    "type": "package",
+    "autoload": {
+        "psr-4": {
+            "Platform\\Api\\": "src"
+        }
+    },
+    "require": {
+        "platform/platform": "*@dev",
+        "laravel/passport": "^9.0|^10.0",
+        "knuckleswtf/scribe": "^1.0",
+        "fruitcake/laravel-cors": "^2.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Platform\\Api\\Providers\\ApiServiceProvider"
+            ]
+        }
+    }
+}

@@ -1,0 +1,158 @@
+<?php
+
+namespace Platform\{Module}\Http\Controllers;
+
+use Platform\Base\Events\BeforeEditContentEvent;
+use Platform\{Module}\Http\Requests\{Name}Request;
+use Platform\{Module}\Repositories\Interfaces\{Name}Interface;
+use Platform\Base\Http\Controllers\BaseController;
+use Illuminate\Http\Request;
+use Exception;
+use Platform\{Module}\Tables\{Name}Table;
+use Platform\Base\Events\CreatedContentEvent;
+use Platform\Base\Events\DeletedContentEvent;
+use Platform\Base\Events\UpdatedContentEvent;
+use Platform\Base\Http\Responses\BaseHttpResponse;
+use Platform\{Module}\Forms\{Name}Form;
+use Platform\Base\Forms\FormBuilder;
+
+class {Name}Controller extends BaseController
+{
+    /**
+     * @var {Name}Interface
+     */
+    protected ${+name}Repository;
+
+    /**
+     * @param {Name}Interface ${+name}Repository
+     */
+    public function __construct({Name}Interface ${+name}Repository)
+    {
+        $this->{+name}Repository = ${+name}Repository;
+    }
+
+    /**
+     * @param {Name}Table $table
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Throwable
+     */
+    public function index({Name}Table $table)
+    {
+        page_title()->setTitle(trans('{types}/{-module}::{-name}.name'));
+
+        return $table->renderTable();
+    }
+
+    /**
+     * @param FormBuilder $formBuilder
+     * @return string
+     */
+    public function create(FormBuilder $formBuilder)
+    {
+        page_title()->setTitle(trans('{types}/{-module}::{-name}.create'));
+
+        return $formBuilder->create({Name}Form::class)->renderForm();
+    }
+
+    /**
+     * @param {Name}Request $request
+     * @param BaseHttpResponse $response
+     * @return BaseHttpResponse
+     */
+    public function store({Name}Request $request, BaseHttpResponse $response)
+    {
+        ${+name} = $this->{+name}Repository->createOrUpdate($request->input());
+
+        event(new CreatedContentEvent({NAME}_MODULE_SCREEN_NAME, $request, ${+name}));
+
+        return $response
+            ->setPreviousUrl(route('{-name}.index'))
+            ->setNextUrl(route('{-name}.edit', ${+name}->id))
+            ->setMessage(trans('core/base::notices.create_success_message'));
+    }
+
+    /**
+     * @param $id
+     * @param Request $request
+     * @param FormBuilder $formBuilder
+     * @return string
+     */
+    public function edit($id, FormBuilder $formBuilder, Request $request)
+    {
+        ${+name} = $this->{+name}Repository->findOrFail($id);
+
+        event(new BeforeEditContentEvent($request, ${+name}));
+
+        page_title()->setTitle(trans('{types}/{-module}::{-name}.edit') . ' "' . ${+name}->name . '"');
+
+        return $formBuilder->create({Name}Form::class, ['model' => ${+name}])->renderForm();
+    }
+
+    /**
+     * @param $id
+     * @param {Name}Request $request
+     * @param BaseHttpResponse $response
+     * @return BaseHttpResponse
+     */
+    public function update($id, {Name}Request $request, BaseHttpResponse $response)
+    {
+        ${+name} = $this->{+name}Repository->findOrFail($id);
+
+        ${+name}->fill($request->input());
+
+        $this->{+name}Repository->createOrUpdate(${+name});
+
+        event(new UpdatedContentEvent({NAME}_MODULE_SCREEN_NAME, $request, ${+name}));
+
+        return $response
+            ->setPreviousUrl(route('{-name}.index'))
+            ->setMessage(trans('core/base::notices.update_success_message'));
+    }
+
+    /**
+     * @param $id
+     * @param Request $request
+     * @param BaseHttpResponse $response
+     * @return BaseHttpResponse
+     */
+    public function destroy(Request $request, $id, BaseHttpResponse $response)
+    {
+        try {
+            ${+name} = $this->{+name}Repository->findOrFail($id);
+
+            $this->{+name}Repository->delete(${+name});
+
+            event(new DeletedContentEvent({NAME}_MODULE_SCREEN_NAME, $request, ${+name}));
+
+            return $response->setMessage(trans('core/base::notices.delete_success_message'));
+        } catch (Exception $exception) {
+            return $response
+                ->setError()
+                ->setMessage($exception->getMessage());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param BaseHttpResponse $response
+     * @return BaseHttpResponse
+     * @throws Exception
+     */
+    public function deletes(Request $request, BaseHttpResponse $response)
+    {
+        $ids = $request->input('ids');
+        if (empty($ids)) {
+            return $response
+                ->setError()
+                ->setMessage(trans('core/base::notices.no_select'));
+        }
+
+        foreach ($ids as $id) {
+            ${+name} = $this->{+name}Repository->findOrFail($id);
+            $this->{+name}Repository->delete(${+name});
+            event(new DeletedContentEvent({NAME}_MODULE_SCREEN_NAME, $request, ${+name}));
+        }
+
+        return $response->setMessage(trans('core/base::notices.delete_success_message'));
+    }
+}

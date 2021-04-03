@@ -1,0 +1,9 @@
+{
+    "name": "Page Builder",
+    "namespace": "Platform\\PageBuilder\\",
+    "provider": "Platform\\PageBuilder\\Providers\\PageBuilderServiceProvider",
+    "author": "Developer Team",
+    "url": "https://laravel-cms.gistensal.com",
+    "version": "5.4",
+    "description": "Drag and drop website editor. No coding needed."
+}

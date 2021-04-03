@@ -1,0 +1,9 @@
+{
+    "name": "Custom Fields",
+    "namespace": "Platform\\CustomField\\",
+    "provider": "Platform\\CustomField\\Providers\\CustomFieldServiceProvider",
+    "author": "Laravel Technologies",
+    "url": "https://laravel-cms.gistensal.com",
+    "version": "5.8",
+    "description": "Custom Fields"
+}

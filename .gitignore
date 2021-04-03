@@ -1,0 +1,562 @@
+################ GLOBAL INGNORE ################
+################################################
+logs/
+public/phpMyAdmin
+public/phpRedisAdmin/
+
+############# Excute files #############
+!bin/
+bin/*
+!bin/*.sh
+!bin/*.sh
+
+############# Laravel #############
+storage/*
+public/storage/
+
+################ GUIDE LINE ####################
+## To gitignore every file and folder under a directory recursively:
+## MyPrject/WebApp/Scripts/special/**
+## OR track these files !MyPrject/WebApp/Scripts/special/**/*.foo
+
+############# track this file .gitignore (i.e. do NOT ignore it)
+!.gitignore
+!.htaccess
+!.htaccess.sample
+!.htpasswd
+!*.sample*
+!*.example*
+
+############# track .editorconfig file (i.e. do NOT ignore it)
+!.editorconfig
+
+############# track readme.md in the root (i.e. do NOT ignore it)
+!*.md
+!*.MD
+
+#### https://github.com/github/gitignore
+desktop.ini
+.bash_logout
+.bash_profile
+.bashrc
+.zshrc
+*.lock
+*.php~
+.svn
+.svn/
+.ansible
+.DS_Store
+Icon\r
+Icon^
+__MACOSX
+._*
+.~lock.*
+*.bak
+*.swp
+*~.nib
+*.mo
+*.retry
+*.tmp
+*.bak
+*.swp
+*~.nib
+*.rdb
+*.psd
+*.cdr
+*.ai
+.vagrant/
+.bundle/
+
+############# ignore all files that start with ~
+~*
+
+############# ignore all files starting with .
+## .*
+
+############# ignore log files and databases
+*.log
+*.sql
+*.sqlite
+
+# ignore compiled files
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+############# Linux.gitignore
+.fuse_hidden*
+.directory
+.nfs*
+.Trash-*
+
+############# LibreOffice.gitignore & MicrosoftOffice.gitignore
+*.tmp
+.~lock.*#
+~$*.doc*
+~$*.xls*
+*.xlk
+~$*.ppt*
+*.~vsdx
+
+############# React Native
+# Xcode
+#
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
+
+# Android/IntelliJ
+#
+build/
+.idea
+.gradle
+local.properties
+*.iml
+
+# node.js
+#
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# BUCK
+buck-out/
+\.buckd/
+*.keystore
+
+# fastlane
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/
+
+*/fastlane/report.xml
+*/fastlane/Preview.html
+*/fastlane/screenshots
+
+# Bundle artifact
+*.jsbundle
+
+############# macOS.gitignore
+*.DS_Store
+.AppleDouble
+.LSOverride
+# Thumbnails
+._*
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+############# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+desktop.ini
+
+############# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+############# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+############# Windows shortcuts
+*.lnk
+
+############# ignore packaged files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar.gz
+*.tar
+*.zip
+*.bzip
+*.bz2
+*.xz
+*.lzma
+
+############# packing-only formats
+*.iso
+
+############# package management formats
+*.dmg
+*.xpi
+*.gem
+*.egg
+*.deb
+*.rpm
+*.msi
+*.msm
+*.msp
+
+############# CVS.gitignore
+/CVS/*
+**/CVS/*
+.cvsignore
+*/.cvsignore
+
+############# Dropbox settings and caches
+.dropbox
+.dropbox.attr
+.dropbox.cache
+
+############# DW Dreamweaver added files
+_notes
+_compareTemp
+## configs/
+dwsync.xml
+dw_php_codehinting.config
+*.mno
+
+############# Wordpress
+wp-config.php
+**/uploads/*
+**/apps/upgrade/
+
+**/themes/twenty*/
+**/advanced-cache.php
+**/backup-db/
+**/backups/
+**/blogs.dir/
+## **/cache/
+**/wp-cache-config.php
+
+############# Vtiger CRM
+**/test/templates_c/
+
+############# Drupal
+# Ignore configuration files that may contain sensitive information.
+sites/*/settings*.php
+# Ignore paths that contain user-generated content.
+sites/*/files
+sites/*/private
+
+############# Doctrine 2
+**/data/DoctrineORMModule/Proxy/
+**/data/DoctrineORMModule/cache/
+**/bin/phpunit
+**/bin/phpunit.bat
+**/bin/doctrine
+**/bin/doctrine-dbal
+**/bin/doctrine-dbal.bat
+**/bin/doctrine.bat
+**/bin/classmap_generator.php
+**/bin/classmap_generator.php.bat
+**/bin/doctrine-module
+**/bin/doctrine-module.bat
+**/bin/pluginmap_generator.php
+**/bin/pluginmap_generator.php.bat
+**/bin/templatemap_generator.php
+**/bin/templatemap_generator.php.bat
+
+############# Composer
+composer.lock
+composer.phar
+/vendor/
+/app/bootstrap.php.cache
+/var/bootstrap.php.cache
+!bin/console
+!bin/symfony_requirements
+
+############# Internal Framework Built, based on ZF1, ZF2 core
+**/extras/documentation
+**/webapp/data/
+**/backend/data/
+/data/
+
+############# CI
+**/application/config/database.php
+**/application/backend/config/database.php
+application/cache
+application/logs
+uploads/**
+!uploads/.gitkeep
+
+############# Yii
+protected/runtime/*
+!protected/runtime/.gitignore
+protected/data/*.db
+
+############# ignore node/grunt dependency directories
+**/node_modules
+/html/frontend/css/
+/html/frontend/dist/css/
+npm-debug.log
+/gulpfile.js
+.env
+.ideal
+
+###################################
+
+############# Magento #############
+###################################
+var/cache/
+var/session/
+var/report/
+var/export/
+*/var/cache/
+*/var/report/
+*/var/export/
+*/var/session/
+!/var/.htaccess
+!/var/index.html
+downloader/.cache
+downloader/cache.cfg
+!downloader/connect.cfg
+var/locks
+var/package
+var/importexport
+var/log
+var/report
+media/catalog/product/cache
+*/media/catalog/product/cache
+## errors/
+!lib/Zend/
+!lib/Varien/
+pkginfo/
+.modgit/
+.modman/
+app/design/install/
+dev/.htaccess
+dev/tests/functional/
+
+############# IDE files
+/nbproject/
+/build/
+/nbbuild/
+## dist/
+/nbdist/
+.nb-gradle/
+.project
+.settings
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+.buildpath
+*.tmproj
+local.properties
+.loadpath
+.recommenders
+.externalToolBuilders/
+*.launch
+*.pydevproject
+.cproject
+.classpath
+.factorypath
+.buildpath
+.target
+.tern-project
+.texlipse
+.springBeans
+.recommenders/
+*.bak
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+sftp-config.json
+Package Control.last-run
+Package Control.ca-list
+Package Control.ca-bundle
+Package Control.system-ca-bundle
+Package Control.cache/
+Package Control.ca-certs/
+bh_unicode_properties.cache
+GitHub.sublime-settings
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+Session.vim
+.netrwhist
+*~
+
+############# Node ################
+###################################
+# Logs
+./logs
+./cache
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Directory for instrumented libs generated by jscoverage/JSCover
+lib-cov
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# nyc test coverage
+.nyc_output
+
+# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
+.grunt
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons (http://nodejs.org/api/addons.html)
+build/Release
+
+# Dependency directories
+node_modules
+jspm_packages
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+############# OpenCart ############
+###################################
+image/data/
+image/cache/
+system/cache/
+system/logs/
+
+system/storage/
+
+# vQmod log files
+vqmod/logs/*
+# vQmod cache files
+vqmod/vqcache/*
+vqmod/checked.cache
+vqmod/mods.cache
+
+############# Symfony #############
+###################################
+manifest/cache/
+manifest/logs/
+manifest/tmp/
+symphony/
+workspace/uploads/
+install-log.txt
+# Cache and logs (Symfony2)
+/app/cache/**
+/app/logs/**
+!app/cache/.gitkeep
+!app/logs/.gitkeep
+# Email spool folder
+/app/spool/*
+# Cache, session files and logs (Symfony3)
+/var/cache/*
+/var/logs/*
+/var/sessions/*
+!var/cache/.gitkeep
+!var/logs/.gitkeep
+!var/sessions/.gitkeep
+
+# Parameters
+/app/config/parameters.yml
+/app/config/parameters.ini
+# Assets managed by Bower
+/web/assets/vendor/
+
+# PHPUnit
+/app/phpunit.xml
+/phpunit.xml
+
+############# Test ################
+###################################
+tests/TestConfiguration.php
+tests/phpunit.xml
+tests/library/Gc/Core/_files/*
+!tests/logs
+tests/logs/*
+tests/media/*
+!tests/media/files
+tests/media/files/test/*
+!tests/media/github.tags
+!tests/media/templates/
+tests/media/templates/layout/*
+!tests/media/templates/layout/.gitignore
+tests/media/templates/script/*
+!tests/media/templates/script/.gitignore
+tests/media/templates/view/*
+!tests/media/templates/view/.gitignore
+
+############# Botle Laravel CMS #############
+###################################
+
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.DS_Store
+Thumbs.db
+/bower_components
+.env
+/.idea
+/.vscode
+/.vagrant
+Homestead.json
+Homestead.yaml
+npm-debug.log
+sftp-config.json
+.phpstorm.meta.php
+_ide_helper_models.php
+/storage/app/backup
+/storage/cache_keys.json
+/storage/languages.json
+
+__MACOSX
+/.phpintel
+/.php_cs.cache
+
+_ide_helper.php
+package-lock.json
+/.sass-cache
+
+storage/settings.json
+
+public/mix-manifest.json
+
+/storage/installing
+public/docs

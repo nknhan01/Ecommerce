@@ -1,0 +1,129 @@
+<?php
+
+namespace Platform\Blog\Http\Controllers;
+
+use Platform\Blog\Models\Category;
+use Platform\Blog\Models\Post;
+use Platform\Blog\Models\Tag;
+use Platform\Blog\Repositories\Interfaces\PostInterface;
+use Platform\Blog\Repositories\Interfaces\TagInterface;
+use Platform\Blog\Services\BlogService;
+use Platform\Slug\Repositories\Interfaces\SlugInterface;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Response;
+use SeoHelper;
+use SlugHelper;
+use Theme;
+
+class PublicController extends Controller
+{
+
+    /**
+     * @var TagInterface
+     */
+    protected $tagRepository;
+
+    /**
+     * @var SlugInterface
+     */
+    protected $slugRepository;
+
+    /**
+     * PublicController constructor.
+     * @param TagInterface $tagRepository
+     * @param SlugInterface $slugRepository
+     */
+    public function __construct(TagInterface $tagRepository, SlugInterface $slugRepository)
+    {
+        $this->tagRepository = $tagRepository;
+        $this->slugRepository = $slugRepository;
+    }
+
+    /**
+     * @param Request $request
+     * @param PostInterface $postRepository
+     * @return Response
+     */
+    public function getSearch(Request $request, PostInterface $postRepository)
+    {
+        $query = $request->input('q');
+        SeoHelper::setTitle(__('Search result for: ') . '"' . $query . '"')
+            ->setDescription(__('Search result for: ') . '"' . $query . '"');
+
+        $posts = $postRepository->getSearch($query, 0, 12);
+
+        Theme::breadcrumb()
+            ->add(__('Home'), url('/'))
+            ->add(__('Search result for: ') . '"' . $query . '"', route('public.search'));
+
+        return Theme::scope('search', compact('posts'))
+            ->render();
+    }
+
+    /**
+     * @param string $slug
+     * @param Request $request
+     * @return Response
+     */
+    public function getTag($slug, BlogService $blogService)
+    {
+        $slug = $this->slugRepository->getFirstBy([
+            'key'            => $slug,
+            'prefix'         => SlugHelper::getPrefix(Tag::class),
+        ]);
+
+        if (!$slug) {
+            abort(404);
+        }
+
+        $data = $blogService->handleFrontRoutes($slug);
+
+        return Theme::scope($data['view'], $data['data'], $data['default_view'])
+            ->render();
+    }
+
+    /**
+     * @param string $slug
+     * @param BlogService $blogService
+     * @return Response
+     */
+    public function getPost($slug, BlogService $blogService)
+    {
+        $slug = $this->slugRepository->getFirstBy([
+            'key'    => $slug,
+            'prefix' => SlugHelper::getPrefix(Post::class),
+        ]);
+
+        if (!$slug) {
+            abort(404);
+        }
+
+        $data = $blogService->handleFrontRoutes($slug);
+
+        return Theme::scope($data['view'], $data['data'], $data['default_view'])
+            ->render();
+    }
+
+    /**
+     * @param string $slug
+     * @param BlogService $blogService
+     * @return Response
+     */
+    public function getCategory($slug, BlogService $blogService)
+    {
+        $slug = $this->slugRepository->getFirstBy([
+            'key'    => $slug,
+            'prefix' => SlugHelper::getPrefix(Category::class),
+        ]);
+
+        if (!$slug) {
+            abort(404);
+        }
+
+        $data = $blogService->handleFrontRoutes($slug);
+
+        return Theme::scope($data['view'], $data['data'], $data['default_view'])
+            ->render();
+    }
+}

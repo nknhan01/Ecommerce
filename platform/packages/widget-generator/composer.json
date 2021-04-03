@@ -1,0 +1,21 @@
+{
+    "name": "platform/widget-generator",
+    "description": "Widget generator",
+    "type": "package",
+    "autoload": {
+        "psr-4": {
+            "Platform\\WidgetGenerator\\": "src"
+        }
+    },
+    "require": {
+        "platform/platform": "*@dev",
+        "platform/widget": "*@dev"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Platform\\WidgetGenerator\\Providers\\WidgetGeneratorServiceProvider"
+            ]
+        }
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "name": "Translation",
+    "namespace": "Platform\\Translation\\",
+    "provider": "Platform\\Translation\\Providers\\TranslationServiceProvider",
+    "author": "Laravel Technologies",
+    "url": "https://laravel-cms.gistensal.com",
+    "version": "5.8",
+    "description": "Manage translation text"
+}

@@ -1,0 +1,9 @@
+{
+    "name": "Block",
+    "namespace": "Platform\\Block\\",
+    "provider": "Platform\\Block\\Providers\\BlockServiceProvider",
+    "author": "Laravel Technologies",
+    "url": "https://laravel-cms.gistensal.com",
+    "version": "5.8",
+    "description": "Manage static block (HTML, Text) on your theme"
+}

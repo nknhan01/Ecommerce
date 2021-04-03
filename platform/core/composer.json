@@ -1,0 +1,81 @@
+{
+    "name": "platform/platform",
+    "description": "The Laravel Platform based on Laravel Framework.",
+    "keywords": [
+        "Laravel Framework",
+        "Laravel CMS",
+        "Laravel CMS Platform"
+    ],
+    "homepage": "https://laravel-cms.gistensal.com",
+    "support": {
+        "issues": "https://laravel-cms.gistensal.com",
+        "document": "https://docs.laravel-cms.gistensal.com"
+    },
+    "authors": [
+        {
+            "name": "Laravel Technologies",
+            "email": "contact@laravel-cms.gistensal.com"
+        }
+    ],
+    "type": "project",
+    "require": {
+        "barryvdh/laravel-dompdf": "^0.8.6",
+        "platform/assets": "*@dev",
+        "intervention/image": "^2.4",
+        "kris/laravel-form-builder": "dev-master",
+        "laravelcollective/html": "^6.1",
+        "ralouphie/mimey": "^2.0",
+        "tightenco/ziggy": "^0.9",
+        "yajra/laravel-datatables-buttons": "^4.9",
+        "yajra/laravel-datatables-oracle": "^9.9",
+        "guzzlehttp/guzzle": "^6.0|^7.0",
+        "mews/purifier": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Platform\\Support\\": "support/src",
+            "Platform\\ACL\\": "acl/src",
+            "Platform\\Base\\": "base/src",
+            "Platform\\Dashboard\\": "dashboard/src",
+            "Platform\\Media\\": "media/src",
+            "Platform\\Setting\\": "setting/src",
+            "Platform\\Table\\": "table/src",
+            "Platform\\JsValidation\\": "js-validation/src",
+            "Platform\\Chart\\": "chart/src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Platform\\Base\\Providers\\BaseServiceProvider",
+                "Platform\\Base\\Providers\\CommandServiceProvider",
+                "Platform\\Base\\Providers\\EventServiceProvider",
+                "Platform\\Base\\Providers\\BreadcrumbsServiceProvider",
+                "Platform\\Base\\Providers\\ComposerServiceProvider",
+                "Platform\\Base\\Providers\\MailConfigServiceProvider",
+                "Platform\\Base\\Providers\\FormServiceProvider",
+                "Platform\\Support\\Providers\\SupportServiceProvider",
+                "Platform\\Table\\Providers\\TableServiceProvider",
+                "Platform\\ACL\\Providers\\AclServiceProvider",
+                "Platform\\Dashboard\\Providers\\DashboardServiceProvider",
+                "Platform\\Media\\Providers\\MediaServiceProvider",
+                "Platform\\JsValidation\\Providers\\JsValidationServiceProvider",
+                "Platform\\Chart\\Providers\\ChartServiceProvider"
+            ],
+            "aliases": {
+                "Assets": "Platform\\Base\\Facades\\AssetsFacade",
+                "BaseHelper": "Platform\\Base\\Facades\\BaseHelperFacade",
+                "MetaBox": "Platform\\Base\\Facades\\MetaBoxFacade",
+                "Action": "Platform\\Base\\Facades\\ActionFacade",
+                "Filter": "Platform\\Base\\Facades\\FilterFacade",
+                "EmailHandler": "Platform\\Base\\Facades\\EmailHandlerFacade",
+                "DashboardMenu": "Platform\\Base\\Facades\\DashboardMenuFacade",
+                "MailVariable": "Platform\\Base\\Facades\\MailVariableFacade",
+                "Breadcrumbs": "Platform\\Base\\Facades\\BreadcrumbsFacade",
+                "JsValidator": "Platform\\JsValidation\\Facades\\JsValidatorFacade"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

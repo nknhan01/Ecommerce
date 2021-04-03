@@ -1,0 +1,9 @@
+{
+  "name": "Captcha",
+  "namespace": "Platform\\Captcha\\",
+  "provider": "Platform\\Captcha\\Providers\\CaptchaServiceProvider",
+  "author": "Laravel Technologies",
+  "url": "https://laravel-cms.gistensal.com",
+  "version": "5.8",
+  "description": "Captcha for higher security"
+}

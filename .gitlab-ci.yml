@@ -1,0 +1,60 @@
+before_script:
+  #- yum install which -y
+  # install ssh-agent if not already installed, it is required by docker
+  - 'which ssh-agent || ( yum install openssh-clients -y )'
+  # run ssh-agent (inside the build environment)
+  - eval $(ssh-agent -s)
+  # add the ssh key stored in SSH_PRIVATE_KEY variable to the agent store
+  #- ssh-add <(echo "$SSH_PRIVATE_KEY")
+  # for docker builds disable host key checking although this can lead to
+  # mitm attacks; only use this in docker or it will overwrite the host
+  # ssh config!
+  #- mkdir -p ~/.ssh
+  #- '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  - whoami 
+  - pwd
+after_script:
+  - whoami
+  - pwd
+stages:
+  - develop
+  - preprod
+  - prod
+develop:
+  stage: develop
+  only:
+    # This build will run only when something is pushed to the develop branch.
+    - develop
+  script:
+    - pwd && su dev && whoami
+    - cd /media/disk1/www-demo/botble/
+    - git pull
+    - bootstrap="$(git log -1 --pretty=%B | grep bootstrap)" && ([[ $bootstrap ]] && bash bin/bootstrap.sh -e d)
+    - sass="$(git log -1 --pretty=%B | grep sass)" && ([[ $sass ]] && sass public/themes/main/sass/common.scss:public/themes/main/css/common.css --style compressed)
+    - npm="$(git log -1 --pretty=%B | grep npm)" && ([[ $npm ]] && npm update && npm run dev)
+    - php artisan config:clear
+    - php artisan cache:clear
+    - php artisan view:clear
+    - chown -R dev:dev /media/disk1/www-demo/botble/
+    - pwd
+preprod:
+  stage: preprod
+  only:
+    # This build will run only when something is pushed to the develop branch.
+    - preprod
+  script:
+    - pwd && whoami
+    - ssh -tt giaxd@giaxd.com "cd /home/giaxd/domains/preprod.giaxd.com/public_html;git pull --no-edit;"
+    # - bootstrap="$(git log -1 --pretty=%B | grep bootstrap)" && ([[ $bootstrap ]] && bash bin/bootstrap.sh -e d)
+    - pwd && whoami
+prod:
+  stage: prod
+  only:
+    # This build will run only when something is pushed to the develop branch.
+    - master
+  script:
+    - whoami
+    - ssh -tt giaxd@giaxd.com "cd /home/giaxd/domains/giaxd.com/public_html && ls -al && git pull --no-edit"
+    # - bootstrap="$(git log -1 --pretty=%B | grep bootstrap)" && ([[ $bootstrap ]] && bash bin/bootstrap.sh -e d)
+    - pwd
+    - whoami

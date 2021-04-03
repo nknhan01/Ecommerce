@@ -1,0 +1,30 @@
+// Variables
+@import 'variables';
+
+@import 'normalize';
+@import 'custom_bootstrap';
+@import 'header';
+@import 'footer';
+@import 'sidebar';
+@import 'user';
+@import 'setting';
+@import 'dashboard';
+@import 'avatar';
+@import 'card';
+@import 'login';
+
+@import '~tachyons/css/tachyons';
+
+//Jquery nice select
+@import '~jquery-nice-select/scss/nice-select';
+@import '~toastr/toastr';
+
+main {
+    min-height: calc(100vh - 123px);
+}
+
+.show-admin-bar {
+    main {
+        min-height: calc(100vh - 163px);
+    }
+}

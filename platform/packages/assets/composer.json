@@ -1,0 +1,50 @@
+{
+    "name": "platform/assets",
+    "description": "Laravel assets management",
+    "license": "MIT",
+    "keywords": [
+        "Laravel Framework",
+        "Laravel CMS",
+        "Laravel CMS Platform",
+        "Laravel CMS Assets"
+    ],
+    "homepage": "https://laravel-cms.gistensal.com",
+    "authors": [
+        {
+            "name": "Developer Team",
+            "email": "developer-team@gistensal.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1.3",
+        "laravel/framework": "^5.6|^6|^7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.1|^7.0|^8.0",
+        "mockery/mockery": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Platform\\Assets\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Platform\\Assets\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Platform\\Assets\\Providers\\AssetsServiceProvider"
+            ],
+            "aliases": {
+                "Assets": "Platform\\Assets\\Facades\\AssetsFacade"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable"
+}
