@@ -1,9 +1,0 @@
-{
-    "name": "Language",
-    "namespace": "Platform\\Language\\",
-    "provider": "Platform\\Language\\Providers\\LanguageServiceProvider",
-    "author": "Laravel Technologies",
-    "url": "https://laravel-cms.gistensal.com",
-    "version": "5.8",
-    "description": "Multilingual for Laravel CMS"
-}

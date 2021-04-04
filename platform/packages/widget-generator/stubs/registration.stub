@@ -1,5 +1,0 @@
-<?php
-
-require_once __DIR__ . '/{widget}.php';
-
-register_widget({Widget}Widget::class);

@@ -1,9 +1,0 @@
-{
-  "name": "Member",
-  "namespace": "Platform\\Member\\",
-  "provider": "Platform\\Member\\Providers\\MemberServiceProvider",
-  "author": "Laravel Technologies",
-  "url": "https://laravel-cms.gistensal.com",
-  "version": "5.8",
-  "description": "Manage member, user register/login"
-}

@@ -1,9 +1,0 @@
-{
-    "name": "Backup",
-    "namespace": "Platform\\Backup\\",
-    "provider": "Platform\\Backup\\Providers\\BackupServiceProvider",
-    "author": "Laravel Technologies",
-    "url": "https://laravel-cms.gistensal.com",
-    "version": "5.8",
-    "description": "Backup & restore database, uploads folder"
-}

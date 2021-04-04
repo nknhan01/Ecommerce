@@ -1,9 +1,0 @@
-{
-    "name": "MaintenanceMode",
-    "namespace": "Platform\\MaintenanceMode\\",
-    "provider": "Platform\\MaintenanceMode\\Providers\\MaintenanceModeServiceProvider",
-    "author": "Developer Team",
-    "url": "https://laravel-cms.gistensal.com",
-    "version": "5.3",
-    "description": "The description for plugin maintenance_mode"
-}
