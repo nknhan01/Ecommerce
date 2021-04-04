@@ -1,0 +1,10 @@
+{
+    "name": "SslCommerz Payment Gateway",
+    "namespace": "Platform\\SslCommerz\\",
+    "provider": "Platform\\SslCommerz\\Providers\\SslCommerzServiceProvider",
+    "author": "Laravel Technologies",
+    "url": "https://laravel-cms.gistensal.com",
+    "version": "1.0",
+    "description": "SslCommerz payment gateway integration",
+    "require": []
+}

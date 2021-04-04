@@ -1,0 +1,9 @@
+{
+    "name": "Audit Log",
+    "namespace": "Platform\\AuditLog\\",
+    "provider": "Platform\\AuditLog\\Providers\\AuditLogServiceProvider",
+    "author": "Laravel Technologies",
+    "url": "https://laravel-cms.gistensal.com",
+    "version": "5.8",
+    "description": "Record activities logs"
+}

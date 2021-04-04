@@ -1,0 +1,9 @@
+{
+    "name": "Analytics",
+    "namespace": "Platform\\Analytics\\",
+    "provider": "Platform\\Analytics\\Providers\\AnalyticsServiceProvider",
+    "author": "Laravel Technologies",
+    "url": "https://laravel-cms.gistensal.com",
+    "version": "5.8",
+    "description": "Tracking data from Google Analytics"
+}

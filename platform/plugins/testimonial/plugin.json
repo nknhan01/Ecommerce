@@ -1,0 +1,9 @@
+{
+    "name": "Testimonial",
+    "namespace": "Platform\\Testimonial\\",
+    "provider": "Platform\\Testimonial\\Providers\\TestimonialServiceProvider",
+    "author": "Laravel Technologies",
+    "url": "https://laravel-cms.gistensal.com",
+    "version": "5.8",
+    "description": "Customer testimonials"
+}

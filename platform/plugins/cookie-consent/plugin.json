@@ -1,0 +1,9 @@
+{
+    "name": "Cookie Consent",
+    "namespace": "Platform\\CookieConsent\\",
+    "provider": "Platform\\CookieConsent\\Providers\\CookieConsentServiceProvider",
+    "author": "Laravel Technologies",
+    "url": "https://laravel-cms.gistensal.com",
+    "version": "5.8",
+    "description": "Cookie Consent"
+}

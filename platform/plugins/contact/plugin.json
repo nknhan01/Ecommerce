@@ -1,0 +1,9 @@
+{
+    "name": "Contact Form",
+    "namespace": "Platform\\Contact\\",
+    "provider": "Platform\\Contact\\Providers\\ContactServiceProvider",
+    "author": "Laravel Technologies",
+    "url": "https://laravel-cms.gistensal.com",
+    "version": "5.8",
+    "description": "Contact Form"
+}

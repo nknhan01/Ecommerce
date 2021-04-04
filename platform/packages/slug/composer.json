@@ -1,0 +1,23 @@
+{
+    "name": "platform/slug",
+    "description": "Slug/Permalink for Laravel CMS application",
+    "type": "package",
+    "autoload": {
+        "psr-4": {
+            "Platform\\Slug\\": "src"
+        }
+    },
+    "require": {
+        "platform/platform": "*@dev"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Platform\\Slug\\Providers\\SlugServiceProvider"
+            ],
+            "aliases": {
+                "SlugHelper": "Platform\\Slug\\Facades\\SlugHelperFacade"
+            }
+        }
+    }
+}

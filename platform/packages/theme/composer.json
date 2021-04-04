@@ -1,0 +1,32 @@
+{
+    "name": "platform/theme",
+    "description": "Theme package for Laravel CMS application",
+    "type": "package",
+    "autoload": {
+        "psr-4": {
+            "Platform\\Theme\\": "src"
+        }
+    },
+    "require": {
+        "platform/platform": "*@dev",
+        "platform/sitemap": "*@dev",
+        "platform/widget": "*@dev",
+        "platform/slug": "*@dev",
+        "platform/seo-helper": "*@dev"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Platform\\Theme\\Providers\\ThemeServiceProvider",
+                "Platform\\Theme\\Providers\\RouteServiceProvider"
+            ],
+            "aliases": {
+                "Theme": "Platform\\Theme\\Facades\\ThemeFacade",
+                "ThemeOption": "Platform\\Theme\\Facades\\ThemeOptionFacade",
+                "ThemeManager": "Platform\\Theme\\Facades\\ManagerFacade",
+                "AdminBar": "Platform\\Theme\\Facades\\AdminBarFacade",
+                "SiteMapManager": "Platform\\Theme\\Facades\\SiteMapManagerFacade"
+            }
+        }
+    }
+}

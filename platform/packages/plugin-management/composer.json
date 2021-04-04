@@ -1,0 +1,20 @@
+{
+    "name": "platform/plugin-management",
+    "description": "Plugin management package for Laravel CMS application",
+    "type": "package",
+    "autoload": {
+        "psr-4": {
+            "Platform\\PluginManagement\\": "src"
+        }
+    },
+    "require": {
+        "platform/platform": "*@dev"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Platform\\PluginManagement\\Providers\\PluginManagementServiceProvider"
+            ]
+        }
+    }
+}

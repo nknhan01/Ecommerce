@@ -1,0 +1,8 @@
+{
+  "name": "platform/captcha",
+  "description": "Captcha for higher security",
+  "homepage": "https://laravel-cms.gistensal.com",
+  "require": {
+    "google/recaptcha": "^1.2"
+  }
+}

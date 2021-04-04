@@ -1,0 +1,10 @@
+{
+    "name": "Razorpay Payment Gateway",
+    "namespace": "Platform\\Razorpay\\",
+    "provider": "Platform\\Razorpay\\Providers\\RazorpayServiceProvider",
+    "author": "Laravel Technologies",
+    "url": "https://laravel-cms.gistensal.com",
+    "version": "1.0",
+    "description": "Razorpay payment gateway integration",
+    "require": []
+}

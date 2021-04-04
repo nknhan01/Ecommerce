@@ -1,0 +1,9 @@
+<?php
+
+namespace Platform\Ecommerce\Repositories\Interfaces;
+
+use Platform\Support\Repositories\Interfaces\RepositoryInterface;
+
+interface CustomerInterface extends RepositoryInterface
+{
+}

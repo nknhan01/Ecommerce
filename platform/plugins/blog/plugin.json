@@ -1,0 +1,9 @@
+{
+    "name": "Blog",
+    "namespace": "Platform\\Blog\\",
+    "provider": "Platform\\Blog\\Providers\\BlogServiceProvider",
+    "author": "Laravel Technologies",
+    "url": "https://laravel-cms.gistensal.com",
+    "version": "5.8",
+    "description": "Manage posts, categories, tags"
+}

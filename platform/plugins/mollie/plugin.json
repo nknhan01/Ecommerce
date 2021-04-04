@@ -1,0 +1,10 @@
+{
+    "name": "Mollie Payment Gateway",
+    "namespace": "Platform\\Mollie\\",
+    "provider": "Platform\\Mollie\\Providers\\MollieServiceProvider",
+    "author": "Laravel Technologies",
+    "url": "https://laravel-cms.gistensal.com",
+    "version": "1.0",
+    "description": "Mollie payment gateway integration",
+    "require": []
+}
