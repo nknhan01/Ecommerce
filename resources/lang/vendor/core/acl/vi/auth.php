@@ -3,7 +3,7 @@
 return [
     'login'              =>
         [
-            'username'          => 'Email/Tên truy cập',
+            'username'          => 'Tên truy cập',
             'password'          => 'Mật khẩu',
             'title'             => 'Đăng nhập vào quản trị',
             'remember'          => 'Nhớ mật khẩu?',

@@ -13,29 +13,32 @@ return [
     'error_occur'                     => 'Có lỗi dưới đây',
     'role_and_permission'             => 'Phân quyền hệ thống',
     'role_and_permission_description' => 'Quản lý những phân quyền trong hệ thống',
-    'user'                            => [
-        'list_super' => 'Danh sách quản trị viên cấp cao',
-        'username'   => 'Tên đăng nhập',
-        'email'      => 'Email',
-        'last_login' => 'Đăng nhập lần cuối	',
-        'add_user'   => 'Thêm quản trị viên cấp cao',
-        'cancel'     => 'Hủy bỏ',
-        'create'     => 'Thêm',
-    ],
-    'options'                         => [
-        'features'                 => 'Kiểm soát truy cập các tính năng',
-        'feature_description'      => 'Bật/tắt các tính năng.',
-        'manage_super'             => 'Quản lý quản trị viên cấp cao',
-        'manage_super_description' => 'Thêm/xóa quản trị viên cấp cao',
-        'info'                     => 'Thông tin hệ thống',
-        'info_description'         => 'Những thông tin về cấu hình hiện tại của hệ thống.',
-    ],
-    'info'                            => [
-        'title'       => 'Thông tin hệ thống',
-        'cache'       => 'Bộ nhớ đệm',
-        'environment' => 'Môi trường',
-        'locale'      => 'Ngôn ngữ hệ thống',
-    ],
+    'user'                            =>
+        [
+            'list_super' => 'Danh sách quản trị viên cấp cao',
+            'username'   => 'Tên đăng nhập',
+            'email'      => 'Email',
+            'last_login' => 'Đăng nhập lần cuối	',
+            'add_user'   => 'Thêm quản trị viên cấp cao',
+            'cancel'     => 'Hủy bỏ',
+            'create'     => 'Thêm',
+        ],
+    'options'                         =>
+        [
+            'features'                 => 'Kiểm soát truy cập các tính năng',
+            'feature_description'      => 'Bật/tắt các tính năng.',
+            'manage_super'             => 'Quản lý quản trị viên cấp cao',
+            'manage_super_description' => 'Thêm/xóa quản trị viên cấp cao',
+            'info'                     => 'Thông tin hệ thống',
+            'info_description'         => 'Những thông tin về cấu hình hiện tại của hệ thống.',
+        ],
+    'info'                            =>
+        [
+            'title'       => 'Thông tin hệ thống',
+            'cache'       => 'Bộ nhớ đệm',
+            'environment' => 'Môi trường',
+            'locale'      => 'Ngôn ngữ hệ thống',
+        ],
     'user_management'                 => 'Quản lý thành viên',
     'user_management_description'     => 'Quản lý người dùng trong hệ thống',
     'app_size'                        => 'Kích thước ứng dụng',
@@ -70,6 +73,4 @@ return [
     'tokenizer_ext'                   => 'Tokenizer Ext',
     'version'                         => 'Phiên bản',
     'cms_version'                     => 'Phiên bản CMS',
-    'queue_connection'                => 'Queue Connection',
-    'disabled_in_demo_mode'           => 'Bạn không thể thực hiện hành động này ở chế độ demo!',
 ];

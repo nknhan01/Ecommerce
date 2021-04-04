@@ -6,9 +6,7 @@ use Platform\Blog\Models\Category;
 use Platform\Blog\Models\Post;
 use Platform\Blog\Models\Tag;
 use Platform\Blog\Repositories\Interfaces\PostInterface;
-use Platform\Blog\Repositories\Interfaces\TagInterface;
 use Platform\Blog\Services\BlogService;
-use Platform\Slug\Repositories\Interfaces\SlugInterface;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Response;
@@ -18,28 +16,6 @@ use Theme;
 
 class PublicController extends Controller
 {
-
-    /**
-     * @var TagInterface
-     */
-    protected $tagRepository;
-
-    /**
-     * @var SlugInterface
-     */
-    protected $slugRepository;
-
-    /**
-     * PublicController constructor.
-     * @param TagInterface $tagRepository
-     * @param SlugInterface $slugRepository
-     */
-    public function __construct(TagInterface $tagRepository, SlugInterface $slugRepository)
-    {
-        $this->tagRepository = $tagRepository;
-        $this->slugRepository = $slugRepository;
-    }
-
     /**
      * @param Request $request
      * @param PostInterface $postRepository
@@ -64,20 +40,21 @@ class PublicController extends Controller
     /**
      * @param string $slug
      * @param Request $request
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|Response
      */
     public function getTag($slug, BlogService $blogService)
     {
-        $slug = $this->slugRepository->getFirstBy([
-            'key'            => $slug,
-            'prefix'         => SlugHelper::getPrefix(Tag::class),
-        ]);
+        $slug = SlugHelper::getSlug($slug, SlugHelper::getPrefix(Tag::class));
 
         if (!$slug) {
             abort(404);
         }
 
         $data = $blogService->handleFrontRoutes($slug);
+
+        if (isset($data['slug']) && $data['slug'] !== $slug->key) {
+            return redirect()->to(url(SlugHelper::getPrefix(Tag::class) . '/' . $data['slug']));
+        }
 
         return Theme::scope($data['view'], $data['data'], $data['default_view'])
             ->render();
@@ -86,20 +63,21 @@ class PublicController extends Controller
     /**
      * @param string $slug
      * @param BlogService $blogService
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|Response
      */
     public function getPost($slug, BlogService $blogService)
     {
-        $slug = $this->slugRepository->getFirstBy([
-            'key'    => $slug,
-            'prefix' => SlugHelper::getPrefix(Post::class),
-        ]);
+        $slug = SlugHelper::getSlug($slug, SlugHelper::getPrefix(Post::class));
 
         if (!$slug) {
             abort(404);
         }
 
         $data = $blogService->handleFrontRoutes($slug);
+
+        if (isset($data['slug']) && $data['slug'] !== $slug->key) {
+            return redirect()->to(url(SlugHelper::getPrefix(Post::class) . '/' . $data['slug']));
+        }
 
         return Theme::scope($data['view'], $data['data'], $data['default_view'])
             ->render();
@@ -108,20 +86,21 @@ class PublicController extends Controller
     /**
      * @param string $slug
      * @param BlogService $blogService
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|Response
      */
     public function getCategory($slug, BlogService $blogService)
     {
-        $slug = $this->slugRepository->getFirstBy([
-            'key'    => $slug,
-            'prefix' => SlugHelper::getPrefix(Category::class),
-        ]);
+        $slug = SlugHelper::getSlug($slug, SlugHelper::getPrefix(Category::class));
 
         if (!$slug) {
             abort(404);
         }
 
         $data = $blogService->handleFrontRoutes($slug);
+
+        if (isset($data['slug']) && $data['slug'] !== $slug->key) {
+            return redirect()->to(url(SlugHelper::getPrefix(Category::class) . '/' . $data['slug']));
+        }
 
         return Theme::scope($data['view'], $data['data'], $data['default_view'])
             ->render();

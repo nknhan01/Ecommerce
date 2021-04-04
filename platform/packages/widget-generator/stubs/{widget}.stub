@@ -27,14 +27,13 @@ class {Widget}Widget extends AbstractWidget
     protected $widgetDirectory = '{widget}';
 
     /**
-     * Widget constructor.
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * {Widget} constructor.
      */
     public function __construct()
     {
         parent::__construct([
-            'name'        => '{Widget}',
-            'description' => __('This is a sample widget'),
+            'name'        => __('{Widget}'),
+            'description' => __('Widget description'),
         ]);
     }
 }

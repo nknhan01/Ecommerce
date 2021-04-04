@@ -593,13 +593,6 @@ a.list-group-item-info.active, a.list-group-item-info.active:hover, a.list-group
     .widgets {
         display: block;
     }
-    .portlet {
-        &.portlet-no-padding {
-            .portlet-body {
-                margin-right: -10px;
-            }
-        }
-    }
 }
 
 .portlet {

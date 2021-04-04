@@ -76,8 +76,7 @@ class CategoryTable extends TableAbstract
                     return $item->status->getValue();
                 }
                 return $item->status->toHtml();
-            })
-            ->removeColumn('is_default');
+            });
 
         return apply_filters(BASE_FILTER_GET_LIST_DATA, $data, $this->repository->getModel())
             ->addColumn('operations', function ($item) {

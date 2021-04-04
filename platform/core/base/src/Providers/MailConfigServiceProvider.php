@@ -2,6 +2,7 @@
 
 namespace Platform\Base\Providers;
 
+use Platform\Setting\Supports\SettingStore;
 use Illuminate\Support\ServiceProvider;
 
 class MailConfigServiceProvider extends ServiceProvider
@@ -13,66 +14,75 @@ class MailConfigServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        config([
-            'mail' => array_merge(config('mail'), [
-                'default' => setting('email_driver', config('mail.default')),
-                'from'    => [
-                    'address' => setting('email_from_address', config('mail.from.address')),
-                    'name'    => setting('email_from_name', config('mail.from.name')),
-                ],
-            ]),
-        ]);
+        $this->app->booted(function () {
+            $config = $this->app->make('config');
+            $setting = $this->app->make(SettingStore::class);
 
-        switch (setting('email_driver', config('mail.default'))) {
-            case 'smtp':
-                config([
-                    'mail.mailers.smtp' => array_merge(config('mail.mailers.smtp'), [
-                        'transport'  => 'smtp',
-                        'host'       => setting('email_host', config('mail.mailers.smtp.host')),
-                        'port'       => (int)setting('email_port', config('mail.mailers.smtp.port')),
-                        'encryption' => setting('email_encryption', config('mail.mailers.smtp.encryption')),
-                        'username'   => setting('email_username', config('mail.mailers.smtp.username')),
-                        'password'   => setting('email_password', config('mail.mailers.smtp.password')),
-                    ]),
-                ]);
-                break;
-            case 'mailgun':
-                config([
-                    'services.mailgun' => [
-                        'domain'   => setting('email_mail_gun_domain', config('services.mailgun.domain')),
-                        'secret'   => setting('email_mail_gun_secret', config('services.mailgun.secret')),
-                        'endpoint' => setting('email_mail_gun_endpoint', config('services.mailgun.endpoint')),
+            $config->set([
+                'mail' => array_merge($config->get('mail'), [
+                    'default' => $setting->get('email_driver', $config->get('mail.default')),
+                    'from'    => [
+                        'address' => $setting->get('email_from_address', $config->get('mail.from.address')),
+                        'name'    => $setting->get('email_from_name', $config->get('mail.from.name')),
                     ],
-                ]);
-                break;
-            case 'sendmail':
-                config([
-                    'mail.mailers.sendmail.path' => setting('email_sendmail_path',
-                        config('mail.mailers.sendmail.path')),
-                ]);
-                break;
-            case 'postmark':
-                config([
-                    'services.postmark' => [
-                        'token' => setting('email_postmark_token', config('services.postmark.token')),
-                    ],
-                ]);
-                break;
-            case 'ses':
-                config([
-                    'services.ses' => [
-                        'key'    => setting('email_ses_key', config('services.ses.key')),
-                        'secret' => setting('email_ses_secret', config('services.ses.secret')),
-                        'region' => setting('email_ses_region', config('services.ses.region')),
-                    ],
-                ]);
-                break;
-            case 'log':
-                config([
-                    'mail.mailers.log.channel' => setting('email_log_channel',
-                        config('mail.mailers.log.channel')),
-                ]);
-                break;
-        }
+                ]),
+            ]);
+
+            switch ($setting->get('email_driver', $config->get('mail.default'))) {
+                case 'smtp':
+                    $config->set([
+                        'mail.mailers.smtp' => array_merge($config->get('mail.mailers.smtp'), [
+                            'transport'  => 'smtp',
+                            'host'       => $setting->get('email_host', $config->get('mail.mailers.smtp.host')),
+                            'port'       => (int)$setting->get('email_port', $config->get('mail.mailers.smtp.port')),
+                            'encryption' => $setting->get('email_encryption',
+                                $config->get('mail.mailers.smtp.encryption')),
+                            'username'   => $setting->get('email_username', $config->get('mail.mailers.smtp.username')),
+                            'password'   => $setting->get('email_password', $config->get('mail.mailers.smtp.password')),
+                        ]),
+                    ]);
+                    break;
+                case 'mailgun':
+                    $config->set([
+                        'services.mailgun' => [
+                            'domain'   => $setting->get('email_mail_gun_domain',
+                                $config->get('services.mailgun.domain')),
+                            'secret'   => $setting->get('email_mail_gun_secret',
+                                $config->get('services.mailgun.secret')),
+                            'endpoint' => $setting->get('email_mail_gun_endpoint',
+                                $config->get('services.mailgun.endpoint')),
+                        ],
+                    ]);
+                    break;
+                case 'sendmail':
+                    $config->set([
+                        'mail.mailers.sendmail.path' => $setting->get('email_sendmail_path',
+                            $config->get('mail.mailers.sendmail.path')),
+                    ]);
+                    break;
+                case 'postmark':
+                    $config->set([
+                        'services.postmark' => [
+                            'token' => $setting->get('email_postmark_token', $config->get('services.postmark.token')),
+                        ],
+                    ]);
+                    break;
+                case 'ses':
+                    $config->set([
+                        'services.ses' => [
+                            'key'    => $setting->get('email_ses_key', $config->get('services.ses.key')),
+                            'secret' => $setting->get('email_ses_secret', $config->get('services.ses.secret')),
+                            'region' => $setting->get('email_ses_region', $config->get('services.ses.region')),
+                        ],
+                    ]);
+                    break;
+                case 'log':
+                    $config->set([
+                        'mail.mailers.log.channel' => $setting->get('email_log_channel',
+                            $config->get('mail.mailers.log.channel')),
+                    ]);
+                    break;
+            }
+        });
     }
 }

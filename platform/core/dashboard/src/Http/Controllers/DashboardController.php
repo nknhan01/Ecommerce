@@ -71,7 +71,7 @@ class DashboardController extends BaseController
                 'settings' => function (HasMany $query) use ($request) {
                     $query->where('user_id', $request->user()->getKey())
                         ->select(['status', 'order', 'settings', 'widget_id'])
-                        ->orderBy('order', 'asc');
+                        ->orderBy('order');
                 },
             ])
             ->select(['id', 'name'])
@@ -116,10 +116,10 @@ class DashboardController extends BaseController
                 $request->input('setting_name') => $request->input('setting_value'),
             ]);
             $this->widgetSettingRepository->createOrUpdate($widgetSetting);
-        } catch (Exception $ex) {
+        } catch (Exception $exception) {
             return $response
                 ->setError()
-                ->setMessage($ex->getMessage());
+                ->setMessage($exception->getMessage());
         }
 
         return $response;

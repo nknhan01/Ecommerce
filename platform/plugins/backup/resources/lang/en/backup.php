@@ -7,8 +7,8 @@ return [
     'delete_backup_success'   => 'Delete backup successfully!',
     'restore_backup_success'  => 'Restore backup successfully!',
     'generate_btn'            => 'Generate backup',
-    'create'                  => 'Create backup',
-    'restore'                 => 'Restore backup',
+    'create'                  => 'Create a backup',
+    'restore'                 => 'Restore a backup',
     'create_btn'              => 'Create',
     'restore_btn'             => 'Restore',
     'restore_confirm_msg'     => 'Do you really want to restore this revision?',
@@ -17,11 +17,6 @@ return [
     'restore_tooltip'         => 'Restore this backup',
     'demo_alert'              => 'Hi guest, if you see demo site is destroyed, please help me <a href=":link">go here</a> and restore demo site to the latest revision! Thank you so much!',
     'menu_name'               => 'Backups',
-
-    'settings' => [
-        'title'                                 => 'Backup',
-        'description'                           => 'Settings for backup function',
-        'backup_mysql_execute_path'             => 'MySQL execute path',
-        'backup_mysql_execute_path_placeholder' => 'Default: /usr/mysql/bin. Ignore it if you aren\'t sure about it',
-    ],
+    'size'                    => 'Size',
+    'no_backups'              => 'There is no backup now!',
 ];

@@ -72,7 +72,7 @@ class {Name}Controller extends BaseController
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @param Request $request
      * @param FormBuilder $formBuilder
      * @return string
@@ -89,7 +89,7 @@ class {Name}Controller extends BaseController
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @param {Name}Request $request
      * @param BaseHttpResponse $response
      * @return BaseHttpResponse
@@ -110,7 +110,7 @@ class {Name}Controller extends BaseController
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @param Request $request
      * @param BaseHttpResponse $response
      * @return BaseHttpResponse

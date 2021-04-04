@@ -59,7 +59,7 @@ class PluginService
         if (empty($content)) {
             return [
                 'error'   => true,
-                'message' => __('Invalid plugin.json!'),
+                'message' => trans('packages/plugin-management::plugin.invalid_json'),
             ];
         }
 
@@ -72,7 +72,7 @@ class PluginService
 
                     return [
                         'error'   => true,
-                        'message' => __('Please activate plugin(s) first: :plugins',
+                        'message' => trans('packages/plugin-management::plugin.missing_required_plugins',
                             ['plugins' => implode(',', $content['require'])]),
                     ];
                 }
@@ -106,13 +106,13 @@ class PluginService
 
             return [
                 'error'   => false,
-                'message' => __('Activate plugin successfully!'),
+                'message' => trans('packages/plugin-management::plugin.activate_success'),
             ];
         }
 
         return [
             'error'   => true,
-            'message' => __('This plugin is activated already!'),
+            'message' => trans('packages/plugin-management::plugin.activated_already'),
         ];
     }
 
@@ -127,20 +127,20 @@ class PluginService
         if (!$this->files->isDirectory($location)) {
             return [
                 'error'   => true,
-                'message' => __('This plugin is not exists.'),
+                'message' => trans('packages/plugin-management::plugin.plugin_not_exist'),
             ];
         }
 
         if (!$this->files->exists($location . '/plugin.json')) {
             return [
                 'error'   => true,
-                'message' => __('Missing file plugin.json!'),
+                'message' => trans('packages/plugin-management::plugin.missing_json_file'),
             ];
         }
 
         return [
             'error'   => false,
-            'message' => __('Plugin is valid!'),
+            'message' => trans('packages/plugin-management::plugin.plugin_invalid'),
         ];
     }
 
@@ -163,7 +163,7 @@ class PluginService
 
         return [
             'error'   => false,
-            'message' => __('Publish assets for plugin :name successfully!', ['name' => $plugin]),
+            'message' => trans('packages/plugin-management::plugin.published_assets_success', ['name' => $plugin]),
         ];
     }
 
@@ -225,7 +225,7 @@ class PluginService
 
         return [
             'error'   => false,
-            'message' => __('Plugin is removed!'),
+            'message' => trans('packages/plugin-management::plugin.plugin_removed'),
         ];
     }
 
@@ -246,7 +246,7 @@ class PluginService
         if (empty($content)) {
             return [
                 'error'   => true,
-                'message' => __('Invalid plugin.json!'),
+                'message' => trans('packages/plugin-management::plugin.invalid_json'),
             ];
         }
 
@@ -276,13 +276,13 @@ class PluginService
 
             return [
                 'error'   => false,
-                'message' => __('Deactivate plugin successfully!'),
+                'message' => trans('packages/plugin-management::plugin.deactivated_success'),
             ];
         }
 
         return [
             'error'   => true,
-            'message' => __('This plugin is deactivated already!'),
+            'message' => trans('packages/plugin-management::plugin.deactivated_already'),
         ];
     }
 }

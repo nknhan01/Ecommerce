@@ -24,7 +24,7 @@ class JsonSettingStore extends SettingStore
     public function __construct(Filesystem $files, $path = null)
     {
         $this->files = $files;
-        $this->setPath($path ?: storage_path() . '/settings.json');
+        $this->setPath($path ?: storage_path('settings.json'));
     }
 
     /**
@@ -80,10 +80,9 @@ class JsonSettingStore extends SettingStore
      */
     protected function write(array $data)
     {
+        $contents = '{}';
         if ($data) {
             $contents = json_encode($data);
-        } else {
-            $contents = '{}';
         }
 
         $this->files->put($this->path, $contents);

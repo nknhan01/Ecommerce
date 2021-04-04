@@ -9,10 +9,10 @@ use Platform\Blog\Http\Resources\CategoryResource;
 use Platform\Blog\Http\Resources\ListCategoryResource;
 use Platform\Blog\Repositories\Interfaces\CategoryInterface;
 use Platform\Blog\Supports\FilterCategory;
-use Platform\Slug\Repositories\Interfaces\SlugInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Platform\Blog\Models\Category;
+use SlugHelper;
 
 class CategoryController extends Controller
 {
@@ -22,19 +22,12 @@ class CategoryController extends Controller
     protected $categoryRepository;
 
     /**
-     * @var SlugInterface
-     */
-    protected $slugRepository;
-
-    /**
      * CategoryController constructor.
      * @param CategoryInterface $categoryRepository
-     * @param SlugInterface $slugRepository
      */
-    public function __construct(CategoryInterface $categoryRepository, SlugInterface $slugRepository)
+    public function __construct(CategoryInterface $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
-        $this->slugRepository = $slugRepository;
     }
 
     /**
@@ -88,7 +81,7 @@ class CategoryController extends Controller
      */
     public function findBySlug(string $slug, BaseHttpResponse $response)
     {
-        $slug = $this->slugRepository->getFirstBy(['key' => $slug, 'reference_type' => Category::class]);
+        $slug = SlugHelper::getSlug($slug, SlugHelper::getPrefix(Category::class), Category::class);
         if (!$slug) {
             return $response->setError()->setCode(404)->setMessage('Not found');
         }

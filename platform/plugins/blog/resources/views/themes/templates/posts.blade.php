@@ -24,6 +24,6 @@
         </article>
     @endforeach
     <div>
-        {!! $posts->appends(request()->query())->links() !!}
+        {!! $posts->withQueryString()->links() !!}
     </div>
 @endif

@@ -734,14 +734,8 @@ Page Footer
             .navbar-nav {
                 > li.dropdown-user {
                     .dropdown-toggle {
-                        background-color: lighten($header-top-menu-bg-hover-color, 1%);
-
                         .page-header-fixed-mobile & {
                             background: none;
-                        }
-
-                        &:hover {
-                            background-color: $header-top-menu-bg-hover-color;
                         }
                     }
                 }

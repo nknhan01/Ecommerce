@@ -30,4 +30,9 @@ return [
         'flag'        => 'theme.custom-css',
         'parent_flag' => 'core.appearance',
     ],
+    [
+        'name'        => 'Custom JS',
+        'flag'        => 'theme.custom-js',
+        'parent_flag' => 'core.appearance',
+    ],
 ];

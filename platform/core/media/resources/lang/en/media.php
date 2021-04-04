@@ -71,8 +71,8 @@ return [
 
     'javascript'   => [
         'name'             => 'Name',
-        'url'              => 'Url',
-        'full_url'         => 'Full url',
+        'url'              => 'URL',
+        'full_url'         => 'Full URL',
         'size'             => 'Size',
         'mime_type'        => 'Type',
         'created_at'       => 'Uploaded at',
@@ -143,4 +143,6 @@ return [
         ],
     ],
     'name_invalid' => 'The folder name has invalid character(s).',
+    'url_invalid'  => 'Please provide a valid URL',
+    'path_invalid' => 'Please provide a valid path',
 ];

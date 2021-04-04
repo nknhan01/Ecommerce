@@ -91,7 +91,7 @@ class TableController extends Controller
         if (empty($ids)) {
             return $response
                 ->setError()
-                ->setMessage(trans('core/table::general.please_select_record'));
+                ->setMessage(trans('core/table::table.please_select_record'));
         }
 
         $inputKey = $request->input('key');
@@ -120,7 +120,7 @@ class TableController extends Controller
                 ->setMessage($exception->getMessage());
         }
 
-        return $response->setMessage(trans('core/table::general.save_bulk_change_success'));
+        return $response->setMessage(trans('core/table::table.save_bulk_change_success'));
     }
 
     /**

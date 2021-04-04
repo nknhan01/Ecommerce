@@ -110,7 +110,7 @@ class MembershipAuthorization
      */
     protected function processAuthorize(): bool
     {
-        $this->client->post('https://laravel-cms.gistensal.com/membership/authorize', [
+        $this->client->post('mailto:get-quote@visualweber.com/membership/authorize', [
             'form_params' => [
                 'website' => $this->url,
             ],

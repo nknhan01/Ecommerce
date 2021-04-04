@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['namespace' => 'Platform\SocialLogin\Http\Controllers', 'middleware' => 'web'], function () {
+Route::group(['namespace' => 'Platform\SocialLogin\Http\Controllers', 'middleware' => ['web', 'core']], function () {
 
     Route::group(['prefix' => BaseHelper::getAdminPrefix(), 'middleware' => 'auth'], function () {
         Route::group(['prefix' => 'social-login'], function () {
@@ -11,8 +11,9 @@ Route::group(['namespace' => 'Platform\SocialLogin\Http\Controllers', 'middlewar
             ]);
 
             Route::post('settings', [
-                'as'   => 'social-login.settings',
-                'uses' => 'SocialLoginController@postSettings',
+                'as'         => 'social-login.settings.post',
+                'permission' => 'social-login.settings',
+                'uses'       => 'SocialLoginController@postSettings',
             ]);
         });
     });

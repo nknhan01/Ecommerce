@@ -43,13 +43,11 @@ class BlogService
             case Post::class:
                 $post = app(PostInterface::class)
                     ->getFirstBy($condition, ['*'],
-                        ['categories', 'tags', 'categories.slugable', 'tags.slugable']);
+                        ['categories', 'tags', 'slugable', 'categories.slugable', 'tags.slugable']);
 
                 if (empty($post)) {
                     abort(404);
                 }
-
-                $post->slugable = $slug;
 
                 Helper::handleViewCount($post, 'viewed_post');
 
@@ -67,14 +65,19 @@ class BlogService
 
                 SeoHelper::setSeoOpenGraph($meta);
 
-                if (function_exists('admin_bar')) {
+                if (function_exists('admin_bar') && Auth::check() && Auth::user()->hasPermission('posts.edit')) {
                     admin_bar()->registerLink(trans('plugins/blog::posts.edit_this_post'),
                         route('posts.edit', $post->id));
                 }
 
-                Theme::breadcrumb()
-                    ->add(__('Home'), url('/'))
-                    ->add($post->name, $post->url);
+                Theme::breadcrumb()->add(__('Home'), url('/'));
+
+                $category = $post->categories->first();
+                if ($category) {
+                    Theme::breadcrumb()->add($category->name, $category->url);
+                }
+
+                Theme::breadcrumb()->add($post->name, $post->url);
 
                 do_action(BASE_ACTION_PUBLIC_RENDER_SINGLE, POST_MODULE_SCREEN_NAME, $post);
 
@@ -92,8 +95,6 @@ class BlogService
                     abort(404);
                 }
 
-                $category->slugable = $slug;
-
                 SeoHelper::setTitle($category->name)
                     ->setDescription($category->description);
 
@@ -108,7 +109,7 @@ class BlogService
 
                 SeoHelper::setSeoOpenGraph($meta);
 
-                if (function_exists('admin_bar')) {
+                if (function_exists('admin_bar') && Auth::check() && Auth::user()->hasPermission('categories.edit')) {
                     admin_bar()->registerLink(trans('plugins/blog::categories.edit_this_category'),
                         route('categories.edit', $category->id));
                 }
@@ -134,13 +135,11 @@ class BlogService
                     'slug'         => $category->slug,
                 ];
             case Tag::class:
-                $tag = app(TagInterface::class)->getFirstBy($condition);
+                $tag = app(TagInterface::class)->getFirstBy($condition, ['*'], ['slugable']);
 
                 if (!$tag) {
                     abort(404);
                 }
-
-                $tag->slugable = $slug;
 
                 SeoHelper::setTitle($tag->name)
                     ->setDescription($tag->description);
@@ -151,11 +150,11 @@ class BlogService
                 $meta->setTitle($tag->name);
                 $meta->setType('article');
 
-                if (function_exists('admin_bar')) {
+                if (function_exists('admin_bar') && Auth::check() && Auth::user()->hasPermission('tags.edit')) {
                     admin_bar()->registerLink(trans('plugins/blog::tags.edit_this_tag'), route('tags.edit', $tag->id));
                 }
 
-                $posts = get_posts_by_tag($tag->id, theme_option('number_of_posts_in_a_tag'));
+                $posts = get_posts_by_tag($tag->id, theme_option('number_of_posts_in_a_tag', 12));
 
                 Theme::breadcrumb()
                     ->add(__('Home'), url('/'))

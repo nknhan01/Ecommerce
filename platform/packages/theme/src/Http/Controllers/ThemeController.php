@@ -6,9 +6,10 @@ use Assets;
 use Platform\Base\Forms\FormBuilder;
 use Platform\Base\Http\Controllers\BaseController;
 use Platform\Base\Http\Responses\BaseHttpResponse;
-use Platform\Setting\Supports\SettingStore;
 use Platform\Theme\Forms\CustomCSSForm;
+use Platform\Theme\Forms\CustomJSForm;
 use Platform\Theme\Http\Requests\CustomCssRequest;
+use Platform\Theme\Http\Requests\CustomJsRequest;
 use Platform\Theme\Services\ThemeService;
 use Exception;
 use File;
@@ -44,7 +45,7 @@ class ThemeController extends BaseController
     {
         page_title()->setTitle(trans('packages/theme::theme.theme_options'));
 
-        Assets::addScripts(['are-you-sure', 'colorpicker'])
+        Assets::addScripts(['are-you-sure', 'colorpicker', 'jquery-ui'])
             ->addStyles(['colorpicker'])
             ->addStylesDirectly([
                 'vendor/core/packages/theme/css/theme-options.css',
@@ -66,6 +67,10 @@ class ThemeController extends BaseController
     public function postUpdate(Request $request, BaseHttpResponse $response)
     {
         foreach ($request->except(['_token', 'ref_lang']) as $key => $value) {
+            if (is_array($value)) {
+                $value = json_encode($value);
+            }
+
             ThemeOption::setOption($key, $value);
         }
 
@@ -127,10 +132,64 @@ class ThemeController extends BaseController
     {
         $file = public_path('themes/' . Theme::getThemeName() . '/css/style.integration.css');
         $css = $request->input('custom_css');
-        $css = htmlspecialchars(htmlentities(strip_tags($css)));
-        save_file_data($file, $css, false);
+        $css = htmlspecialchars(strip_tags($css));
 
-        return $response->setMessage(__('Update custom CSS successfully!'));
+        if (empty($css)) {
+            File::delete($file);
+        } else {
+            save_file_data($file, $css, false);
+        }
+
+        return $response->setMessage(trans('packages/theme::theme.update_custom_css_success'));
+    }
+
+    /**
+     * @param FormBuilder $formBuilder
+     * @return string
+     */
+    public function getCustomJs(FormBuilder $formBuilder)
+    {
+        if (!config('packages.theme.general.enable_custom_js')) {
+            abort(404);
+        }
+
+        page_title()->setTitle(trans('packages/theme::theme.custom_js'));
+
+        Assets::addStylesDirectly([
+            'vendor/core/core/base/libraries/codemirror/lib/codemirror.css',
+            'vendor/core/core/base/libraries/codemirror/addon/hint/show-hint.css',
+            'vendor/core/packages/theme/css/custom-css.css',
+        ])
+            ->addScriptsDirectly([
+                'vendor/core/core/base/libraries/codemirror/lib/codemirror.js',
+                'vendor/core/core/base/libraries/codemirror/lib/javascript.js',
+                'vendor/core/core/base/libraries/codemirror/addon/hint/show-hint.js',
+                'vendor/core/core/base/libraries/codemirror/addon/hint/anyword-hint.js',
+                'vendor/core/core/base/libraries/codemirror/addon/hint/javascript-hint.js',
+                'vendor/core/packages/theme/js/custom-js.js',
+            ]);
+
+        return $formBuilder->create(CustomJSForm::class)->renderForm();
+    }
+
+    /**
+     * @param CustomJsRequest $request
+     * @param BaseHttpResponse $response
+     * @return BaseHttpResponse
+     */
+    public function postCustomJs(CustomJsRequest $request, BaseHttpResponse $response)
+    {
+        if (!config('packages.theme.general.enable_custom_js')) {
+            abort(404);
+        }
+
+        setting()
+            ->set('custom_header_js', $request->input('header_js'))
+            ->set('custom_body_js', $request->input('body_js'))
+            ->set('custom_footer_js', $request->input('footer_js'))
+            ->save();
+
+        return $response->setMessage(trans('packages/theme::theme.update_custom_js_success'));
     }
 
     /**
@@ -163,6 +222,6 @@ class ThemeController extends BaseController
 
         return $response
             ->setError()
-            ->setMessage(trans('packages/theme::theme.theme_is_note_existed'));
+            ->setMessage(trans('packages/theme::theme.theme_is_not_existed'));
     }
 }

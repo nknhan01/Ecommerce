@@ -1,13 +1,7 @@
 #!/bin/bash
+
 platform='unknown'
-os=${OSTYPE//[0-9.-]*/}
-if [[ "$os" == 'darwin' ]]; then
-  platform='MAC OSX'
-elif [[ "$os" == 'msys' ]]; then
-  platform='window'
-elif [[ "$os" == 'linux' ]]; then
-  platform='linux'
-fi
+
 NORMAL="\\033[0;39m"
 VERT="\\033[1;32m"
 ROUGE="\\033[1;31m"
@@ -23,52 +17,32 @@ COL_BLUE=$ESC_SEQ"34;01m"
 COL_MAGENTA=$ESC_SEQ"35;01m"
 COL_CYAN=$ESC_SEQ"36;01m"
 
-# Linux bin paths, change this if it can not be autodetected via which command
-
-if [[ "$platform" != 'window' ]]; then
-  BIN="/usr/bin"
-  CP="$($BIN/which cp)"
-  SSH="$($BIN/which ssh)"
-  CD="$($BIN/which cd)"
-  GIT="$($BIN/which git)"
-  ECHO="$($BIN/which echo)"
-  LN="$($BIN/which ln)"
-  MV="$($BIN/which mv)"
-  RM="$($BIN/which rm)"
-  NGINX="/etc/init.d/nginx"
-  MKDIR="$($BIN/which mkdir)"
-  MYSQL="$($BIN/which mysql)"
-  MYSQLDUMP="$($BIN/which mysqldump)"
-  CHOWN="$($BIN/which chown)"
-  CHMOD="$($BIN/which chmod)"
-  GZIP="$($BIN/which gzip)"
-  FIND="$($BIN/which find)"
-  TOUCH="$($BIN/which touch)"
-  LS="$($BIN/which ls)"
-  PHP="$($BIN/which php)"
-else
-  CP="cp"
-  SSH="ssh"
-  CD="cd"
-  GIT="git"
-  ECHO="echo"
-  LN="ln"
-  MV="mv"
-  RM="rm"
-  NGINX="/etc/init.d/nginx"
-  MKDIR="mkdir"
-  MYSQL="mysql"
-  MYSQLDUMP="mysqldump"
-  #no support
-  CHOWN="chown"
-  CHMOD="chmod"
-  GZIP="gzip"
-  TOUCH="touch"
-  #end no support
-  FIND="find"
-  LS="ls"
-  PHP="php"
-fi
+## Linux bin paths, change this if it can not be autodetected via which command
+BIN="/usr/bin"
+CP="$($BIN/which cp)"
+SSH="$($BIN/which ssh)"
+CD="$($BIN/which cd)"
+GIT="$($BIN/which git)"
+ECHO="$($BIN/which echo)"
+LN="$($BIN/which ln)"
+MV="$($BIN/which mv)"
+RM="$($BIN/which rm)"
+NGINX="/etc/init.d/nginx"
+MKDIR="$($BIN/which mkdir)"
+MYSQL="$($BIN/which mysql)"
+MYSQLDUMP="$($BIN/which mysqldump)"
+CHOWN="$($BIN/which chown)"
+CHMOD="$($BIN/which chmod)"
+GZIP="$($BIN/which gzip)"
+ZIP="$($BIN/which zip)"
+FIND="$($BIN/which find)"
+TOUCH="$($BIN/which touch)"
+PHP="$($BIN/which php)"
+PERL="$($BIN/which perl)"
+CURL="$($BIN/which curl)"
+HASCURL=1
+DEVMODE="--no-dev"
+PHPCOPTS=" -d memory_limit=-1 "
 
 ### directory and file modes for cron and mirror files
 FDMODE=0777
@@ -76,6 +50,16 @@ CDMODE=0700
 CFMODE=600
 MDMODE=0755
 MFMODE=644
+
+os=${OSTYPE//[0-9.-]*/}
+if [[ "$os" == 'darwin' ]]; then
+  platform='macosx'
+elif [[ "$os" == 'msys' ]]; then
+  platform='window'
+elif [[ "$os" == 'linux' ]]; then
+  platform='linux'
+fi
+echo -e "$ROUGE You are using $platform $NORMAL"
 
 ###
 ## SOURCE="${BASH_SOURCE[0]}"
@@ -87,9 +71,20 @@ MFMODE=644
 ## DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 ## cd $DIR
 ## SCRIPT_PATH=`pwd -P` # return wrong path if you are calling this script with wrong location
+## SCRIPT_PATH=`pwd -P`
 SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)" # return /path/bin
-echo -e "$VERT--> Booting now ... $NORMAL"
 echo -e "$VERT--> Your path: $SCRIPT_PATH $NORMAL"
+
+command -v php >/dev/null || {
+  echo "php command not found."
+  exit 1
+}
+
+## command -v curl >/dev/null || HASCURL=0
+command -v curl >/dev/null || {
+  echo "curl command not found."
+  exit 1
+}
 
 # Usage info
 show_help() {
@@ -119,9 +114,11 @@ while :; do
     APPLICATION_ENV="$2"
     if [[ "$2" == 'd' ]]; then
       APPLICATION_ENV="development"
+      DEVMODE="" # default is dev mode
     fi
     if [[ "$2" == 'p' ]]; then
       APPLICATION_ENV="production"
+      DEVMODE="--no-dev"
     fi
     shift
     break
@@ -149,24 +146,25 @@ while :; do
 done
 
 export APPLICATION_ENV="${APPLICATION_ENV}"
+export APP_ENV="${APPLICATION_ENV}"
+export NODE_ENV="${APPLICATION_ENV}"
+export CI_ENV="${APPLICATION_ENV}"
+export ENVIRONMENT="${APPLICATION_ENV}"
 
 echo -e "$VERT--> You are uing APPLICATION_ENV: $APPLICATION_ENV $NORMAL"
+echo "$(date) - Your composer devmod $DEVMODE is running"
 
-## try if CMDS exist
-command -v php >/dev/null || {
-  echo "php command not found."
+nonce=$(md5sum <<< $(ip route get 8.8.8.8 | awk '{print $NF; exit}')$(hostname) | cut -c1-5 )
+LOCKFILE=/tmp/zipping_$nonce
+EMAILFILE=/tmp/zipping_$nonce.email
+if [ -f "$LOCKFILE" ]; then
+  # Remove lock file if script fails last time and did not run longer than 2 days due to lock file.
+  find "$LOCKFILE" -mtime +2 -type f -delete
+  echo "$(date) - Warning - process is running"
   exit 1
-}
-HASCURL=1
-command -v curl >/dev/null || HASCURL=0
-if [ -z "$1" ]; then
-  DEVMODE=$1
-else
-  DEVMODE="--no-dev"
 fi
-
-### settings / options
-PHPCOPTS="-d memory_limit=-1"
+## touch $LOCKFILE
+## touch $EMAILFILE
 
 ################ FOR SYMFONY
 if [ -f "$SCRIPT_PATH/../app/console" ]; then
@@ -237,25 +235,40 @@ if [ -f "$SCRIPT_PATH/../artisan" ]; then
 
   [ ! -d "$SCRIPT_PATH/../bootstrap/cache" ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../bootstrap/cache
   [ -f "$SCRIPT_PATH/../bootstrap/cache/.gitignore" ] && $ECHO "Found: bootstrap/cache/.gitignore" || $TOUCH $SCRIPT_PATH/../bootstrap/cache/.gitignore && echo -e "*\n!.gitignore"$'\r' >$SCRIPT_PATH/../bootstrap/cache/.gitignore
+fi
 
-  ## [ ! -d "$SCRIPT_PATH/../storage/DoctrineModule"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../storage/DoctrineModule && touch $SCRIPT_PATH/../storage/DoctrineModule/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../storage/DoctrineModule/.gitignore
-  ## [ ! -d "$SCRIPT_PATH/../storage/DoctrineORMModule"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../storage/DoctrineORMModule && touch $SCRIPT_PATH/../storage/DoctrineORMModule/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../storage/DoctrineORMModule/.gitignore
-  ## [ ! -d "$SCRIPT_PATH/../storage/DoctrineORMModule/Hydrator"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../storage/DoctrineORMModule/Hydrator && touch $SCRIPT_PATH/../storage/DoctrineORMModule/Hydrator/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../storage/DoctrineORMModule/Hydrator/.gitignore
-  ## [ ! -d "$SCRIPT_PATH/../storage/DoctrineORMModule/Proxy"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../storage/DoctrineORMModule/Proxy && touch $SCRIPT_PATH/../storage/DoctrineORMModule/Proxy/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../storage/DoctrineORMModule/Proxy/.gitignore
-  ## [ ! -d "$SCRIPT_PATH/../storage/DoctrineMongoODMModule"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../storage/DoctrineMongoODMModule && touch $SCRIPT_PATH/../storage/DoctrineMongoODMModule/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../storage/DoctrineMongoODMModule/.gitignore
-  ## [ ! -d "$SCRIPT_PATH/../storage/DoctrineMongoODMModule/Hydrator"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../storage/DoctrineMongoODMModule/Hydrator && touch $SCRIPT_PATH/../storage/DoctrineMongoODMModule/Hydrator/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../storage/DoctrineMongoODMModule/Hydrator/.gitignore
-  ## [ ! -d "$SCRIPT_PATH/../storage/DoctrineMongoODMModule/Proxy"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../storage/DoctrineMongoODMModule/Proxy && touch $SCRIPT_PATH/../storage/DoctrineMongoODMModule/Proxy/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../storage/DoctrineMongoODMModule/Proxy/.gitignore
+################ FOR Zend Framework & Doctrine
+if [ -d "$SCRIPT_PATH/../data/DoctrineModule" ]; then
+  ## [ ! -d "$SCRIPT_PATH/../public/themes/webapp/data/captcha"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../public/themes/webapp/data/captcha && touch $SCRIPT_PATH/../public/themes/webapp/data/captcha/index.html
+  ## [ ! -d "$SCRIPT_PATH/../public/themes/webapp/data/pdf"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../public/themes/webapp/data/pdf && touch $SCRIPT_PATH/../public/themes/webapp/data/pdf/index.html
+
+  $RM -rf $SCRIPT_PATH/../data/cache/*
+  $RM -rf $SCRIPT_PATH/../data/Doctrine*
+  $RM -rf $SCRIPT_PATH/../composer.lock
+
+	[ ! -d "$SCRIPT_PATH/../data/cache"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../data/cache && touch $SCRIPT_PATH/../data/cache/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../data/cache/.gitignore
+	[ ! -d "$SCRIPT_PATH/../data/config"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../data/config && touch $SCRIPT_PATH/../data/config/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../data/config/.gitignore
+	[ ! -d "$SCRIPT_PATH/../data/tmp"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../data/tmp && touch $SCRIPT_PATH/../data/tmp/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../data/tmp/.gitignore
+	[ ! -d "$SCRIPT_PATH/../data/logs"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../data/logs && touch $SCRIPT_PATH/../data/logs/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../data/logs/.gitignore
+
+  [ ! -d "$SCRIPT_PATH/../data/DoctrineModule"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../data/DoctrineModule && touch $SCRIPT_PATH/../data/DoctrineModule/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../data/DoctrineModule/.gitignore
+  [ ! -d "$SCRIPT_PATH/../data/DoctrineORMModule"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../data/DoctrineORMModule && touch $SCRIPT_PATH/../data/DoctrineORMModule/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../data/DoctrineORMModule/.gitignore
+  [ ! -d "$SCRIPT_PATH/../data/DoctrineORMModule/Hydrator"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../data/DoctrineORMModule/Hydrator && touch $SCRIPT_PATH/../data/DoctrineORMModule/Hydrator/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../data/DoctrineORMModule/Hydrator/.gitignore
+  [ ! -d "$SCRIPT_PATH/../data/DoctrineORMModule/Proxy"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../data/DoctrineORMModule/Proxy && touch $SCRIPT_PATH/../data/DoctrineORMModule/Proxy/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../data/DoctrineORMModule/Proxy/.gitignore
+  [ ! -d "$SCRIPT_PATH/../data/DoctrineMongoODMModule"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../data/DoctrineMongoODMModule && touch $SCRIPT_PATH/../data/DoctrineMongoODMModule/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../data/DoctrineMongoODMModule/.gitignore
+  [ ! -d "$SCRIPT_PATH/../data/DoctrineMongoODMModule/Hydrator"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../data/DoctrineMongoODMModule/Hydrator && touch $SCRIPT_PATH/../data/DoctrineMongoODMModule/Hydrator/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../data/DoctrineMongoODMModule/Hydrator/.gitignore
+  [ ! -d "$SCRIPT_PATH/../data/DoctrineMongoODMModule/Proxy"  ] && $MKDIR -m $FDMODE -p $SCRIPT_PATH/../data/DoctrineMongoODMModule/Proxy && touch $SCRIPT_PATH/../data/DoctrineMongoODMModule/Proxy/.gitignore && echo -e "*\n!.gitignore"$'\r' > $SCRIPT_PATH/../data/DoctrineMongoODMModule/Proxy/.gitignore
 fi
 
 ## ($CD $SCRIPT_PATH && $FIND $SCRIPT_PATH -type d -exec touch {}/index.html \;)
 
 ## get last composer
-if [ -f "$SCRIPT_PATH/../composer.phar" ]; then
-  $PHP $PHPCOPTS composer.phar config --global discard-changes true
+if [ -f composer.phar ]; then
+  ## $PHP $PHPCOPTS composer.phar config --global discard-changes true
   $PHP $PHPCOPTS composer.phar self-update
 else
-  if [ HASCURL == 1 ]; then
-    curl -sS https://getcomposer.org/installer | php
+  if [ $HASCURL == 1 ]; then
+    curl -sS https://getcomposer.org/installer | $PHP
   else
     $PHP $PHPCOPTS -r "eval('?>'.file_get_contents('https://getcomposer.org/installer'));"
   fi
@@ -277,6 +290,12 @@ fi
 ################ FOR LARAVEL
 if [ -f "$SCRIPT_PATH/../artisan" ]; then
   ($CD $SCRIPT_PATH && $CHMOD -R 0777 $SCRIPT_PATH/../storage/ && $CHMOD 0777 $SCRIPT_PATH/../bootstrap/cache/)
+  echo -e "$BLUE All paths created $NORMAL"
+fi
+
+################ FOR Zend Framework & Doctrine
+if [ -d "$SCRIPT_PATH/../data/DoctrineModule" ]; then
+  ($CD $SCRIPT_PATH && $CHMOD -R 0777 $SCRIPT_PATH/../data/ && $CHMOD 0777 $SCRIPT_PATH/../data/cache/)
   echo -e "$BLUE All paths created $NORMAL"
 fi
 

@@ -7,10 +7,12 @@ use Platform\Base\Forms\Fields\AutocompleteField;
 use Platform\Base\Forms\Fields\ColorField;
 use Platform\Base\Forms\Fields\CustomRadioField;
 use Platform\Base\Forms\Fields\CustomSelectField;
+use Platform\Base\Forms\Fields\DateField;
 use Platform\Base\Forms\Fields\EditorField;
 use Platform\Base\Forms\Fields\HtmlField;
 use Platform\Base\Forms\Fields\MediaFileField;
 use Platform\Base\Forms\Fields\MediaImageField;
+use Platform\Base\Forms\Fields\MediaImagesField;
 use Platform\Base\Forms\Fields\OnOffField;
 use Platform\Base\Forms\Fields\TimeField;
 use Exception;
@@ -269,9 +271,11 @@ abstract class FormAbstract extends Form
             'onOff'        => OnOffField::class,
             'customRadio'  => CustomRadioField::class,
             'mediaImage'   => MediaImageField::class,
+            'mediaImages'  => MediaImagesField::class,
             'mediaFile'    => MediaFileField::class,
             'customColor'  => ColorField::class,
             'time'         => TimeField::class,
+            'date'         => DateField::class,
             'autocomplete' => AutocompleteField::class,
             'html'         => HtmlField::class,
         ];
@@ -303,6 +307,7 @@ abstract class FormAbstract extends Form
     public function hasTabs(): self
     {
         $this->setFormOption('template', 'core/base::forms.form-tabs');
+
         return $this;
     }
 
@@ -337,6 +342,7 @@ abstract class FormAbstract extends Form
     public function disableFields()
     {
         parent::disableFields();
+
         return $this;
     }
 

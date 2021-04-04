@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['namespace' => 'Platform\AuditLog\Http\Controllers', 'middleware' => 'web'], function () {
+Route::group(['namespace' => 'Platform\AuditLog\Http\Controllers', 'middleware' => ['web', 'core']], function () {
     Route::group(['prefix' => BaseHelper::getAdminPrefix(), 'middleware' => 'auth'], function () {
 
         Route::resource('audit-logs', 'AuditLogController', ['names' => 'audit-log'])->only(['index', 'destroy']);

@@ -1,5 +1,5 @@
 @if (Auth::user()->hasPermission('users.edit'))
-    <a href="{{ route('user.profile.view', $item->id) }}" class="btn btn-icon btn-primary" data-toggle="tooltip"
+    <a href="{{ route('users.profile.view', $item->id) }}" class="btn btn-icon btn-primary" data-toggle="tooltip"
        data-original-title="{{ trans('core/acl::users.view_user_profile') }}"><i class="fa fa-eye"></i></a>
 @endif
 

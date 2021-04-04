@@ -137,3 +137,15 @@ if (!defined('BASE_FILTER_ENUM_ARRAY')) {
 if (!defined('BASE_FILTER_ENUM_HTML')) {
     define('BASE_FILTER_ENUM_HTML', 'base_filter_enum_html');
 }
+
+if (!defined('BASE_FILTER_SITE_LANGUAGE_DIRECTION')) {
+    define('BASE_FILTER_SITE_LANGUAGE_DIRECTION', 'base_filter_site_language_direction');
+}
+
+if (!defined('BASE_FILTER_FOOTER_LAYOUT_TEMPLATE')) {
+    define('BASE_FILTER_FOOTER_LAYOUT_TEMPLATE', 'base_filter_footer_layout_template');
+}
+
+if (!defined('BASE_FILTER_HEADER_LAYOUT_TEMPLATE')) {
+    define('BASE_FILTER_HEADER_LAYOUT_TEMPLATE', 'base_filter_headerer_layout_template');
+}

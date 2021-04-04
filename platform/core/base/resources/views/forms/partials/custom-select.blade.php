@@ -1,4 +1,4 @@
-<div class="ui-select-wrapper">
+<div class="ui-select-wrapper form-group">
     @php
         Arr::set($selectAttributes, 'class', Arr::get($selectAttributes, 'class') . ' ui-select');
     @endphp

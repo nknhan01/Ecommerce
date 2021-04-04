@@ -14,10 +14,10 @@ class CreateBaseTables extends Migration
     {
         Schema::create('meta_boxes', function (Blueprint $table) {
             $table->id();
-            $table->integer('content_id')->unsigned()->index();
             $table->string('meta_key', 255);
             $table->text('meta_value')->nullable();
-            $table->string('reference', 120);
+            $table->integer('reference_id')->unsigned()->index();
+            $table->string('reference_type', 120);
             $table->timestamps();
         });
     }

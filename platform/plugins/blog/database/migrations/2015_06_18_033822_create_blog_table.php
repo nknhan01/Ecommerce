@@ -35,7 +35,6 @@ class CreateBlogTable extends Migration
             $table->integer('author_id');
             $table->string('author_type', 255)->default(addslashes(User::class));
             $table->string('description', 400)->nullable()->default('');
-            $table->integer('parent_id')->unsigned()->default(0);
             $table->string('status', 60)->default('published');
             $table->timestamps();
         });

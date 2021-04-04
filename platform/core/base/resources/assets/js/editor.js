@@ -98,21 +98,38 @@ class EditorManagement {
     }
 
     manageShortCode() {
-        let $shortCodeKey = $('.short_code_input_key');
-
         $('.list-shortcode-items li a').on('click', function (event) {
             event.preventDefault();
-            let adminConfig = $(this).closest('li').data('html');
-            if (adminConfig != null && adminConfig !== '') {
-                $('.short-code-data-form').trigger('reset');
-                $shortCodeKey.val($(this).data('key'));
-                $('.short-code-admin-config').html(adminConfig);
-                Botble.initResources();
-                Botble.initMediaIntegrate();
-                if ($(this).data('description') !== '' && $(this).data('description') != null) {
-                    $('.short_code_modal .modal-title strong').text($(this).data('description'));
-                }
+
+            if ($(this).data('has-admin-config') == '1') {
+                $('.short-code-admin-config').html('');
                 $('.short_code_modal').modal('show');
+                $('.half-circle-spinner').show();
+
+                $.ajax({
+                    type: 'GET',
+                    url: $(this).prop('href'),
+                    success: res =>  {
+                        if (res.error) {
+                            Botble.showError(res.message);
+                            return false;
+                        }
+
+                        $('.short-code-data-form').trigger('reset');
+                        $('.short_code_input_key').val($(this).data('key'));
+                        $('.half-circle-spinner').hide();
+                        $('.short-code-admin-config').html(res.data);
+                        Botble.initResources();
+                        Botble.initMediaIntegrate();
+                        if ($(this).data('description') !== '' && $(this).data('description') != null) {
+                            $('.short_code_modal .modal-title strong').text($(this).data('description'));
+                        }
+                    },
+                    error: data =>  {
+                        Botble.handleError(data);
+                    }
+                });
+
             } else {
                 if ($('.editor-ckeditor').length > 0) {
                     CKEDITOR.instances[$('.add_shortcode_btn_trigger').data('result')].insertHtml('[' + $(this).data('key') + '][/' + $(this).data('key') + ']');
@@ -162,13 +179,15 @@ class EditorManagement {
                 content = contentElement.val();
             }
 
+            const $shortCodeKey = $(this).closest('.short_code_modal').find('.short_code_input_key').val();
+
             if ($('.editor-ckeditor').length > 0) {
-                CKEDITOR.instances[$('.add_shortcode_btn_trigger').data('result')].insertHtml('<div>[' + $shortCodeKey.val() + attributes + ']' + content + '[/' + $shortCodeKey.val() + ']</div>');
+                CKEDITOR.instances[$('.add_shortcode_btn_trigger').data('result')].insertHtml('<div>[' + $shortCodeKey + attributes + ']' + content + '[/' + $shortCodeKey + ']</div>');
             } else {
                 tinymce.get($('.add_shortcode_btn_trigger').data('result')).execCommand(
                     'mceInsertContent',
                     false,
-                    '<div>[' + $shortCodeKey.val() + attributes + ']' + content + '[/' + $shortCodeKey.val() + ']</div>'
+                    '<div>[' + $shortCodeKey + attributes + ']' + content + '[/' + $shortCodeKey + ']</div>'
                 );
             }
             $(this).closest('.modal').modal('hide');

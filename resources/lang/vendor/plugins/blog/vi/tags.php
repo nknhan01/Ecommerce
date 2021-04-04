@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'model'         => 'Thẻ',
+    'models'        => 'Thẻ',
+    'list'          => 'Danh sách thẻ',
     'create'        => 'Thêm thẻ mới',
     'edit'          => 'Sửa thẻ',
     'form'          =>

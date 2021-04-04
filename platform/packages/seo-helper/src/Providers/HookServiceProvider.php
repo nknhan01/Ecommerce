@@ -3,7 +3,9 @@
 namespace Platform\SeoHelper\Providers;
 
 use Assets;
+use BaseHelper;
 use Platform\Base\Models\BaseModel;
+use Platform\Page\Models\Page;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View;
@@ -25,6 +27,10 @@ class HookServiceProvider extends ServiceProvider
     public function addMetaBox($priority, $data)
     {
         if (!empty($data) && in_array(get_class($data), config('packages.seo-helper.general.supported', []))) {
+            if (get_class($data) == Page::class && BaseHelper::isHomepage($data->id)) {
+                return false;
+            }
+
             Assets::addScriptsDirectly('vendor/core/packages/seo-helper/js/seo-helper.js')
                 ->addStylesDirectly('vendor/core/packages/seo-helper/css/seo-helper.css');
             MetaBox::addMetaBox('seo_wrap', trans('packages/seo-helper::seo-helper.meta_box_header'), [$this, 'seoMetaBox'],
@@ -62,6 +68,10 @@ class HookServiceProvider extends ServiceProvider
      */
     public function setSeoMeta($screen, $object)
     {
+        if (get_class($object) == Page::class && BaseHelper::isHomepage($object->id)) {
+            return false;
+        }
+
         $meta = MetaBox::getMetaData($object, 'seo_meta', true);
         if (!empty($meta)) {
             if (!empty($meta['seo_title'])) {

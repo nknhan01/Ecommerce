@@ -231,6 +231,16 @@ class RvMedia
             return $path;
         }
 
+        if (config('filesystems.default') === 'do_spaces' && (int)setting('media_do_spaces_cdn_enabled')) {
+            $customDomain = setting('media_do_spaces_cdn_custom_domain');
+
+            if ($customDomain) {
+                return $customDomain . '/' . ltrim($path, '/');
+            }
+
+            return str_replace('.digitaloceanspaces.com', '.cdn.digitaloceanspaces.com', Storage::url($path));
+        }
+
         return Storage::url($path);
     }
 
@@ -613,7 +623,10 @@ class RvMedia
                 setting('watermark_position_x', config('core.media.media.watermark.x')),
                 setting('watermark_position_y', config('core.media.media.watermark.y'))
             );
-            $image->save($this->getRealPath($file->url));
+
+            $destinationPath = sprintf('%s/%s', trim(File::dirname($file->url), '/'), File::name($file->url) . '.' . File::extension($file->url));
+
+            $this->uploadManager->saveFile($destinationPath, $image->stream()->__toString());
         }
 
         return true;
@@ -666,7 +679,7 @@ class RvMedia
         if (empty($url)) {
             return [
                 'error'   => true,
-                'message' => __('Please provide a valid URL'),
+                'message' => trans('core/media::media.url_invalid'),
             ];
         }
 
@@ -713,5 +726,39 @@ class RvMedia
         File::delete($path);
 
         return $result;
+    }
+
+    /**
+     * @param string $path
+     * @param int $folderId
+     * @param string|null $folderSlug
+     * @param string|null $defaultMimetype
+     * @return array
+     */
+    public function uploadFromPath(string $path, int $folderId = 0, ?string $folderSlug = null, $defaultMimetype = null)
+    {
+        if (empty($path)) {
+            return [
+                'error'   => true,
+                'message' => trans('core/media::media.path_invalid'),
+            ];
+        }
+
+        $mimeTypeDetection = new MimeTypes;
+        $mimeType = $mimeTypeDetection->getMimeType(File::extension($path));
+
+        if (empty($mimeType)) {
+            $mimeType = $defaultMimetype;
+        }
+
+        $fileName = File::name($path);
+        $fileExtension = File::extension($path);
+        if (empty($fileExtension)) {
+            $fileExtension = $mimeTypeDetection->getExtension($mimeType);
+        }
+
+        $fileUpload = new UploadedFile($path, $fileName . '.' . $fileExtension, $mimeType, null, true);
+
+        return $this->handleUpload($fileUpload, $folderId, $folderSlug);
     }
 }

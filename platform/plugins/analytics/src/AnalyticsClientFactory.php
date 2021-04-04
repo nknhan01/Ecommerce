@@ -2,18 +2,18 @@
 
 namespace Platform\Analytics;
 
-use Cache;
-use Google_Exception;
+use Google\Exception;
 use Google_Service_Analytics;
 use Illuminate\Contracts\Cache\Repository;
-use Platform\Analytics\Cache\CacheItemPool;
+use Illuminate\Support\Facades\Cache;
+use Symfony\Component\Cache\Adapter\Psr16Adapter;
 
 class AnalyticsClientFactory
 {
     /**
      * @param array $analyticsConfig
      * @return AnalyticsClient
-     * @throws Google_Exception
+     * @throws Exception
      */
     public static function createForConfig(array $analyticsConfig): AnalyticsClient
     {
@@ -27,7 +27,7 @@ class AnalyticsClientFactory
     /**
      * @param array $config
      * @return GoogleClient
-     * @throws Google_Exception
+     * @throws Exception
      */
     public static function createAuthenticatedGoogleClient(array $config): GoogleClient
     {
@@ -54,7 +54,7 @@ class AnalyticsClientFactory
 
         $store = Cache::store($config->get('store'));
 
-        $cache = new CacheItemPool($store);
+        $cache = new Psr16Adapter($store);
 
         $client->setCache($cache);
 

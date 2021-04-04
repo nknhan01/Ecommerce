@@ -1,0 +1,10 @@
+{
+    "name": "Paystack Payment Gateway",
+    "namespace": "Platform\\Paystack\\",
+    "provider": "Platform\\Paystack\\Providers\\PaystackServiceProvider",
+    "author": "Laravel Technologies",
+    "url": "https://laravel-cms.gistensal.com",
+    "version": "1.0",
+    "description": "Paystack payment gateway integration",
+    "require": []
+}

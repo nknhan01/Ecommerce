@@ -68,10 +68,6 @@ class AclServiceProvider extends ServiceProvider
             ->loadRoutes(['web'])
             ->loadMigrations();
 
-        config()->set(['auth.providers.users.model' => User::class]);
-
-        $this->app->register(HookServiceProvider::class);
-
         $this->garbageCollect();
 
         Event::listen(RouteMatched::class, function () {
@@ -94,6 +90,12 @@ class AclServiceProvider extends ServiceProvider
                     'url'         => route('users.index'),
                     'permissions' => ['users.index'],
                 ]);
+        });
+
+        $this->app->booted(function () {
+            config()->set(['auth.providers.users.model' => User::class]);
+
+            $this->app->register(HookServiceProvider::class);
         });
     }
 

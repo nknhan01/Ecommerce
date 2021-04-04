@@ -3,7 +3,12 @@
 namespace Platform\Widget;
 
 use Platform\Widget\Contracts\ApplicationWrapperContract;
+use Platform\Widget\Repositories\Interfaces\WidgetInterface;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Language;
+use Theme;
 
 class WidgetGroupCollection
 {
@@ -18,6 +23,18 @@ class WidgetGroupCollection
      * @var ApplicationWrapperContract
      */
     protected $app;
+
+    /**
+     * @var Collection
+     */
+    protected $data = [];
+
+    /**
+     * Whether the settings data are loaded.
+     *
+     * @var boolean
+     */
+    protected $loaded = false;
 
     /**
      * Constructor.
@@ -41,6 +58,7 @@ class WidgetGroupCollection
             return $this->groups[$sidebarId];
         }
         $this->groups[$sidebarId] = new WidgetGroup(['id' => $sidebarId, 'name' => $sidebarId], $this->app);
+
         return $this->groups[$sidebarId];
     }
 
@@ -58,6 +76,7 @@ class WidgetGroupCollection
         } else {
             $this->groups[$args['id']] = new WidgetGroup($args, $this->app);
         }
+
         return $this;
     }
 
@@ -70,6 +89,7 @@ class WidgetGroupCollection
         if (isset($this->groups[$groupId])) {
             unset($this->groups[$groupId]);
         }
+
         return $this;
     }
 
@@ -79,5 +99,58 @@ class WidgetGroupCollection
     public function getGroups()
     {
         return $this->groups;
+    }
+
+    /**
+     * @param string $sidebarId
+     * @return string
+     * @throws FileNotFoundException
+     */
+    public function render($sidebarId)
+    {
+        $this->load();
+
+        foreach ($this->data as $widget) {
+            $this->group($widget->sidebar_id)
+                ->position($widget->position)
+                ->addWidget($widget->widget_id, $widget->data);
+        }
+
+        return $this->group($sidebarId)->display();
+    }
+
+    /**
+     * Make sure data is loaded.
+     *
+     * @param boolean $force Force a reload of data. Default false.
+     */
+    public function load($force = false)
+    {
+        if (!$this->loaded || $force) {
+            $this->data = $this->read();
+            $this->loaded = true;
+        }
+    }
+
+    /**
+     * @return Collection
+     */
+    protected function read()
+    {
+        $languageCode = null;
+        if (is_plugin_active('language')) {
+            $currentLocale = is_in_admin() ? Language::getCurrentAdminLocaleCode() : Language::getCurrentLocaleCode();
+            $languageCode = $currentLocale && $currentLocale != Language::getDefaultLocaleCode() ? '-' . $currentLocale : null;
+        }
+
+        return app(WidgetInterface::class)->allBy(['theme' => Theme::getThemeName() . $languageCode]);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getData(): Collection
+    {
+        return $this->data;
     }
 }

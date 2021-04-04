@@ -17,33 +17,15 @@ class CreateAclTables extends Migration
         });
 
         Schema::table('users', function (Blueprint $table) {
-            $table->text('permissions')->nullable();
-            $table->timestamp('last_login')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('username', 60)->unique()->nullable();
-            $table->dateTime('dob')->nullable();
-            $table->string('address', 255)->nullable();
-            $table->string('secondary_address', 255)->nullable();
-            $table->string('job_position', 60)->nullable();
-            $table->string('phone', 15)->nullable();
-            $table->string('secondary_phone', 15)->nullable();
-            $table->string('secondary_email', 60)->nullable();
-            $table->tinyInteger('gender')->nullable();
-            $table->string('website', 120)->nullable();
-            $table->string('skype', 60)->nullable();
-            $table->string('facebook', 120)->nullable();
-            $table->string('twitter', 120)->nullable();
-            $table->string('google_plus', 120)->nullable();
-            $table->string('youtube', 120)->nullable();
-            $table->string('github', 120)->nullable();
-            $table->string('interest', 255)->nullable();
-            $table->string('about', 400)->nullable();
+            $table->string('password')->nullable()->change();
             $table->integer('avatar_id')->unsigned()->nullable();
             $table->boolean('super_user')->default(0);
             $table->boolean('manage_supers')->default(0);
-            $table->boolean('completed_profile')->default(0);
-            $table->string('password')->nullable()->change();
+            $table->text('permissions')->nullable();
+            $table->timestamp('last_login')->nullable();
         });
 
         Schema::create('activations', function (Blueprint $table) {

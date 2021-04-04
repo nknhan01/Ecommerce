@@ -1,18 +1,20 @@
 <?php
 
 return [
-    'notices'                 => [
-        'role_in_use'             => 'Không thể xóa quyền người dùng này vì nó đang được sử dụng!',
-        'role_delete_belong_user' => 'Không thể xóa quyền hạn này vì nó thuộc về người khác!',
-        'role_edit_belong_user'   => 'Bạn không được phép sửa quyền này vì nó thuộc về người khác',
-        'delete_global_role'      => 'Bạn không thể xóa quyền người dùng hệ thống!',
-        'delete_success'          => 'Quyền người dùng đã được xóa!',
-        'modified_success'        => 'Quyền người dùng đã được cập nhật thành công!',
-        'create_success'          => 'Quyền người dùng mới đã được tạo thành công!',
-        'duplicated_success'      => 'Quyền người dùng đã được sao chép thành công!',
-        'no_select'               => 'Hãy chọn ít nhất một quyền người dùng để thực hiện hành động này!',
-        'not_found'               => 'Không tìm thấy quyền người dùng này',
-    ],
+    'notices'                 =>
+        [
+            'role_in_use'             => 'Không thể xóa quyền người dùng này vì nó đang được sử dụng!',
+            'role_delete_belong_user' => 'Không thể xóa quyền hạn này vì nó thuộc về người khác!',
+            'role_edit_belong_user'   => 'Bạn không được phép sửa quyền này vì nó thuộc về người khác',
+            'delete_global_role'      => 'Bạn không thể xóa quyền người dùng hệ thống!',
+            'delete_success'          => 'Quyền người dùng đã được xóa!',
+            'modified_success'        => 'Quyền người dùng đã được cập nhật thành công!',
+            'create_success'          => 'Quyền người dùng mới đã được tạo thành công!',
+            'duplicated_success'      => 'Quyền người dùng đã được sao chép thành công!',
+            'no_select'               => 'Hãy chọn ít nhất một quyền người dùng để thực hiện hành động này!',
+            'not_found'               => 'Không tìm thấy quyền người dùng này',
+        ],
+    'list'                    => 'Danh sách phân quyền',
     'name'                    => 'Tên',
     'current_role'            => 'Quyền hiện tại',
     'no_role_assigned'        => 'Không có quyền hạn nào',
@@ -48,5 +50,4 @@ return [
     'role_permission'         => 'Nhóm và phân quyền',
     'user_management'         => 'Quản lý người dùng hệ thống',
     'super_user_management'   => 'Quản lý người dùng cấp cao',
-    'action_unauthorized'     => 'Hành động này không được phép',
 ];

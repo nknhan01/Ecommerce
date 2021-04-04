@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Menu;
 
 class SlugController extends BaseController
 {
@@ -77,6 +78,8 @@ class SlugController extends BaseController
                     ['reference_type' => $request->input($settingKey . '-model-key')],
                     ['prefix' => (string)$settingValue]
                 );
+
+                Menu::clearCacheMenuItems();
             }
 
             $settingStore->set($settingKey, (string)$settingValue);

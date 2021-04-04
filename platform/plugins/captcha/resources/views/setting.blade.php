@@ -28,17 +28,17 @@
 
             <div class="form-group">
                 <label class="text-title-field"
-                       for="captcha_type">{{ __('Type') }}
+                       for="captcha_type">{{ trans('plugins/captcha::captcha.settings.type') }}
                 </label>
                 <label class="hrv-label">
                     <input type="radio" name="captcha_type" class="hrv-radio"
                            value="v2"
-                           @if (setting('captcha_type', 'v2') == 'v2') checked @endif>{{ __('V2 (Verify requests with a challenge)') }}
+                           @if (setting('captcha_type', 'v2') == 'v2') checked @endif>{{ trans('plugins/captcha::captcha.settings.v2_description') }}
                 </label>
                 <label class="hrv-label">
                     <input type="radio" name="captcha_type" class="hrv-radio"
                            value="v3"
-                           @if (setting('captcha_type', 'v2') == 'v3') checked @endif>{{ __('V3 (Verify requests with a score)') }}
+                           @if (setting('captcha_type', 'v2') == 'v3') checked @endif>{{ trans('plugins/captcha::captcha.settings.v3_description') }}
                 </label>
             </div>
 

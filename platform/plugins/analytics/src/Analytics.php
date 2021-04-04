@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Google_Service_Analytics;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
-use stdClass;
 
 class Analytics
 {
@@ -31,6 +30,14 @@ class Analytics
         $this->client = $client;
 
         $this->viewId = $viewId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getViewId()
+    {
+        return $this->viewId;
     }
 
     /**
@@ -64,6 +71,26 @@ class Analytics
                 'pageViews' => (int)$dateRow[3],
             ];
         });
+    }
+
+    /**
+     * Call the query method on the authenticated client.
+     *
+     * @param Period $period
+     * @param string $metrics
+     * @param array $others
+     *
+     * @return array|null
+     */
+    public function performQuery(Period $period, string $metrics, array $others = [])
+    {
+        return $this->client->performQuery(
+            $this->viewId,
+            $period->startDate,
+            $period->endDate,
+            $metrics,
+            $others
+        );
     }
 
     /**
@@ -121,7 +148,8 @@ class Analytics
      */
     public function fetchTopReferrers(Period $period, int $maxResults = 20): Collection
     {
-        $response = $this->performQuery($period,
+        $response = $this->performQuery(
+            $period,
             'ga:pageviews',
             [
                 'dimensions'  => 'ga:fullReferrer',
@@ -205,29 +233,9 @@ class Analytics
             ]);
     }
 
-    /**
-     * Call the query method on the authenticated client.
-     *
-     * @param Period $period
-     * @param string $metrics
-     * @param array $others
-     * @return stdClass|null
-     */
-    public function performQuery(Period $period, string $metrics, array $others = [])
-    {
-        return $this->client->performQuery(
-            $this->viewId,
-            $period->startDate,
-            $period->endDate,
-            $metrics,
-            $others
-        );
-    }
-
-    /**
+    /*
      * Get the underlying Google_Service_Analytics object. You can use this
      * to basically call anything on the Google Analytics API.
-     * @return Google_Service_Analytics
      */
     public function getAnalyticsService(): Google_Service_Analytics
     {

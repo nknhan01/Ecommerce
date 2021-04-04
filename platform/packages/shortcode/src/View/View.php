@@ -28,7 +28,7 @@ class View extends IlluminateView implements ArrayAccess, Renderable
      * @param ShortcodeCompiler $shortcode
      * @since 2.1
      */
-    public function __construct(Factory $factory, $engine, $view, $path, $data = [], ShortcodeCompiler $shortcode)
+    public function __construct(Factory $factory, $engine, $view, $path, $data, ShortcodeCompiler $shortcode)
     {
         parent::__construct($factory, $engine, $view, $path, $data);
         $this->shortcode = $shortcode;

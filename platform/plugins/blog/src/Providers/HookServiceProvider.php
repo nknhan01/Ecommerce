@@ -33,10 +33,12 @@ class HookServiceProvider extends ServiceProvider
     public function boot()
     {
         if (defined('MENU_ACTION_SIDEBAR_OPTIONS')) {
+            Menu::addMenuOptionModel(Category::class);
+            Menu::addMenuOptionModel(Tag::class);
             add_action(MENU_ACTION_SIDEBAR_OPTIONS, [$this, 'registerMenuOptions'], 2);
         }
         add_filter(DASHBOARD_FILTER_ADMIN_LIST, [$this, 'registerDashboardWidgets'], 21, 2);
-        add_filter(BASE_FILTER_PUBLIC_SINGLE_DATA, [$this, 'handleSingleView'], 2, 1);
+        add_filter(BASE_FILTER_PUBLIC_SINGLE_DATA, [$this, 'handleSingleView'], 2);
         if (defined('PAGE_MODULE_SCREEN_NAME')) {
             add_filter(PAGE_FILTER_FRONT_PAGE_CONTENT, [$this, 'renderBlogPage'], 2, 2);
             add_filter(PAGE_FILTER_PAGE_NAME_IN_ADMIN_LIST, [$this, 'addAdditionNameToPageName'], 147, 2);
@@ -44,12 +46,12 @@ class HookServiceProvider extends ServiceProvider
 
         if (function_exists('admin_bar')) {
             Event::listen(RouteMatched::class, function () {
-                admin_bar()->registerLink('Post', route('posts.create'), 'add-new');
+                admin_bar()->registerLink(trans('plugins/blog::posts.post'), route('posts.create'), 'add-new');
             });
         }
 
         if (function_exists('add_shortcode')) {
-            add_shortcode('blog-posts', __('Blog posts'), __('Add blog posts'), [$this, 'renderBlogPosts']);
+            add_shortcode('blog-posts', trans('plugins/blog::base.short_code_name'), trans('plugins/blog::base.short_code_description'), [$this, 'renderBlogPosts']);
             shortcode()->setAdminConfig('blog-posts',
                 view('plugins/blog::partials.posts-short-code-admin-config')->render());
         }
@@ -75,10 +77,10 @@ class HookServiceProvider extends ServiceProvider
                     [
                         'id'         => 'blog_page_id',
                         'type'       => 'select',
-                        'label'      => trans('plugins/blog::settings.blog_page_id'),
+                        'label'      => trans('plugins/blog::base.blog_page_id'),
                         'attributes' => [
                             'name'    => 'blog_page_id',
-                            'list'    => ['' => trans('plugins/blog::settings.select')] + $pages,
+                            'list'    => ['' => trans('plugins/blog::base.select')] + $pages,
                             'value'   => '',
                             'options' => [
                                 'class' => 'form-control',
@@ -88,7 +90,7 @@ class HookServiceProvider extends ServiceProvider
                     [
                         'id'         => 'number_of_posts_in_a_category',
                         'type'       => 'number',
-                        'label'      => __('Number of posts per page in a category'),
+                        'label'      => trans('plugins/blog::base.number_posts_per_page_in_category'),
                         'attributes' => [
                             'name'    => 'number_of_posts_in_a_category',
                             'value'   => 12,
@@ -100,7 +102,7 @@ class HookServiceProvider extends ServiceProvider
                     [
                         'id'         => 'number_of_posts_in_a_tag',
                         'type'       => 'number',
-                        'label'      => __('Number of posts per page in a tag'),
+                        'label'      => trans('plugins/blog::base.number_posts_per_page_in_tag'),
                         'attributes' => [
                             'name'    => 'number_of_posts_in_a_tag',
                             'value'   => 12,
@@ -171,7 +173,7 @@ class HookServiceProvider extends ServiceProvider
      */
     public function renderBlogPosts($shortcode)
     {
-        $posts = $this->app->make(PostInterface::class)->getAllPosts($shortcode->paginate);
+        $posts = $this->app->make(PostInterface::class)->getAllPosts($shortcode->paginate, true, ['slugable', 'categories', 'categories.slugable']);
 
         $view = 'plugins/blog::themes.templates.posts';
         $themeView = Theme::getThemeNamespace() . '::views.templates.posts';
@@ -212,11 +214,11 @@ class HookServiceProvider extends ServiceProvider
         if ($page->id == theme_option('blog_page_id', setting('blog_page_id'))) {
             $subTitle = Html::tag('span', trans('plugins/blog::base.blog_page'), ['class' => 'additional-page-name'])
                 ->toHtml();
-            if (Str::contains($name, '— ')) {
+            if (Str::contains($name, ' —')) {
                 return $name . ', ' . $subTitle;
             }
 
-            return $name . '— ' . $subTitle;
+            return $name . ' —' . $subTitle;
         }
 
         return $name;

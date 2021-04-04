@@ -58,4 +58,10 @@ interface CategoryInterface extends RepositoryInterface
      * @return mixed
      */
     public function getFilters($filters);
+
+    /**
+     * @param int $limit
+     * @return mixed
+     */
+    public function getPopularCategories(int $limit);
 }

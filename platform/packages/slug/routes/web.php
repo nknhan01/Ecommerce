@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['namespace' => 'Platform\Slug\Http\Controllers', 'middleware' => 'web'], function () {
+Route::group(['namespace' => 'Platform\Slug\Http\Controllers', 'middleware' => ['web', 'core']], function () {
     Route::group(['prefix' => 'ajax'], function () {
         Route::group(['prefix' => 'slug'], function () {
             Route::post('create', [
@@ -20,7 +20,7 @@ Route::group(['namespace' => 'Platform\Slug\Http\Controllers', 'middleware' => '
                 ]);
 
                 Route::post('', [
-                    'as'         => 'slug.settings',
+                    'as'         => 'slug.settings.post',
                     'uses'       => 'SlugController@postSettings',
                     'permission' => 'settings.options',
                     'middleware' => 'preventDemo',

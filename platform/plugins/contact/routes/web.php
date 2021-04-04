@@ -1,10 +1,6 @@
 <?php
 
-Route::group(['namespace' => 'Platform\Contact\Http\Controllers', 'middleware' => 'web'], function () {
-    Route::post('contact/send', [
-        'as'   => 'public.send.contact',
-        'uses' => 'PublicController@postSendContact',
-    ]);
+Route::group(['namespace' => 'Platform\Contact\Http\Controllers', 'middleware' => ['web', 'core']], function () {
 
     Route::group(['prefix' => BaseHelper::getAdminPrefix(), 'middleware' => 'auth'], function () {
 
@@ -19,9 +15,17 @@ Route::group(['namespace' => 'Platform\Contact\Http\Controllers', 'middleware' =
             ]);
 
             Route::post('reply/{id}', [
-                'as'   => 'reply',
-                'uses' => 'ContactController@postReply',
+                'as'         => 'reply',
+                'uses'       => 'ContactController@postReply',
+                'permission' => 'contacts.edit',
             ]);
         });
+    });
+
+    Route::group(apply_filters(BASE_FILTER_GROUP_PUBLIC_ROUTE, []), function () {
+        Route::post('contact/send', [
+            'as'   => 'public.send.contact',
+            'uses' => 'PublicController@postSendContact',
+        ]);
     });
 });

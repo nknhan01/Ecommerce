@@ -45,7 +45,7 @@ class PluginManagementController extends Controller
 
                 $content = get_file_data($pluginPath . '/plugin.json');
                 if (!empty($content)) {
-                    if (!in_array($plugin, $installed)) {
+                    if (!is_array($installed) || !in_array($plugin, $installed)) {
                         $content['status'] = 0;
                     } else {
                         $content['status'] = 1;

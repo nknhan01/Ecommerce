@@ -27,7 +27,7 @@ develop:
     - develop
   script:
     - pwd && su dev && whoami
-    - cd /media/disk1/www-demo/botble/
+    - cd /mnt/hdd-500gb/www-demo/botble-realestate/
     - git pull
     - bootstrap="$(git log -1 --pretty=%B | grep bootstrap)" && ([[ $bootstrap ]] && bash bin/bootstrap.sh -e d)
     - sass="$(git log -1 --pretty=%B | grep sass)" && ([[ $sass ]] && sass public/themes/main/sass/common.scss:public/themes/main/css/common.css --style compressed)
@@ -35,7 +35,7 @@ develop:
     - php artisan config:clear
     - php artisan cache:clear
     - php artisan view:clear
-    - chown -R dev:dev /media/disk1/www-demo/botble/
+    - chown -R dev:dev /mnt/hdd-500gb/www-demo/botble-realestate/
     - pwd
 preprod:
   stage: preprod

@@ -1,29 +1,26 @@
-@include('core/base::forms.fields.custom-select', compact('name', 'showLabel', 'showField', 'options'))
+@if ($showLabel && $showField)
+    @if ($options['wrapper'] !== false)
+        <div {!! $options['wrapperAttrs'] !!}>
+    @endif
+@endif
 
-@push('footer')
-    <script>
-        $('#' + '{{ Arr::get($options['attr'], 'id') }}').select2({
-            minimumInputLength: 2,
-            ajax: {
-                url: '{{ Arr::get($options['attr'], 'data-url') }}',
-                quietMillis: 500,
-                data: function (params) {
-                    return {
-                        q: params.term,
-                    };
-                },
-                processResults: function (data) {
-                    let results = data.data.map((item) => {
-                        return {
-                            id: item['id'],
-                            text: item['name'],
-                        };
-                    });
-                    return {
-                        results: results
-                    };
-                }
-            }
-        });
-    </script>
-@endpush
+@if ($showLabel && $options['label'] !== false && $options['label_show'])
+    {!! Form::customLabel($name, $options['label'], $options['label_attr']) !!}
+@endif
+
+@if ($showField)
+    @php
+        Arr::set($options['attr'], 'class', Arr::get($options['attr'], 'class') . ' ui-select');
+        $emptyVal = $options['empty_value'] ? ['' => $options['empty_value']] : null;
+    @endphp
+    {!! Form::autocomplete($name, (array)$emptyVal + $options['choices'], $options['selected'], $options['attr']) !!}
+    @include('core/base::forms.partials.help-block')
+@endif
+
+@include('core/base::forms.partials.errors')
+
+@if ($showLabel && $showField)
+    @if ($options['wrapper'] !== false)
+        </div>
+    @endif
+@endif

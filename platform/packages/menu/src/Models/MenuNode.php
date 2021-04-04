@@ -46,7 +46,7 @@ class MenuNode extends BaseModel
      */
     public function child()
     {
-        return $this->hasMany(MenuNode::class, 'parent_id')->orderBy('position', 'asc');
+        return $this->hasMany(MenuNode::class, 'parent_id')->orderBy('position');
     }
 
     /**
@@ -63,6 +63,10 @@ class MenuNode extends BaseModel
      */
     public function getUrlAttribute($value)
     {
+        if ($value) {
+            return apply_filters(MENU_FILTER_NODE_URL, $value);
+        }
+
         if (!$this->reference_type) {
             return $value ? (string)$value : '/';
         }

@@ -31,6 +31,7 @@ class {Module}ServiceProvider extends ServiceProvider
             ->loadAndPublishConfigurations(['permissions'])
             ->loadMigrations()
             ->loadAndPublishTranslations()
+            ->loadAndPublishViews()
             ->loadRoutes(['web']);
 
         Event::listen(RouteMatched::class, function () {

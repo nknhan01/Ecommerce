@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['namespace' => 'Platform\Media\Http\Controllers', 'middleware' => 'web'], function () {
+Route::group(['namespace' => 'Platform\Media\Http\Controllers', 'middleware' => ['web', 'core']], function () {
     Route::group(['prefix' => BaseHelper::getAdminPrefix(), 'middleware' => 'auth'], function () {
         Route::group(['prefix' => 'media', 'as' => 'media.', 'permission' => 'media.index'], function () {
             Route::get('', [

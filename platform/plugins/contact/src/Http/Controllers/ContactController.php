@@ -2,6 +2,7 @@
 
 namespace Platform\Contact\Http\Controllers;
 
+use Platform\Base\Events\BeforeEditContentEvent;
 use Platform\Base\Forms\FormBuilder;
 use Platform\Base\Http\Controllers\BaseController;
 use Platform\Base\Http\Responses\BaseHttpResponse;
@@ -52,14 +53,16 @@ class ContactController extends BaseController
     /**
      * @param $id
      * @param FormBuilder $formBuilder
+     * @param Request $request
      * @return string
-     *
      */
-    public function edit($id, FormBuilder $formBuilder)
+    public function edit($id, FormBuilder $formBuilder, Request $request)
     {
         page_title()->setTitle(trans('plugins/contact::contact.edit'));
 
         $contact = $this->contactRepository->findOrFail($id);
+
+        event(new BeforeEditContentEvent($request, $contact));
 
         return $formBuilder->create(ContactForm::class, ['model' => $contact])->renderForm();
     }
@@ -118,7 +121,7 @@ class ContactController extends BaseController
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @param ContactReplyRequest $request
      * @param BaseHttpResponse $response
      * @param ContactReplyInterface $contactReplyRepository
@@ -143,6 +146,6 @@ class ContactController extends BaseController
         $this->contactRepository->createOrUpdate($contact);
 
         return $response
-            ->setMessage(__('Message sent successfully!'));
+            ->setMessage(trans('plugins/contact::contact.message_sent_success'));
     }
 }

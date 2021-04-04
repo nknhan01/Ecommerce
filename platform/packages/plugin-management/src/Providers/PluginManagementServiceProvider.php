@@ -90,7 +90,6 @@ class PluginManagementServiceProvider extends ServiceProvider
         }
 
         $this->app->register(CommandServiceProvider::class);
-        $this->app->register(HookServiceProvider::class);
 
         Event::listen(RouteMatched::class, function () {
             dashboard_menu()
@@ -103,6 +102,10 @@ class PluginManagementServiceProvider extends ServiceProvider
                     'url'         => route('plugins.index'),
                     'permissions' => ['plugins.index'],
                 ]);
+        });
+
+        $this->app->booted(function () {
+            $this->app->register(HookServiceProvider::class);
         });
 
     }

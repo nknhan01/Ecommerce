@@ -82,21 +82,3 @@
         }
     }
 }
-
-@media screen and (min-width: 768px) {
-    .page-content {
-        .table-responsive {
-            overflow-x: inherit;
-        }
-    }
-}
-
-@media screen and (max-width: 767px) {
-    .page-content {
-        .table-responsive {
-            margin-bottom: 0;
-            border: none;
-            overflow-x: auto;
-        }
-    }
-}

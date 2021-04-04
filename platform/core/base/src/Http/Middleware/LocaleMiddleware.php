@@ -2,7 +2,7 @@
 
 namespace Platform\Base\Http\Middleware;
 
-use Assets;
+use Platform\Base\Supports\Language;
 use Closure;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
@@ -41,7 +41,7 @@ class LocaleMiddleware
 
         $sessionLocale = $request->session()->get('site-locale');
 
-        if (array_key_exists($sessionLocale, Assets::getAdminLocales()) && is_in_admin()) {
+        if (array_key_exists($sessionLocale, Language::getAvailableLocales()) && is_in_admin()) {
             $this->app->setLocale($sessionLocale);
             $request->setLocale($sessionLocale);
         }

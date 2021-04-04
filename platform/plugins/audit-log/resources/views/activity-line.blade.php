@@ -1,7 +1,7 @@
 <span class="log-icon log-icon-{{ $history->type }}"></span>
 <span>
     @if ($history->user->id)
-        <a href="{{ route('user.profile.view', $history->user->id) }}">{{ $history->user->getFullName() }}</a>
+        <a href="{{ route('users.profile.view', $history->user->id) }}">{{ $history->user->getFullName() }}</a>
     @else
         <span>{{ trans('plugins/audit-log::history.system') }}</span>
     @endif

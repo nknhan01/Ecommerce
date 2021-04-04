@@ -24,8 +24,8 @@ class CreateMenusTable extends Migration
             $table->id()->unsigned();
             $table->integer('menu_id')->unsigned()->index()->references('id')->on('menus');
             $table->integer('parent_id')->default(0)->unsigned()->index();
-            $table->integer('related_id')->default(0)->unsigned()->index();
-            $table->string('type', 60);
+            $table->integer('reference_id')->unsigned()->nullable();
+            $table->string('reference_type', 255)->nullable();
             $table->string('url', 120)->nullable();
             $table->string('icon_font', 50)->nullable();
             $table->tinyInteger('position')->unsigned()->default(0);

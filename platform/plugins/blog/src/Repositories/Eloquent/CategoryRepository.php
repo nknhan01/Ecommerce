@@ -148,4 +148,19 @@ class CategoryRepository extends RepositoriesAbstract implements CategoryInterfa
 
         return $this->applyBeforeExecuteQuery($this->model)->paginate((int)$filters['per_page']);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPopularCategories(int $limit)
+    {
+        $data = $this->model
+            ->with('slugable')
+            ->withCount('posts')
+            ->orderBy('posts_count', 'desc')
+            ->where('categories.status', BaseStatusEnum::PUBLISHED)
+            ->limit($limit);
+
+        return $this->applyBeforeExecuteQuery($data)->get();
+    }
 }

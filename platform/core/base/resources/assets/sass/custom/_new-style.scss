@@ -1556,7 +1556,6 @@ svg:not(:root) {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     position: relative;
-    overflow: hidden;
     vertical-align: bottom;
     -webkit-transition: all .2s ease-out;
     transition: all .2s ease-out;
@@ -1567,6 +1566,12 @@ svg:not(:root) {
 
     .ui-select {
         width: 100%;
+    }
+
+    .invalid-feedback {
+        position: absolute;
+        bottom: -22px;
+        z-index: 999999999;
     }
 }
 

@@ -14,7 +14,7 @@ class WidgetFactory extends AbstractWidgetFactory
     protected $widgets = [];
 
     /**
-     * @param $widget
+     * @param string $widget
      * @return $this
      */
     public function registerWidget($widget)

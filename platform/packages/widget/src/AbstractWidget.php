@@ -5,8 +5,8 @@ namespace Platform\Widget;
 use Platform\Widget\Repositories\Interfaces\WidgetInterface;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
-use Language;
 use Theme;
 
 abstract class AbstractWidget
@@ -49,9 +49,20 @@ abstract class AbstractWidget
     protected $theme = null;
 
     /**
+     * @var Collection
+     */
+    protected $data = [];
+
+    /**
+     * Whether the settings data are loaded.
+     *
+     * @var boolean
+     */
+    protected $loaded = false;
+
+    /**
      * AbstractWidget constructor.
      * @param array $config
-     * @throws FileNotFoundException
      */
     public function __construct(array $config = [])
     {
@@ -60,23 +71,6 @@ abstract class AbstractWidget
         }
 
         $this->widgetRepository = app(WidgetInterface::class);
-
-        $this->theme = Theme::getThemeName() . $this->getCurrentLocaleCode();
-    }
-
-    /**
-     * @return null|string
-     * @throws FileNotFoundException
-     */
-    protected function getCurrentLocaleCode()
-    {
-        $language_code = null;
-        if (is_plugin_active('language')) {
-            $current_locale = is_in_admin() ? Language::getCurrentAdminLocaleCode() : Language::getCurrentLocaleCode();
-            $language_code = $current_locale && $current_locale != Language::getDefaultLocaleCode() ? '-' . $current_locale : null;
-        }
-
-        return $language_code;
     }
 
     /**
@@ -95,14 +89,17 @@ abstract class AbstractWidget
      */
     public function run()
     {
+        $widgetGroup = app('botble.widget-group-collection');
+        $widgetGroup->load();
+        $widgetGroupData = $widgetGroup->getData();
+
         Theme::uses(Theme::getThemeName());
         $args = func_get_args();
-        $data = $this->widgetRepository->getFirstBy([
-            'widget_id'  => $this->getId(),
-            'sidebar_id' => $args[0],
-            'position'   => $args[1],
-            'theme'      => $this->theme,
-        ]);
+        $data = $widgetGroupData
+            ->where('widget_id', $this->getId())
+            ->where('sidebar_id', $args[0])
+            ->where('position', $args[1])
+            ->first();
 
         if (!empty($data)) {
             $this->config = array_merge($this->config, $data->data);
@@ -140,12 +137,16 @@ abstract class AbstractWidget
     {
         Theme::uses(Theme::getThemeName());
         if (!empty($sidebarId)) {
-            $data = $this->widgetRepository->getFirstBy([
-                'widget_id'  => $this->getId(),
-                'sidebar_id' => $sidebarId,
-                'position'   => $position,
-                'theme'      => $this->theme,
-            ]);
+            $widgetGroup = app('botble.widget-group-collection');
+            $widgetGroup->load();
+            $widgetGroupData = $widgetGroup->getData();
+
+            $data = $widgetGroupData
+                ->where('widget_id', $this->getId())
+                ->where('sidebar_id', $sidebarId)
+                ->where('position', $position)
+                ->first();
+
             if (!empty($data)) {
                 $this->config = array_merge($this->config, $data->data);
             }

@@ -390,6 +390,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
             ],
             'select'    => ['*'],
             'with'      => [],
+            'withCount' => [],
         ], $params);
 
         $this->applyConditions($params['condition']);

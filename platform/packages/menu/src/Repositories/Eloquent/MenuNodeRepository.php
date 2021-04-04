@@ -10,7 +10,7 @@ class MenuNodeRepository extends RepositoriesAbstract implements MenuNodeInterfa
     /**
      * {@inheritDoc}
      */
-    public function getByMenuId($menuId, $parentId, $select = ['*'], array $with = ['child', 'reference', 'reference.slugable'])
+    public function getByMenuId($menuId, $parentId, $select = ['*'], array $with = ['child'])
     {
         $data = $this->model
             ->with($with)

@@ -2,7 +2,7 @@
 
 use Platform\Base\Http\Controllers\SystemController;
 
-Route::group(['namespace' => 'Platform\Base\Http\Controllers', 'middleware' => 'web'], function () {
+Route::group(['namespace' => 'Platform\Base\Http\Controllers', 'middleware' => ['web', 'core']], function () {
     Route::group(['prefix' => BaseHelper::getAdminPrefix(), 'middleware' => 'auth'], function () {
         Route::group(['prefix' => 'system/info'], function () {
             Route::get('', [
@@ -31,7 +31,7 @@ Route::group(['namespace' => 'Platform\Base\Http\Controllers', 'middleware' => '
         Route::post('membership/authorize', [
             'as'         => 'membership.authorize',
             'uses'       => 'SystemController@authorize',
-            'permission' => ACL_ROLE_SUPER_USER,
+            'permission' => false,
         ]);
     });
 

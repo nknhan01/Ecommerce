@@ -1,6 +1,5 @@
-import VerifyLicenseComponent from './components/VerifyLicenseComponent'
-
-window.Vue = require('vue');
+import Vue from 'vue';
+import VerifyLicenseComponent from './components/VerifyLicenseComponent';
 
 Vue.component('verify-license-component', VerifyLicenseComponent);
 

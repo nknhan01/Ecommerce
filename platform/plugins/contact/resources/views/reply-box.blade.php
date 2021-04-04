@@ -7,11 +7,11 @@
                 <pre class="message-content">{!! clean($reply->message) !!}</pre>
             @endforeach
         @else
-            <p>{{ __('No reply yet!') }}</p>
+            <p>{{ trans('plugins/contact::contact.no_reply') }}</p>
         @endif
     </div>
 
-    <p><button class="btn btn-info answer-trigger-button">{{ __('Reply') }}</button></p>
+    <p><button class="btn btn-info answer-trigger-button">{{ trans('plugins/contact::contact.reply') }}</button></p>
 
     <div class="answer-wrapper">
         <div class="form-group">
@@ -20,7 +20,7 @@
 
         <div class="form-group">
             <input type="hidden" value="{{ $contact->id }}" id="input_contact_id">
-            <button class="btn btn-success answer-send-button"><i class="fas fa-reply"></i> {{ __('Send') }}</button>
+            <button class="btn btn-success answer-send-button"><i class="fas fa-reply"></i> {{ trans('plugins/contact::contact.send') }}</button>
         </div>
     </div>
 @endif

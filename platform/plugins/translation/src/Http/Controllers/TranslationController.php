@@ -2,7 +2,6 @@
 
 namespace Platform\Translation\Http\Controllers;
 
-use App;
 use Assets;
 use Platform\Base\Http\Controllers\BaseController;
 use Platform\Base\Http\Responses\BaseHttpResponse;
@@ -276,7 +275,7 @@ class TranslationController extends BaseController
             ->addStylesDirectly('vendor/core/plugins/translation/css/theme-translations.css');
 
         $groups = Language::getAvailableLocales();
-        $defaultLanguage = Arr::get($groups, App::getLocale());
+        $defaultLanguage = Arr::get($groups, 'en');
 
         if (!$request->has('ref_lang')) {
             $group = Arr::first($groups);
@@ -305,7 +304,17 @@ class TranslationController extends BaseController
             if (File::exists($jsonFile)) {
                 $translations = get_file_data($jsonFile, true);
             }
+
+            if ($group['locale'] != 'en') {
+                $defaultEnglishFile = theme_path(Theme::getThemeName() . '/lang/en.json');
+
+                if ($defaultEnglishFile) {
+                    $translations = array_merge(get_file_data($defaultEnglishFile, true), $translations);
+                }
+            }
         }
+
+        ksort($translations);
 
         return view('plugins/translation::theme-translations', compact('translations', 'groups', 'group', 'defaultLanguage'));
     }
@@ -325,9 +334,9 @@ class TranslationController extends BaseController
 
         $jsonFile = resource_path('lang/' . $request->input('locale') . '.json');
 
-        $json = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        ksort($json);
 
-        save_file_data($jsonFile, $json, false);
+        File::put($jsonFile, json_encode_prettify($json));
 
         return $response
             ->setPreviousUrl(route('translations.theme-translations'))

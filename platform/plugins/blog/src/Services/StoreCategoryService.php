@@ -17,11 +17,8 @@ class StoreCategoryService extends StoreCategoryServiceAbstract
     public function execute(Request $request, Post $post)
     {
         $categories = $request->input('categories');
-        if (!empty($categories)) {
-            $post->categories()->detach();
-            foreach ($categories as $category) {
-                $post->categories()->attach($category);
-            }
+        if (!empty($categories) && is_array($categories)) {
+            $post->categories()->sync($categories);
         }
     }
 }

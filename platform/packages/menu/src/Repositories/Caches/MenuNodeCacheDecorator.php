@@ -10,7 +10,7 @@ class MenuNodeCacheDecorator extends CacheAbstractDecorator implements MenuNodeI
     /**
      * {@inheritDoc}
      */
-    public function getByMenuId($menuId, $parentId, $select = ['*'], array $with = ['child', 'reference', 'reference.slugable'])
+    public function getByMenuId($menuId, $parentId, $select = ['*'], array $with = ['child'])
     {
         return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
     }

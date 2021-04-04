@@ -45,8 +45,6 @@ class AuditLogServiceProvider extends ServiceProvider
             ->loadMigrations()
             ->publishAssets();
 
-        $this->app->register(HookServiceProvider::class);
-
         Event::listen(RouteMatched::class, function () {
             dashboard_menu()
                 ->registerItem([
@@ -58,6 +56,10 @@ class AuditLogServiceProvider extends ServiceProvider
                     'url'         => route('audit-log.index'),
                     'permissions' => ['audit-log.index'],
                 ]);
+        });
+
+        $this->app->booted(function () {
+            $this->app->register(HookServiceProvider::class);
         });
     }
 }

@@ -20,7 +20,6 @@ table.dataTable {
     padding: 0;
 }
 
-$table-min-width: 585px;
 $brand-main-color: #36c6d3;
 $general-img-path: '/vendor/core/core/base/images/' !default;
 
@@ -81,6 +80,7 @@ $general-img-path: '/vendor/core/core/base/images/' !default;
         > tr {
             > th {
                 background-color: #fbfcfd;
+                text-align: center;
             }
         }
 
@@ -139,10 +139,10 @@ $general-img-path: '/vendor/core/core/base/images/' !default;
         }
 
         .dt-buttons {
-            float: right;
-            margin-top: -40px;
             margin-right: 10px;
-            top: -4px;
+            top: -46px;
+            right: 0;
+            position: absolute;
 
             .btn {
                 padding: 5px 10px;
@@ -407,22 +407,53 @@ div.dataTables_info {
     text-align: center;
 }
 
-@media screen and (max-width: 767px) {
-    .page-content {
+.page-content {
+    .table-wrapper {
         .table-responsive {
-            .table.dataTable {
-                min-width: $table-min-width;
+            overflow-x: inherit;
+
+            .dataTables_processing {
+                margin-left: 0;
             }
 
-            .dataTables_wrapper {
-                .dt-buttons {
-                    margin-top: 10px;
-                    min-width: $table-min-width;
-                    float: none;
-                }
+            .dataTable {
+                &.collapsed {
+                    .table-check-all {
+                        margin-left: 25px;
+                    }
 
-                .dataTables_filter {
-                    max-width: 120px;
+                    .dtr-control {
+                        padding-left: 35px !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    .page-content {
+        .table-wrapper {
+            .table-responsive {
+                .dataTables_wrapper {
+                    .dtr-details {
+                        width: 100%;
+                    }
+
+                    .dt-buttons {
+                        margin: 10px 10px 0;
+                        position: static;
+                    }
+
+                    .dataTables_filter {
+                        right: 10px;
+                        left: auto;
+                        float: none;
+
+                        input {
+                            max-width: 135px;
+                        }
+                    }
                 }
             }
         }

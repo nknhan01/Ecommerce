@@ -26,9 +26,9 @@ class PasswordForm extends FormAbstract
                 'attr'       => [
                     'data-counter' => 60,
                 ],
-                'wrapper'    => [
-                    'class' => $this->formHelper->getConfig('defaults.wrapper_class') . ' col-md-6',
-                ],
+            ])
+            ->add('rowOpen1', 'html', [
+                'html' => '<div class="row">',
             ])
             ->add('password', 'password', [
                 'label'      => trans('core/acl::users.new_password'),
@@ -56,6 +56,9 @@ class PasswordForm extends FormAbstract
                 'wrapper'    => [
                     'class' => $this->formHelper->getConfig('defaults.wrapper_class') . ' col-md-6',
                 ],
+            ])
+            ->add('rowClose', 'html', [
+                'html' => '</div>',
             ])
             ->setActionButtons(view('core/acl::users.profile.actions')->render());
     }

@@ -19,6 +19,11 @@
     .cookie-consent__message {
         height: 32px !important;
         line-height: 32px !important;
+
+        a {
+            color: #fff !important;
+            text-decoration: underline;
+        }
     }
 
     .cookie-consent__agree {

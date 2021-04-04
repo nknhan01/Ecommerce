@@ -51,15 +51,13 @@ class ThemeServiceProvider extends ServiceProvider
             ->loadRoutes(['web'])
             ->publishAssets();
 
-        $this->app->register(HookServiceProvider::class);
-
         Event::listen(RouteMatched::class, function () {
             dashboard_menu()
                 ->registerItem([
                     'id'          => 'cms-core-appearance',
                     'priority'    => 996,
                     'parent_id'   => null,
-                    'name'        => 'core/base::layouts.appearance',
+                    'name'        => 'packages/theme::theme.appearance',
                     'icon'        => 'fa fa-paint-brush',
                     'url'         => '#',
                     'permissions' => [],
@@ -92,21 +90,54 @@ class ThemeServiceProvider extends ServiceProvider
                     'permissions' => ['theme.custom-css'],
                 ]);
 
+            if (config('packages.theme.general.enable_custom_js')) {
+                dashboard_menu()
+                    ->registerItem([
+                        'id'          => 'cms-core-appearance-custom-js',
+                        'priority'    => 6,
+                        'parent_id'   => 'cms-core-appearance',
+                        'name'        => 'packages/theme::theme.custom_js',
+                        'icon'        => null,
+                        'url'         => route('theme.custom-js'),
+                        'permissions' => ['theme.custom-js'],
+                    ]);
+            }
+
             admin_bar()
                 ->registerLink(trans('packages/theme::theme.name'), route('theme.index'), 'appearance')
                 ->registerLink(trans('packages/theme::theme.theme_options'), route('theme.options'), 'appearance');
         });
 
         $this->app->booted(function () {
-            $theme = ThemeFacade::getThemeName();
-            if ($theme) {
-                $file = 'themes/' . $theme . '/css/style.integration.css';
-                if (File::exists(public_path($file))) {
-                    ThemeFacade::asset()
-                        ->container('after_header')
-                        ->add('theme-style-integration-css', $file);
+            $file = public_path(ThemeFacade::path() . '/css/style.integration.css');
+            if (File::exists($file)) {
+                ThemeFacade::asset()
+                    ->container('after_header')
+                    ->usePath()
+                    ->add('theme-style-integration-css', 'css/style.integration.css', [], [], filectime($file));
+            }
+
+            if (config('packages.theme.general.enable_custom_js')) {
+                if (setting('custom_header_js')) {
+                    add_filter(THEME_FRONT_HEADER, function ($html) {
+                        return $html . setting('custom_header_js');
+                    }, 15);
+                }
+
+                if (setting('custom_body_js')) {
+                    add_filter(THEME_FRONT_BODY, function ($html) {
+                        return $html . setting('custom_body_js');
+                    }, 15);
+                }
+
+                if (setting('custom_footer_js')) {
+                    add_filter(THEME_FRONT_FOOTER, function ($html) {
+                        return $html . setting('custom_footer_js');
+                    }, 15);
                 }
             }
+
+            $this->app->register(HookServiceProvider::class);
         });
 
         $this->app->register(ThemeManagementServiceProvider::class);

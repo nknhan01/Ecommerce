@@ -26,7 +26,6 @@ class BackupServiceProvider extends ServiceProvider
             ->loadAndPublishTranslations()
             ->publishAssets();
 
-        $this->app->register(HookServiceProvider::class);
         $this->app->register(CommandServiceProvider::class);
 
         Event::listen(RouteMatched::class, function () {
@@ -39,6 +38,10 @@ class BackupServiceProvider extends ServiceProvider
                 'url'         => route('backups.index'),
                 'permissions' => ['backups.index'],
             ]);
+        });
+
+        $this->app->booted(function () {
+            $this->app->register(HookServiceProvider::class);
         });
     }
 }

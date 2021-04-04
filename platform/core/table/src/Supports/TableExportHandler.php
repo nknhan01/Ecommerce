@@ -138,7 +138,11 @@ class TableExportHandler extends DataTablesExportHandler implements WithEvents
         $imageUrl = url($imageUrl);
 
         try {
-            return imagecreatefromstring(file_get_contents($imageUrl));
+            $content = @file_get_contents($imageUrl);
+            if (!$content) {
+                return null;
+            }
+            return imagecreatefromstring($content);
         } catch (Exception $exception) {
             return null;
         }
@@ -159,31 +163,35 @@ class TableExportHandler extends DataTablesExportHandler implements WithEvents
             ->getCell($column . $row)
             ->getValue();
 
-        $drawing = new MemoryDrawing;
-        $drawing->setName('Image')
-            ->setWorksheet($event->sheet->getDelegate());
+        $imageContent = $this->getImageResourceFromURL($image);
 
-        $drawing
-            ->setRenderingFunction(MemoryDrawing::RENDERING_PNG)
-            ->setMimeType(MemoryDrawing::MIMETYPE_PNG)
-            ->setImageResource($this->getImageResourceFromURL($image))
-            ->setCoordinates($column . $row)
-            ->setWidth(70)
-            ->setHeight(70)
-            ->setOffsetX(10)
-            ->setOffsetY(10);
+        if ($imageContent) {
+            $drawing = new MemoryDrawing;
+            $drawing->setName('Image')
+                ->setWorksheet($event->sheet->getDelegate());
 
-        $event->sheet->getDelegate()
-            ->getCell($column . $row)
-            ->setValue(null);
+            $drawing
+                ->setRenderingFunction(MemoryDrawing::RENDERING_PNG)
+                ->setMimeType(MemoryDrawing::MIMETYPE_PNG)
+                ->setImageResource($imageContent)
+                ->setCoordinates($column . $row)
+                ->setWidth(70)
+                ->setHeight(70)
+                ->setOffsetX(10)
+                ->setOffsetY(10);
 
-        $event->sheet->getDelegate()
-            ->getRowDimension($row)
-            ->setRowHeight(65);
+            $event->sheet->getDelegate()
+                ->getCell($column . $row)
+                ->setValue(null);
 
-        $event->sheet->getDelegate()
-            ->getColumnDimension($column)
-            ->setWidth(11);
+            $event->sheet->getDelegate()
+                ->getRowDimension($row)
+                ->setRowHeight(65);
+
+            $event->sheet->getDelegate()
+                ->getColumnDimension($column)
+                ->setWidth(11);
+        }
 
         return true;
     }

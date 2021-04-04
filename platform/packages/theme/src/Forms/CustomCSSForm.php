@@ -16,7 +16,7 @@ class CustomCSSForm extends FormAbstract
     public function buildForm()
     {
         $css = null;
-        $file = public_path(config('packages.theme.general.themeDir') . '/' . Theme::getThemeName() . '/css/style.integration.css');
+        $file = public_path(Theme::path() . '/css/style.integration.css');
         if (File::exists($file)) {
             $css = get_file_data($file, false);
         }
@@ -30,7 +30,7 @@ class CustomCSSForm extends FormAbstract
                 'label_attr' => ['class' => 'control-label'],
                 'value'      => $css,
                 'help_block' => [
-                    'text' => __('Using Ctrl + Space to autocomplete.'),
+                    'text' => trans('packages/theme::theme.custom_css_placeholder'),
                 ],
             ]);
     }

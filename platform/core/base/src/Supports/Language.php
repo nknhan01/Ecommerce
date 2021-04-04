@@ -391,8 +391,17 @@ class Language
             }
             foreach (Language::getListLanguages() as $key => $language) {
                 if (in_array($key, [$locale, str_replace('-', '_', $locale)]) ||
-                    in_array($language[0], [$locale, str_replace('-', '_', $locale)])
+                    in_array($language[1], [$locale, str_replace('-', '_', $locale)])
                 ) {
+                    $languages[$locale] = [
+                        'locale' => $locale,
+                        'name'   => $language[2],
+                        'flag'   => $language[4],
+                    ];
+                }
+
+                if (!array_key_exists($locale, $languages) &&
+                    in_array($language[0], [$locale, str_replace('-', '_', $locale)])) {
                     $languages[$locale] = [
                         'locale' => $locale,
                         'name'   => $language[2],

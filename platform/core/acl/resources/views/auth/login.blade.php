@@ -6,7 +6,7 @@
     {!! Form::open(['route' => 'access.login', 'class' => 'login-form']) !!}
         <div class="form-group" id="emailGroup">
             <label>{{ trans('core/acl::auth.login.username') }}</label>
-            {!! Form::text('username', old('username', app()->environment('demo') ? 'admin@gistensal.com' : null), ['class' => 'form-control', 'placeholder' => trans('core/acl::auth.login.username')]) !!}
+            {!! Form::text('username', old('username', app()->environment('demo') ? 'get-quote@visualweber.com' : null), ['class' => 'form-control', 'placeholder' => trans('core/acl::auth.login.username')]) !!}
         </div>
 
         <div class="form-group" id="passwordGroup">

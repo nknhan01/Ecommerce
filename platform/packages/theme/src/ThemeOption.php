@@ -483,9 +483,9 @@ class ThemeOption
      * @param string $locale
      * @return string
      */
-    protected function getOptionKey(string $key, ?string $locale): string
+    protected function getOptionKey(string $key, ?string $locale = ''): string
     {
-        return $this->optName . '-' . setting()->get('theme') . $locale . '-' . $key;
+        return $this->optName . '-' . setting('theme') . $locale . '-' . $key;
     }
 
     /**
@@ -513,10 +513,7 @@ class ThemeOption
                 $field['attributes']['value'] = $this->getOption($field['attributes']['name']);
             }
 
-            if ($field['type'] == 'select') {
-                return call_user_func_array([Form::class, $field['type']], $field['attributes']);
-            }
-            return call_user_func_array([Form::class, $field['type']], $field['attributes']);
+            return call_user_func_array([Form::class, $field['type']], array_values($field['attributes']));
         } catch (Exception $exception) {
             return $exception->getMessage();
         }
@@ -536,12 +533,23 @@ class ThemeOption
      * @param string $default
      * @return string
      */
-    public function getOption(string $key = '', ?string $default = ''): ?string
+    public function getOption(string $key = '', $default = ''): ?string
     {
-        $value = setting($this->getOptionKey($key, $this->getCurrentLocaleCode()),
-            setting($this->optName . '-' . setting()->get('theme') . '-' . $key, $default));
+        if (is_array($default)) {
+            $default = json_encode($default);
+        }
 
-        return $value ? $value : $default;
+        $default = setting($this->getOptionKey($key), $default);
+
+        $value = setting($this->getOptionKey($key, $this->getCurrentLocaleCode()), $default);
+
+        $value = $value ? $value : $default;
+
+        if (is_array($value)) {
+            $value = json_encode($value);
+        }
+
+        return $value;
     }
 
     public function saveOptions()

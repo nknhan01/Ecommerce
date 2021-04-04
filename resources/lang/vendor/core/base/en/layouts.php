@@ -3,8 +3,6 @@
 return [
     'platform_admin'     => 'Platform Administration',
     'dashboard'          => 'Dashboard',
-    'appearance'         => 'Appearance',
-    'menu'               => 'Menu',
     'widgets'            => 'Widgets',
     'plugins'            => 'Plugins',
     'settings'           => 'Settings',

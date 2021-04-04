@@ -25,14 +25,13 @@ class RenderingSiteMapListener
      * Handle the event.
      *
      * @return void
-     *
      */
     public function handle()
     {
         $pages = $this->pageRepository->getDataSiteMap();
 
         foreach ($pages as $page) {
-            SiteMapManager::add($page->url, $page->updated_at, '0.8', 'daily');
+            SiteMapManager::add($page->url, $page->updated_at, '0.8');
         }
     }
 }

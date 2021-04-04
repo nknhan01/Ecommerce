@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'assetUrl' => '/',
+    'assetUrl' => env('CMS_THEME_ASSET_URL', '/'),
 
     /*
     |--------------------------------------------------------------------------
@@ -128,4 +128,6 @@ return [
         'transient_time'        => '3600',
         'network_sites'         => true,
     ],
+
+    'enable_custom_js' => env('CMS_THEME_ENABLE_CUSTOM_JS', true),
 ];

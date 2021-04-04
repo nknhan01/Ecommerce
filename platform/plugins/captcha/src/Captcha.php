@@ -160,15 +160,6 @@ class Captcha
     }
 
     /**
-     * @return null
-     * @deprecated 5.3
-     */
-    public function script()
-    {
-        return null;
-    }
-
-    /**
      * Display multiple captcha on page
      *
      * @param array $options

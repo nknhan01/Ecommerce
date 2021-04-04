@@ -109,7 +109,7 @@ class UserController extends BaseController
 
         return $response
             ->setPreviousUrl(route('users.index'))
-            ->setNextUrl(route('user.profile.view', $user->id))
+            ->setNextUrl(route('users.profile.view', $user->id))
             ->setMessage(trans('core/base::notices.create_success_message'));
     }
 
@@ -211,8 +211,10 @@ class UserController extends BaseController
         if (!$canChangeProfile) {
             $form->disableFields();
             $form->removeActionButtons();
+            $form->setActionButtons(' ');
             $passwordForm->disableFields();
             $passwordForm->removeActionButtons();
+            $passwordForm->setActionButtons(' ');
         }
 
         if ($request->user()->isSuperUser()) {
@@ -351,7 +353,7 @@ class UserController extends BaseController
      */
     public function getTheme($theme)
     {
-        if (Auth::check()) {
+        if (Auth::check() && !app()->environment('demo')) {
             UserMeta::setMeta('admin-theme', $theme);
         }
 

@@ -3,6 +3,7 @@
 namespace Platform\Shortcode\Providers;
 
 use Platform\Base\Supports\Helper;
+use Platform\Base\Traits\LoadAndPublishDataTrait;
 use Platform\Shortcode\Compilers\ShortcodeCompiler;
 use Platform\Shortcode\Shortcode;
 use Platform\Shortcode\View\Factory;
@@ -10,6 +11,8 @@ use Illuminate\Support\ServiceProvider;
 
 class ShortcodeServiceProvider extends ServiceProvider
 {
+    use LoadAndPublishDataTrait;
+
     /**
      * Register the service provider.
      *
@@ -40,5 +43,8 @@ class ShortcodeServiceProvider extends ServiceProvider
         });
 
         Helper::autoload(__DIR__ . '/../../helpers');
+
+        $this->setNamespace('packages/shortcode')
+            ->loadRoutes();
     }
 }

@@ -8,7 +8,7 @@ class HookServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        add_filter(BASE_FILTER_AFTER_SETTING_CONTENT, [$this, 'addSettings'], 299, 1);
+        add_filter(BASE_FILTER_AFTER_SETTING_CONTENT, [$this, 'addSettings'], 299);
     }
 
     /**

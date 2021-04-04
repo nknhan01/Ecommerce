@@ -63,7 +63,7 @@ class SlugService
                     'key'    => $slug,
                     'prefix' => $prefix,
                 ])
-                ->where('id', '!=', $slugId)
+                ->where('id', '!=', (int)$slugId)
                 ->count() > 0;
     }
 }

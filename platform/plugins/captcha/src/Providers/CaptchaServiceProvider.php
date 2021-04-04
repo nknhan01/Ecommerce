@@ -54,11 +54,13 @@ class CaptchaServiceProvider extends ServiceProvider
 
         $this->bootValidator();
 
-        $this->app->register(HookServiceProvider::class);
-
         if (defined('THEME_MODULE_SCREEN_NAME') && setting('captcha_hide_badge')) {
             \Theme::asset()->writeStyle('hide-recaptcha-badge', '.grecaptcha-badge { visibility: hidden; }');
         }
+
+        $this->app->booted(function () {
+            $this->app->register(HookServiceProvider::class);
+        });
     }
 
     /**
@@ -94,7 +96,7 @@ class CaptchaServiceProvider extends ServiceProvider
         });
 
         $validator->replacer('captcha', function ($message) {
-            return $message === 'validation.captcha' ? __('Failed to validate the captcha.') : $message;
+            return $message === 'validation.captcha' ? trans('plugins/captcha::captcha.failed_validate') : $message;
         });
 
         if ($app->bound('form')) {

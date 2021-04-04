@@ -71,7 +71,7 @@ class WidgetCreateCommand extends BaseMakeCommand
      *
      * @return string
      */
-    protected function getWidget()
+    protected function getWidget(): string
     {
         return strtolower($this->argument('name'));
     }
@@ -81,7 +81,7 @@ class WidgetCreateCommand extends BaseMakeCommand
      *
      * @return string
      */
-    protected function getPath()
+    protected function getPath(): string
     {
         return theme_path(Theme::getThemeName() . '/widgets/' . $this->getWidget());
     }

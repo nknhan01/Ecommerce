@@ -7,9 +7,9 @@
             <tr>
                 <th>{{ trans('core/base::tables.name') }}</th>
                 <th>{{ trans('core/base::tables.description') }}</th>
-                <th>{{ __('Size') }}</th>
+                <th>{{ trans('plugins/backup::backup.size') }}</th>
                 <th>{{ trans('core/base::tables.created_at') }}</th>
-                <th>{{ trans('core/base::tables.operations') }}</th>
+                <th>{{ trans('core/table::table.operations') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -19,7 +19,7 @@
                 @endforeach
             @else
                 <tr class="text-center no-backup-row">
-                    <td colspan="5">{{ __('There is no backup now!') }}</td>
+                    <td colspan="5">{{ trans('plugins/backup::backup.no_backups') }}</td>
                 </tr>
             @endif
         </tbody>

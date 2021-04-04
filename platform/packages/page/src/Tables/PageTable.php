@@ -60,14 +60,10 @@ class PageTable extends TableAbstract
                     $name = Html::link(route('pages.edit', $item->id), $item->name);
                 }
 
-                if (function_exists('theme_option')) {
-                    $homepageId = theme_option('homepage_id', setting('show_on_front'));
-
-                    if ($homepageId == $item->id) {
-                        $name .= Html::tag('span', ' — ' . trans('packages/page::pages.front_page'), [
-                            'class' => 'additional-page-name',
-                        ])->toHtml();
-                    }
+                if (function_exists('theme_option') && BaseHelper::isHomepage($item->id)) {
+                    $name .= Html::tag('span', ' — ' . trans('packages/page::pages.front_page'), [
+                        'class' => 'additional-page-name',
+                    ])->toHtml();
                 }
 
                 return apply_filters(PAGE_FILTER_PAGE_NAME_IN_ADMIN_LIST, $name, $item);

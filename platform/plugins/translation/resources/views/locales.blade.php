@@ -53,10 +53,10 @@
     </div>
 
     @include('core/table::partials.modal-item', [
-        'type' => 'danger',
-        'name' => 'modal-confirm-delete',
-        'title' => trans('core/base::tables.confirm_delete'),
-        'content' => __('Do you really want to delete this locale? It will delete all files/folders for this local in /resources/lang!'),
+        'type'        => 'danger',
+        'name'        => 'modal-confirm-delete',
+        'title'       => trans('core/base::tables.confirm_delete'),
+        'content'     => trans('plugins/translation::translation.confirm_delete_message'),
         'action_name' => trans('core/base::tables.delete'),
         'action_button_attributes' => [
             'class' => 'delete-crud-entry',

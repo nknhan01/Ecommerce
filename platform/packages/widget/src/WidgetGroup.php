@@ -108,12 +108,12 @@ class WidgetGroup
      */
     protected function displayWidget($widget, $position)
     {
+        $widget['arguments'][] = $this->id;
+        $widget['arguments'][] = $position;
+
         $factory = $this->app->make('botble.widget');
 
-        $widget['arguments']['sidebar_id'] = $this->id;
-        $widget['arguments']['position'] = $position;
-
-        return call_user_func_array([$factory, 'run'], $widget['arguments']);
+        return $factory->run(...$widget['arguments']);
     }
 
     /**
@@ -246,10 +246,13 @@ class WidgetGroup
 
     /**
      * @param string $name
+     * @return $this
      */
-    public function setName($name)
+    public function setName($name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -260,9 +263,15 @@ class WidgetGroup
         return $this->description;
     }
 
-    public function setDescription($description)
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**

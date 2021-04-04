@@ -74,7 +74,7 @@ class UserTable extends TableAbstract
                     return $item->username;
                 }
 
-                return Html::link(route('user.profile.view', $item->id), $item->username);
+                return Html::link(route('users.profile.view', $item->id), $item->username);
             })
             ->editColumn('created_at', function ($item) {
                 return BaseHelper::formatDate($item->created_at);

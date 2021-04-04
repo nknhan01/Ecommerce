@@ -11,3 +11,7 @@ if (!defined('MENU_LOCATION_MODULE_SCREEN_NAME')) {
 if (!defined('MENU_ACTION_SIDEBAR_OPTIONS')) {
     define('MENU_ACTION_SIDEBAR_OPTIONS', 'menu_sidebar_options');
 }
+
+if (!defined('MENU_FILTER_NODE_URL')) {
+    define('MENU_FILTER_NODE_URL', 'menu_node_url');
+}

@@ -4,8 +4,8 @@
     <div class="widget-main" id="wrap-widgets">
         <div class="row">
             <div class="col-sm-6">
-                <h2>{{ trans('packages/widget::global.available') }}</h2>
-                <p>{{ trans('packages/widget::global.instruction') }}</p>
+                <h2>{{ trans('packages/widget::widget.available') }}</h2>
+                <p>{{ trans('packages/widget::widget.instruction') }}</p>
                 <ul id="wrap-widget-1">
                     @foreach (Widget::getWidgets() as $widget)
                         <li data-id="{{ $widget->getId() }}">
@@ -19,7 +19,7 @@
                                     {!! $widget->form() !!}
                                     <div class="widget-control-actions">
                                         <div class="float-left">
-                                            <button class="btn btn-danger widget-control-delete">{{ trans('packages/widget::global.delete') }}</button>
+                                            <button class="btn btn-danger widget-control-delete">{{ trans('packages/widget::widget.delete') }}</button>
                                         </div>
                                         <div class="float-right text-right">
                                             <button class="btn btn-primary widget_save">{{ trans('core/base::forms.save') }}</button>
@@ -39,7 +39,6 @@
             <div class="col-sm-6" id="added-widget">
                 {!! apply_filters(WIDGET_TOP_META_BOXES, null, WIDGET_MANAGER_MODULE_SCREEN_NAME) !!}
                 <div class="row">
-                    @php $index = 1; @endphp
                     @foreach (WidgetGroup::getGroups() as $group)
                         <div class="col-sm-6 sidebar-item" data-id="{{ $group->getId() }}">
                             <div class="sidebar-area">
@@ -47,9 +46,8 @@
                                     <h3>{{ $group->getName() }}</h3>
                                     <p>{{ $group->getDescription() }}</p>
                                 </div>
-                                @php $index++; $widget_areas = $group->getWidgets() @endphp
-                                <ul id="wrap-widget-{{ $index }}">
-                                    @include('packages/widget::item', compact('widget_areas'))
+                                <ul id="wrap-widget-{{ ($loop->index + 2) }}">
+                                    @include('packages/widget::item', ['widgetAreas' => $group->getWidgets()])
                                     <div class="clearfix"></div>
                                 </ul>
                             </div>
@@ -64,7 +62,7 @@
     </div>
 @stop
 
-@section('javascript')
+@push('footer')
     <script>
         'use strict';
         var BWidget = BWidget || {};
@@ -73,4 +71,4 @@
             'save_widgets_sidebar': '{{ route('widgets.save_widgets_sidebar', ['ref_lang' => request()->input('ref_lang')]) }}'
         };
     </script>
-@stop
+@endpush

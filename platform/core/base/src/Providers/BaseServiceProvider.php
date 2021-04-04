@@ -3,6 +3,8 @@
 namespace Platform\Base\Providers;
 
 use Platform\Base\Exceptions\Handler;
+use Platform\Base\Facades\MacroableModelsFacade;
+use Platform\Base\Http\Middleware\CoreMiddleware;
 use Platform\Base\Http\Middleware\DisableInDemoModeMiddleware;
 use Platform\Base\Http\Middleware\HttpsProtocolMiddleware;
 use Platform\Base\Http\Middleware\LocaleMiddleware;
@@ -16,9 +18,12 @@ use Platform\Base\Supports\Helper;
 use Platform\Base\Traits\LoadAndPublishDataTrait;
 use Platform\Setting\Providers\SettingServiceProvider;
 use Platform\Setting\Supports\SettingStore;
+use DateTimeZone;
 use Event;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Foundation\AliasLoader;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Routing\ResourceRegistrar;
 use Illuminate\Routing\Router;
@@ -53,34 +58,20 @@ class BaseServiceProvider extends ServiceProvider
 
         $this->app->register(SettingServiceProvider::class);
 
-        $config = $this->app->make('config');
-        $setting = $this->app->make(SettingStore::class);
+        $this->app->singleton(ExceptionHandler::class, Handler::class);
 
-        $config->set([
-            'app.timezone'                     => $setting->get('time_zone', $config->get('app.timezone')),
-            'ziggy.blacklist'                  => ['debugbar.*'],
-            'session.cookie'                   => 'platform_session',
-            'filesystems.default'              => $setting->get('media_driver', 'public'),
-            'filesystems.disks.s3.key'         => $setting
-                ->get('media_aws_access_key_id', $config->get('filesystems.disks.s3.key')),
-            'filesystems.disks.s3.secret'      => $setting
-                ->get('media_aws_secret_key', $config->get('filesystems.disks.s3.secret')),
-            'filesystems.disks.s3.region'      => $setting
-                ->get('media_aws_default_region', $config->get('filesystems.disks.s3.region')),
-            'filesystems.disks.s3.bucket'      => $setting
-                ->get('media_aws_bucket', $config->get('filesystems.disks.s3.bucket')),
-            'filesystems.disks.s3.url'         => $setting
-                ->get('media_aws_url', $config->get('filesystems.disks.s3.url')),
-            'filesystems.disks.do_spaces'      => [
-                'driver'     => 's3',
-                'visibility' => 'public',
-                'key'        => $setting->get('media_do_spaces_access_key_id'),
-                'secret'     => $setting->get('media_do_spaces_secret_key'),
-                'region'     => $setting->get('media_do_spaces_default_region'),
-                'bucket'     => $setting->get('media_do_spaces_bucket'),
-                'endpoint'   => $setting->get('media_do_spaces_endpoint'),
-            ],
-            'app.debug_blacklist'              => [
+        $this->app->singleton(BreadcrumbsManager::class, BreadcrumbsManager::class);
+
+        $this->app->bind(MetaBoxInterface::class, function () {
+            return new MetaBoxCacheDecorator(new MetaBoxRepository(new MetaBoxModel));
+        });
+
+        $this->app->make('config')->set([
+            'session.cookie'                                     => 'platform_session',
+            'purifier.settings.default.AutoFormat.AutoParagraph' => false,
+            'purifier.settings.default.AutoFormat.RemoveEmpty'   => false,
+            'ziggy.except'                                       => ['debugbar.*'],
+            'app.debug_blacklist'                                => [
                 '_ENV'    => [
                     'APP_KEY',
                     'ADMIN_DIR',
@@ -107,28 +98,9 @@ class BaseServiceProvider extends ServiceProvider
                     'password',
                 ],
             ],
-            'datatables-buttons.pdf_generator' => 'excel',
-            'excel.exports.csv.use_bom'        => true,
+            'datatables-buttons.pdf_generator'                   => 'excel',
+            'excel.exports.csv.use_bom'                          => true,
         ]);
-
-        date_default_timezone_set($config->get('app.timezone', 'UTC'));
-
-        $this->app->singleton(ExceptionHandler::class, Handler::class);
-
-        $this->app->singleton(BreadcrumbsManager::class, BreadcrumbsManager::class);
-
-        /**
-         * @var Router $router
-         */
-        $router = $this->app['router'];
-
-        $router->pushMiddlewareToGroup('web', LocaleMiddleware::class);
-        $router->pushMiddlewareToGroup('web', HttpsProtocolMiddleware::class);
-        $router->aliasMiddleware('preventDemo', DisableInDemoModeMiddleware::class);
-
-        $this->app->bind(MetaBoxInterface::class, function () {
-            return new MetaBoxCacheDecorator(new MetaBoxRepository(new MetaBoxModel));
-        });
     }
 
     public function boot()
@@ -141,23 +113,44 @@ class BaseServiceProvider extends ServiceProvider
             ->loadMigrations()
             ->publishAssets();
 
+        /**
+         * @var Router $router
+         */
+        $router = $this->app['router'];
+
+        $router->pushMiddlewareToGroup('web', LocaleMiddleware::class);
+        $router->pushMiddlewareToGroup('web', HttpsProtocolMiddleware::class);
+        $router->aliasMiddleware('preventDemo', DisableInDemoModeMiddleware::class);
+        $router->middlewareGroup('core', [CoreMiddleware::class]);
+
         $this->app->booted(function () {
             do_action(BASE_ACTION_INIT);
             add_action(BASE_ACTION_META_BOXES, [MetaBox::class, 'doMetaBoxes'], 8, 2);
 
             $config = $this->app->make('config');
+            $setting = $this->app->make(SettingStore::class);
+            $timezone = $setting->get('time_zone', $config->get('app.timezone'));
+            $locale = $setting->get('locale', $config->get('core.base.general.locale', $config->get('app.locale')));
+
             $config->set([
-                'app.locale'                                         => setting('locale',
-                    $config->get('core.base.general.locale',
-                        $config->get('app.locale'))),
-                'purifier.settings.default.AutoFormat.AutoParagraph' => false,
-                'purifier.settings.default.AutoFormat.RemoveEmpty'   => false,
+                'app.locale'   => $locale,
+                'app.timezone' => $timezone,
             ]);
+
+            $this->app->setLocale($locale);
+
+            if (in_array($timezone, DateTimeZone::listIdentifiers())) {
+                date_default_timezone_set($timezone);
+            }
         });
 
         Event::listen(RouteMatched::class, function () {
             $this->registerDefaultMenus();
         });
+
+        AliasLoader::getInstance()->alias('MacroableModels', MacroableModelsFacade::class);
+
+        Paginator::useBootstrap();
     }
 
     /**

@@ -15,8 +15,8 @@ class CreateSlugTable extends Migration
         Schema::create('slugs', function (Blueprint $table) {
             $table->id();
             $table->string('key', 255);
-            $table->integer('reference_id');
-            $table->string('reference', 120);
+            $table->integer('reference_id')->unsigned();
+            $table->string('reference_type', 255);
             $table->string('prefix', 120)->nullable()->default('');
             $table->timestamps();
         });

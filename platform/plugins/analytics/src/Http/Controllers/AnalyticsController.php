@@ -21,8 +21,8 @@ class AnalyticsController extends BaseController
      */
     public function getGeneral(BaseHttpResponse $response)
     {
-        $startDate = Carbon::today(config('app.timezone'))->startOfDay();
-        $endDate = Carbon::today(config('app.timezone'))->endOfDay();
+        $startDate = Carbon::today()->startOfDay();
+        $endDate = Carbon::today()->endOfDay();
         $dimensions = 'hour';
 
         try {
@@ -81,8 +81,8 @@ class AnalyticsController extends BaseController
      */
     public function getTopVisitPages(BaseHttpResponse $response)
     {
-        $startDate = Carbon::today(config('app.timezone'))->startOfDay();
-        $endDate = Carbon::today(config('app.timezone'))->endOfDay();
+        $startDate = Carbon::today()->startOfDay();
+        $endDate = Carbon::today()->endOfDay();
 
         try {
             $period = Period::create($startDate, $endDate);
@@ -108,8 +108,8 @@ class AnalyticsController extends BaseController
      */
     public function getTopBrowser(BaseHttpResponse $response)
     {
-        $startDate = Carbon::today(config('app.timezone'))->startOfDay();
-        $endDate = Carbon::today(config('app.timezone'))->endOfDay();
+        $startDate = Carbon::today()->startOfDay();
+        $endDate = Carbon::today()->endOfDay();
 
         try {
             $period = Period::create($startDate, $endDate);
@@ -135,8 +135,8 @@ class AnalyticsController extends BaseController
      */
     public function getTopReferrer(BaseHttpResponse $response)
     {
-        $startDate = Carbon::today(config('app.timezone'))->startOfDay();
-        $endDate = Carbon::today(config('app.timezone'))->endOfDay();
+        $startDate = Carbon::today()->startOfDay();
+        $endDate = Carbon::today()->endOfDay();
 
         try {
             $period = Period::create($startDate, $endDate);

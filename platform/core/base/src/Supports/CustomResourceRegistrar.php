@@ -69,7 +69,7 @@ class CustomResourceRegistrar extends ResourceRegistrar
 
         $action = $this->getResourceAction($name, $controller, 'update', $options);
 
-        return $this->router->post($uri, $action);
+        return $this->router->post($uri, $action)->name($name . '.update');
     }
 
     /**
@@ -87,6 +87,6 @@ class CustomResourceRegistrar extends ResourceRegistrar
 
         $action = $this->getResourceAction($name, $controller, 'store', $options);
 
-        return $this->router->post($uri, $action);
+        return $this->router->post($uri, $action)->name($name. '.store');
     }
 }

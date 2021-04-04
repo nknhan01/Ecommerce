@@ -87,7 +87,7 @@ class ActivationRepository extends RepositoriesAbstract implements ActivationInt
 
         $activation->fill([
             'completed'    => true,
-            'completed_at' => now(config('app.timezone')),
+            'completed_at' => now(),
         ]);
 
         $activation->save();
@@ -150,7 +150,7 @@ class ActivationRepository extends RepositoriesAbstract implements ActivationInt
      */
     protected function expires()
     {
-        return now(config('app.timezone'))->subSeconds($this->expires);
+        return now()->subSeconds($this->expires);
     }
 
     /**

@@ -1,0 +1,9 @@
+{
+  "name": "Simple Slider",
+  "namespace": "Platform\\SimpleSlider\\",
+  "provider": "Platform\\SimpleSlider\\Providers\\SimpleSliderServiceProvider",
+  "author": "Laravel Technologies",
+  "url": "https://laravel-cms.gistensal.com",
+  "version": "5.8",
+  "description": "A plugin to create sliders"
+}

@@ -2,7 +2,8 @@
 @section('content')
     {!! Form::open(['route' => ['settings.email.edit']]) !!}
     <div class="max-width-1200">
-        <div class="flexbox-annotated-section">
+        @if (config('core.setting.general.enable_email_smtp_settings', true))
+            <div class="flexbox-annotated-section">
 
             <div class="flexbox-annotated-section-annotation">
                 <div class="annotated-section-title pd-all-20">
@@ -56,7 +57,7 @@
                         <div class="form-group" style="margin-bottom: 1em;">
                             <label class="text-title-field" for="email_encryption">{{ trans('core/setting::setting.email.encryption') }}</label>
                             <input data-counter="20" type="text" class="next-input" name="email_encryption" id="email_encryption"
-                                   value="{{ setting('email_encryption', config('mail.mailers.smtp.encryption')) }}" placeholder="{{ __('Encryption: ssl or tls') }}">
+                                   value="{{ setting('email_encryption', config('mail.mailers.smtp.encryption')) }}" placeholder="{{ trans('core/setting::setting.email.encryption_placeholder') }}">
                         </div>
                     </div>
 
@@ -112,18 +113,18 @@
 
                     <div data-type="sendmail" class="setting-wrapper @if (setting('email_driver', config('mail.default')) !== 'sendmail') hidden @endif">
                         <div class="form-group">
-                            <label class="text-title-field" for="email_sendmail_path">{{ __('Sendmail Path')  }}</label>
+                            <label class="text-title-field" for="email_sendmail_path">{{ trans('core/setting::setting.email.sendmail_path')  }}</label>
                             <input type="text" class="next-input" name="email_sendmail_path" id="email_sendmail_path"
-                                   value="{{ setting('email_sendmail_path', config('mail.mailers.sendmail.path')) }}" placeholder="{{ __('Sendmail Path') }}">
+                                   value="{{ setting('email_sendmail_path', config('mail.mailers.sendmail.path')) }}" placeholder="{{ trans('core/setting::setting.email.sendmail_path') }}">
                             <span class="help-ts">{{ trans('core/setting::setting.email.default') }}: <code>{{ config('mail.mailers.sendmail.path') }}</code></span>
                         </div>
                     </div>
 
                     <div data-type="log" class="setting-wrapper @if (setting('email_driver', config('mail.default')) !== 'log') hidden @endif">
                         <div class="form-group" style="margin-bottom: 1em;">
-                            <label class="text-title-field" for="email_log_channel">{{ __('Log channel')  }}</label>
+                            <label class="text-title-field" for="email_log_channel">{{ trans('core/setting::setting.email.log_channel') }}</label>
                             <input type="text" class="next-input" name="email_log_channel" id="email_log_channel"
-                                   value="{{ setting('email_log_channel', config('mail.mailers.log.channel')) }}" placeholder="{{ __('Log channel') }}">
+                                   value="{{ setting('email_log_channel', config('mail.mailers.log.channel')) }}" placeholder="{{ trans('core/setting::setting.email.log_channel') }}">
                         </div>
                     </div>
 
@@ -139,9 +140,18 @@
                                value="{{ setting('email_from_address', config('mail.from.address')) }}" placeholder="admin@example.com">
                     </div>
 
+                    <div class="form-group">
+                        <input type="hidden" name="using_queue_to_send_mail" value="0">
+                        <label>
+                            <input type="checkbox" class="hrv-checkbox" value="1" @if (setting('using_queue_to_send_mail')) checked @endif name="using_queue_to_send_mail">
+                            {{ trans('core/setting::setting.email.using_queue_to_send_mail') }}
+                        </label>
+                    </div>
+
                 </div>
             </div>
         </div>
+        @endif
 
         {!! apply_filters(BASE_FILTER_AFTER_SETTING_EMAIL_CONTENT, null) !!}
 

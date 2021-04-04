@@ -38,6 +38,6 @@ if (!function_exists('dynamic_sidebar')) {
      */
     function dynamic_sidebar(string $sidebarId)
     {
-        return Theme::renderWidgetGroup($sidebarId);
+        return WidgetGroup::render($sidebarId);
     }
 }

@@ -2,10 +2,11 @@
 
 namespace Platform\Base\Http\Controllers;
 
+use Arr;
 use Assets;
-use Platform\ACL\Models\UserMeta;
 use Platform\Base\Http\Responses\BaseHttpResponse;
 use Platform\Base\Supports\Helper;
+use Platform\Base\Supports\Language;
 use Platform\Base\Supports\MembershipAuthorization;
 use Platform\Base\Supports\SystemManagement;
 use Platform\Base\Tables\InfoTable;
@@ -22,6 +23,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Menu;
 use Throwable;
 
 class SystemController extends Controller
@@ -54,11 +56,19 @@ class SystemController extends Controller
         $systemEnv = SystemManagement::getSystemEnv();
         $serverEnv = SystemManagement::getServerEnv();
 
+        $requiredPhpVersion = Arr::get($composerArray, 'require.php', '^7.2.5');
+        $requiredPhpVersion = str_replace('^', '', $requiredPhpVersion);
+        $requiredPhpVersion = str_replace('~', '', $requiredPhpVersion);
+
+        $matchPHPRequirement = version_compare(phpversion(), $requiredPhpVersion) > 0;
+
         return view('core/base::system.info', compact(
             'packages',
             'infoTable',
             'systemEnv',
-            'serverEnv'
+            'serverEnv',
+            'matchPHPRequirement',
+            'requiredPhpVersion'
         ));
     }
 
@@ -86,6 +96,7 @@ class SystemController extends Controller
         switch ($request->input('type')) {
             case 'clear_cms_cache':
                 Helper::clearCache();
+                Menu::clearCacheMenuItems();
                 break;
             case 'refresh_compiled_views':
                 foreach ($files->glob(config('view.compiled') . '/*') as $view) {
@@ -99,8 +110,10 @@ class SystemController extends Controller
                 $files->delete($app->getCachedRoutesPath());
                 break;
             case 'clear_log':
-                foreach (File::allFiles(storage_path('logs')) as $file) {
-                    File::delete($file->getPathname());
+                if (File::isDirectory(storage_path('logs'))) {
+                    foreach (File::allFiles(storage_path('logs')) as $file) {
+                        File::delete($file->getPathname());
+                    }
                 }
                 break;
         }
@@ -128,9 +141,8 @@ class SystemController extends Controller
      */
     public function getLanguage($lang, Request $request)
     {
-        if ($lang != false && array_key_exists($lang, Assets::getAdminLocales())) {
+        if ($lang != false && array_key_exists($lang, Language::getAvailableLocales())) {
             if (Auth::check()) {
-                UserMeta::setMeta('site-locale', $lang);
                 cache()->forget(md5('cache-dashboard-menu-' . $request->user()->getKey()));
             }
             session()->put('site-locale', $lang);

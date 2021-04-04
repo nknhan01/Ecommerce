@@ -2,11 +2,11 @@
 
 namespace Platform\Analytics;
 
-use Google_Client;
-use Google_Exception;
+use Google\Client;
+use Google\Exception;
 use LogicException;
 
-class GoogleClient extends Google_Client
+class GoogleClient extends Client
 {
     /**
      * Set the auth config from new or deprecated JSON config.
@@ -14,7 +14,7 @@ class GoogleClient extends Google_Client
      * the "Download JSON" button on in the Google Developer
      * Console.
      * @param string|array $config the configuration json
-     * @throws Google_Exception
+     * @throws Exception
      */
     public function setAuthConfig($config)
     {

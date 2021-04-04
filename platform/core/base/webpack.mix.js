@@ -1,17 +1,6 @@
 let mix = require('laravel-mix');
 let glob = require('glob');
 
-/*
- |--------------------------------------------------------------------------
- | Mix Asset Management
- |--------------------------------------------------------------------------
- |
- | Mix provides a clean, fluent API for defining some Webpack build steps
- | for your Laravel application. By default, we are compiling the Sass
- | file for the application as well as bundling up all the JS files.
- |
- */
-
 const path = require('path');
 let directory = path.basename(path.resolve(__dirname));
 
@@ -20,7 +9,7 @@ const dist = 'public/vendor/core/core/' + directory;
 
 glob.sync(source + '/resources/assets/sass/base/themes/*.scss').forEach(item => {
     mix.sass(item, dist + '/css/themes');
-})
+});
 
 mix
     .sass(source + '/resources/assets/sass/core.scss', dist + '/css')

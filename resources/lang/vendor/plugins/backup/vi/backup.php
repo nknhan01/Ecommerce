@@ -17,10 +17,4 @@ return [
     'download_uploads_folder' => 'Tải về bản sao lưu thư mục uploads',
     'menu_name'               => 'Sao lưu',
     'demo_alert'              => 'Chào khách, nếu bạn thấy trang demo bị phá hoại, hãy tới <a href=":link">trang sao lưu</a> và khôi phục bản sao lưu cuối cùng. Cảm ơn bạn nhiều!',
-    'settings'                => [
-        'backup_mysql_execute_path'             => 'Đường dẫn tới thư mục thực thi MySQL',
-        'backup_mysql_execute_path_placeholder' => 'Mặc định: /usr/mysql/bin. Bỏ qua nếu bạn không chắc chắn về điều này',
-        'description'                           => 'Thiết lập chức năng sao lưu và khôi phục dữ liệu',
-        'title'                                 => 'Sao lưu',
-    ],
 ];

@@ -86,7 +86,7 @@ abstract class BaseMakeCommand extends Command
             '{NAME}'         => strtoupper(Str::snake(str_replace('-', '_', $replaceText))),
             '{Name}'         => ucfirst(Str::camel($replaceText)),
             '.stub'          => '.php',
-            '{migrate_date}' => now(config('app.timezone'))->format('Y_m_d_His'),
+            '{migrate_date}' => now()->format('Y_m_d_His'),
             '{type}'         => 'package',
             '{types}'        => 'packages',
         ];

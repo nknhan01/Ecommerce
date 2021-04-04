@@ -18,7 +18,7 @@ class CreatedContentListener
     protected $slugRepository;
 
     /**
-     * SlugService constructor.
+     * CreatedContentListener constructor.
      * @param SlugInterface $slugRepository
      */
     public function __construct(SlugInterface $slugRepository)
@@ -54,7 +54,7 @@ class CreatedContentListener
                 $slugService = new SlugService($this->slugRepository);
 
                 $this->slugRepository->createOrUpdate([
-                    'key'            => $slugService->create($slug, $event->data->slug_id, get_class($event->data)),
+                    'key'            => $slugService->create($slug, (int)$event->data->slug_id, get_class($event->data)),
                     'reference_type' => get_class($event->data),
                     'reference_id'   => $event->data->id,
                     'prefix'         => SlugHelper::getPrefix(get_class($event->data)),

@@ -95,7 +95,7 @@ class WidgetRemoveCommand extends Command
      *
      * @return string
      */
-    protected function getWidget()
+    protected function getWidget(): string
     {
         return strtolower($this->argument('name'));
     }
@@ -105,7 +105,7 @@ class WidgetRemoveCommand extends Command
      *
      * @return string
      */
-    protected function getPath()
+    protected function getPath(): string
     {
         return theme_path(Theme::getThemeName() . '/widgets/' . $this->getWidget());
     }

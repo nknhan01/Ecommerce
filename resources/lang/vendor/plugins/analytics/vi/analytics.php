@@ -9,12 +9,12 @@ return [
     'views'                              => 'lượt xem',
     'visitors'                           => 'Người truy cập',
     'visits'                             => 'lượt ghé thăm',
-    'credential_is_not_valid'            => 'Thông tin cài đặt không hợp lệ. Tài liệu hướng dẫn tại đây: <a href="https://docs.laravel-cms.gistensal.com/cms/:version/plugin-analytics" target="_blank">https://docs.laravel-cms.gistensal.com/cms/:version/plugin-analytics</a>',
+    'credential_is_not_valid'            => 'Thông tin cài đặt không hợp lệ. Tài liệu hướng dẫn tại đây: <a href="http://laravel-cms.gistensal.com/docs-cms/cms/:version/analytics" target="_blank">http://laravel-cms.gistensal.com/docs-cms/cms/:version/analytics</a>',
     'new_users'                          => 'Lượt khách mới',
     'percent_new_session'                => 'Tỉ lệ khách mới',
     'start_date_can_not_before_end_date' => 'Ngày bắt đầu :start_date không thể sau ngày kết thúc :end_date',
-    'view_id_not_specified'              => 'Bạn phải cung cấp View ID hợp lê. Tài liệu hướng dẫn tại đây: <a href="https://docs.laravel-cms.gistensal.com/cms/:version/plugin-analytics" target="_blank">https://docs.laravel-cms.gistensal.com/cms/:version/plugin-analytics</a>',
-    'wrong_configuration'                => 'Để xem dữ liệu thống kê Google Analytics, bạn cần lấy thông tin Client ID và thêm nó vào trong phần cài đặt. Bạn cũng cần thông tin xác thực dạng JSON. Tài liệu hướng dẫn tại đây: <a href="https://docs.laravel-cms.gistensal.com/cms/:version/plugin-analytics" target="_blank">https://docs.laravel-cms.gistensal.com/cms/:version/plugin-analytics</a>',
+    'view_id_not_specified'              => 'Bạn phải cung cấp View ID hợp lê. Tài liệu hướng dẫn tại đây: <a href="http://laravel-cms.gistensal.com/docs-cms/cms/:version/analytics" target="_blank">http://laravel-cms.gistensal.com/docs-cms/cms/:version/analytics</a>',
+    'wrong_configuration'                => 'Để xem dữ liệu thống kê Google Analytics, bạn cần lấy thông tin Client ID và thêm nó vào trong phần cài đặt. Bạn cũng cần thông tin xác thực dạng JSON. Tài liệu hướng dẫn tại đây: <a href="http://laravel-cms.gistensal.com/docs-cms/cms/:version/analytics" target="_blank">http://laravel-cms.gistensal.com/docs-cms/cms/:version/analytics</a>',
 
     'settings' => [
         'title'                       => 'Google Analytics',

@@ -115,7 +115,7 @@ class LoginController extends BaseController
         }
 
         if ($this->attemptLogin($request)) {
-            app(UserInterface::class)->update(['id' => $user->id], ['last_login' => now(config('app.timezone'))]);
+            app(UserInterface::class)->update(['id' => $user->id], ['last_login' => now()]);
             if (!session()->has('url.intended')) {
                 session()->flash('url.intended', url()->current());
             }

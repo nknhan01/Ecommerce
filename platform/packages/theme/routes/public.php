@@ -3,7 +3,7 @@
 use Platform\Theme\Events\ThemeRoutingAfterEvent;
 use Platform\Theme\Events\ThemeRoutingBeforeEvent;
 
-Route::group(['namespace' => 'Platform\Theme\Http\Controllers', 'middleware' => 'web'], function () {
+Route::group(['namespace' => 'Platform\Theme\Http\Controllers', 'middleware' => ['web', 'core']], function () {
     Route::group(apply_filters(BASE_FILTER_GROUP_PUBLIC_ROUTE, []), function () {
         event(new ThemeRoutingBeforeEvent);
 

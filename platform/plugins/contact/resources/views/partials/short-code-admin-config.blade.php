@@ -1,3 +1,3 @@
 <div class="form-group">
-    <p>{{ __('Add shortcode [contact-form][/contact-form] to editor?') }}</p>
+    <p>{{ trans('plugins/contact::contact.shortcode_content_description') }}</p>
 </div>

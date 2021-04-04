@@ -1,21 +1,25 @@
 <?php
 
 return [
+    'model'               => 'Bài viết',
+    'models'              => 'Bài viết',
+    'list'                => 'Danh sách bài viết',
     'create'              => 'Thêm bài viết',
     'edit'                => 'Sửa bài viết',
-    'form'                => [
-        'name'                    => 'Tên',
-        'name_placeholder'        => 'Tên bài viết (Tối đa 120 kí tự)',
-        'description'             => 'Mô tả',
-        'description_placeholder' => 'Mô tả ngắn cho bài viết (Tối đa 400 kí tự)',
-        'categories'              => 'Chuyên mục',
-        'tags'                    => 'Từ khóa',
-        'tags_placeholder'        => 'Thêm từ khóa',
-        'content'                 => 'Nội dung',
-        'is_featured'             => 'Bài viết nổi bật?',
-        'note'                    => 'Nội dung ghi chú',
-        'format_type'             => 'Định dạng',
-    ],
+    'form'                =>
+        [
+            'name'                    => 'Tên',
+            'name_placeholder'        => 'Tên bài viết (Tối đa 120 kí tự)',
+            'description'             => 'Mô tả',
+            'description_placeholder' => 'Mô tả ngắn cho bài viết (Tối đa 400 kí tự)',
+            'categories'              => 'Chuyên mục',
+            'tags'                    => 'Từ khóa',
+            'tags_placeholder'        => 'Thêm từ khóa',
+            'content'                 => 'Nội dung',
+            'featured'                => 'Bài viết nổi bật?',
+            'note'                    => 'Nội dung ghi chú',
+            'format_type'             => 'Định dạng',
+        ],
     'post_deleted'        => 'Xóa bài viết thành công',
     'cannot_delete'       => 'Không thể xóa bài viết',
     'menu_name'           => 'Bài viết',
@@ -24,6 +28,4 @@ return [
     'posts'               => 'Bài viết',
     'widget_posts_recent' => 'Bài viết gần đây',
     'author'              => 'Tác giả',
-    'categories'          => 'Danh mục',
-    'category'            => 'Danh mục',
 ];

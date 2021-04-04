@@ -3,6 +3,7 @@
 namespace Platform\Base\Helpers;
 
 use Carbon\Carbon;
+use URL;
 
 class BaseHelper
 {
@@ -86,5 +87,32 @@ class BaseHelper
     public function getAdminPrefix(): string
     {
         return config('core.base.general.admin_dir');
+    }
+
+    /**
+     * @return string
+     */
+    public function siteLanguageDirection()
+    {
+        return apply_filters(BASE_FILTER_SITE_LANGUAGE_DIRECTION, setting('locale_direction', 'ltr'));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHomepageId()
+    {
+        return theme_option('homepage_id', setting('show_on_front'));
+    }
+
+    /**
+     * @param int $pageId
+     * @return bool
+     */
+    public function isHomepage($pageId = null)
+    {
+        $homepageId = $this->getHomepageId();
+
+        return $pageId && $homepageId && $pageId == $homepageId;
     }
 }

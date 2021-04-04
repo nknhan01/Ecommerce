@@ -4,13 +4,11 @@ namespace Platform\Blog\Models;
 
 use Platform\Base\Traits\EnumCastable;
 use Platform\Base\Enums\BaseStatusEnum;
-use Platform\Slug\Traits\SlugTrait;
 use Platform\Base\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Tag extends BaseModel
 {
-    use SlugTrait;
     use EnumCastable;
 
     /**
@@ -40,6 +38,7 @@ class Tag extends BaseModel
         'description',
         'status',
         'author_id',
+        'author_type',
     ];
 
     /**

@@ -6,6 +6,7 @@ use Exception;
 use File;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Process\Process;
 use ZipArchive;
 use Platform\Base\Supports\PclZip as Zip;
 use Illuminate\Filesystem\Filesystem;
@@ -41,7 +42,7 @@ class Backup
     public function createBackupFolder($name, $description = null): array
     {
         $backupFolder = $this->createFolder($this->getBackupPath());
-        $now = now(config('app.timezone'))->format('Y-m-d-H-i-s');
+        $now = now()->format('Y-m-d-H-i-s');
         $this->folder = $this->createFolder($backupFolder . DIRECTORY_SEPARATOR . $now);
 
         $file = $this->getBackupPath('backup.json');
@@ -54,7 +55,7 @@ class Backup
         $data[$now] = [
             'name'        => $name,
             'description' => $description,
-            'date'        => now(config('app.timezone'))->toDateTimeString(),
+            'date'        => now()->toDateTimeString(),
         ];
         save_file_data($file, $data);
 
@@ -107,11 +108,10 @@ class Backup
      */
     public function backupDb(): bool
     {
-        $file = 'database-' . now(config('app.timezone'))->format('Y-m-d-H-i-s');
+        $file = 'database-' . now()->format('Y-m-d-H-i-s');
         $path = $this->folder . DIRECTORY_SEPARATOR . $file;
 
-        $mysqlPath = rtrim(setting('backup_mysql_execute_path',
-            config('plugins.backup.general.backup_mysql_execute_path')), '/');
+        $mysqlPath = rtrim(config('plugins.backup.general.backup_mysql_execute_path'), '/');
 
         if (!empty($mysqlPath)) {
             $mysqlPath = $mysqlPath . '/';
@@ -126,7 +126,12 @@ class Backup
 
         $sql .= ' --port=' . config('database.connections.mysql.port') . ' ' . config('database.connections.mysql.database') . ' > ' . $path . '.sql';
 
-        system($sql);
+        try {
+            Process::fromShellCommandline($sql)->mustRun();
+        } catch (Exception $exception) {
+            system($sql);
+        }
+
         $this->compressFileToZip($path, $file);
         if (file_exists($path . '.zip')) {
             chmod($path . '.zip', 0777);
@@ -175,7 +180,7 @@ class Backup
      */
     public function backupFolder($source): bool
     {
-        $file = $this->folder . DIRECTORY_SEPARATOR . 'storage-' . now(config('app.timezone'))->format('Y-m-d-H-i-s') . '.zip';
+        $file = $this->folder . DIRECTORY_SEPARATOR . 'storage-' . now()->format('Y-m-d-H-i-s') . '.zip';
 
         ini_set('max_execution_time', 5000);
 

@@ -3,6 +3,7 @@
 namespace Platform\ACL\Http\Controllers;
 
 use Platform\ACL\Forms\RoleForm;
+use Platform\Base\Events\BeforeEditContentEvent;
 use Platform\Base\Forms\FormBuilder;
 use Platform\Base\Http\Responses\BaseHttpResponse;
 use Platform\ACL\Events\RoleAssignmentEvent;
@@ -98,11 +99,14 @@ class RoleController extends BaseController
     /**
      * @param int $id
      * @param FormBuilder $formBuilder
+     * @param Request $request
      * @return string
      */
-    public function edit($id, FormBuilder $formBuilder)
+    public function edit($id, FormBuilder $formBuilder, Request $request)
     {
         $role = $this->roleRepository->findOrFail($id);
+
+        event(new BeforeEditContentEvent($request, $role));
 
         page_title()->setTitle(trans('core/acl::permissions.details') . ' - ' . e($role->name));
 

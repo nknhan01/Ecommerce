@@ -5,7 +5,7 @@ return [
     'settings'           => [
         'title'       => 'Permalink settings',
         'description' => 'Manage permalink for all modules.',
-        'preview' => 'Preview',
-
+        'preview'     => 'Preview',
     ],
+    'preview'            => 'Preview',
 ];

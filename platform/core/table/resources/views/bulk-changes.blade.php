@@ -1,5 +1,5 @@
 <div class="dropdown dropdown-hover">
-    <a href="javascript:;">{{ trans('core/table::general.bulk_change') }}
+    <a href="javascript:;">{{ trans('core/table::table.bulk_change') }}
         <i class="fa fa-angle-right"></i>
     </a>
     <div class="dropdown-content">

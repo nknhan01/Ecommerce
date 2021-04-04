@@ -222,7 +222,6 @@ class Revision extends BaseModel
         return $this->getValue('new');
     }
 
-
     /**
      * User Responsible.
      *

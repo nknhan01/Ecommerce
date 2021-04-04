@@ -1,9 +1,7 @@
-import LicenseComponent from './components/LicenseComponent'
+import LicenseComponent from './components/LicenseComponent';
+import Vue from 'vue';
 
 if (document.getElementById('main-settings')) {
-
-    window.Vue = require('vue');
-
     Vue.component('license-component', LicenseComponent);
 
     new Vue({

@@ -4,12 +4,13 @@ namespace Platform\Setting\Http\Controllers;
 
 use Assets;
 use Platform\Base\Supports\Core;
+use Platform\Base\Supports\Language;
 use Platform\Setting\Http\Requests\EmailTemplateRequest;
 use Platform\Setting\Http\Requests\LicenseSettingRequest;
 use Platform\Setting\Http\Requests\MediaSettingRequest;
 use Platform\Setting\Http\Requests\SendTestEmailRequest;
+use Platform\Setting\Http\Requests\SettingRequest;
 use Platform\Setting\Repositories\Interfaces\SettingInterface;
-use Platform\Setting\Supports\SettingStore;
 use Carbon\Carbon;
 use EmailHandler;
 use Exception;
@@ -30,19 +31,12 @@ class SettingController extends BaseController
     protected $settingRepository;
 
     /**
-     * @var SettingStore
-     */
-    protected $settingStore;
-
-    /**
      * SettingController constructor.
      * @param SettingInterface $settingRepository
-     * @param SettingStore $settingStore
      */
-    public function __construct(SettingInterface $settingRepository, SettingStore $settingStore)
+    public function __construct(SettingInterface $settingRepository)
     {
         $this->settingRepository = $settingRepository;
-        $this->settingStore = $settingStore;
     }
 
     /**
@@ -58,13 +52,22 @@ class SettingController extends BaseController
     }
 
     /**
-     * @param Request $request
+     * @param SettingRequest $request
      * @param BaseHttpResponse $response
      * @return BaseHttpResponse
      */
-    public function postEdit(Request $request, BaseHttpResponse $response)
+    public function postEdit(SettingRequest $request, BaseHttpResponse $response)
     {
-        $this->saveSettings($request->except(['_token']));
+        $this->saveSettings($request->except(['_token', 'locale']));
+
+        $locale = $request->input('locale');
+        if ($locale != false && array_key_exists($locale, Language::getAvailableLocales())) {
+            session()->put('site-locale', $locale);
+        }
+
+        if (!app()->environment('demo')) {
+            setting()->set('locale', $locale)->save();
+        }
 
         return $response
             ->setPreviousUrl(route('settings.options'))
@@ -77,10 +80,10 @@ class SettingController extends BaseController
     protected function saveSettings(array $data)
     {
         foreach ($data as $settingKey => $settingValue) {
-            $this->settingStore->set($settingKey, $settingValue);
+            setting()->set($settingKey, $settingValue);
         }
 
-        $this->settingStore->save();
+        setting()->save();
     }
 
     /**
@@ -95,11 +98,11 @@ class SettingController extends BaseController
     }
 
     /**
-     * @param Request $request
+     * @param SettingRequest $request
      * @param BaseHttpResponse $response
      * @return BaseHttpResponse
      */
-    public function postEditEmailConfig(Request $request, BaseHttpResponse $response)
+    public function postEditEmailConfig(SettingRequest $request, BaseHttpResponse $response)
     {
         $this->saveSettings($request->except(['_token']));
 
@@ -156,7 +159,7 @@ class SettingController extends BaseController
     public function postStoreEmailTemplate(EmailTemplateRequest $request, BaseHttpResponse $response)
     {
         if ($request->has('email_subject_key')) {
-            $this->settingStore
+            setting()
                 ->set($request->input('email_subject_key'), $request->input('email_subject'))
                 ->save();
         }
@@ -187,7 +190,7 @@ class SettingController extends BaseController
      */
     public function postChangeEmailStatus(Request $request, BaseHttpResponse $response)
     {
-        $this->settingStore
+        setting()
             ->set($request->input('key'), $request->input('value'))
             ->save();
 
@@ -205,13 +208,13 @@ class SettingController extends BaseController
         try {
             EmailHandler::send(
                 file_get_contents(core_path('setting/resources/email-templates/test.tpl')),
-                __('Test title'),
+                'Test',
                 $request->input('email'),
                 [],
                 true
             );
 
-            return $response->setMessage(__('Send email successfully!'));
+            return $response->setMessage(trans('core/setting::setting.test_email_send_success'));
         } catch (Exception $exception) {
             return $response->setError()
                 ->setMessage($exception->getMessage());
@@ -270,7 +273,7 @@ class SettingController extends BaseController
 
         $data = [
             'activated_at' => $activatedAt->format('M d Y'),
-            'licensed_to'  => $this->settingStore->get('licensed_to'),
+            'licensed_to'  => setting('licensed_to'),
         ];
 
         return $response->setMessage($result['message'])->setData($data);
@@ -285,24 +288,37 @@ class SettingController extends BaseController
      */
     public function activateLicense(LicenseSettingRequest $request, BaseHttpResponse $response, Core $coreApi)
     {
-        $result = $coreApi->activateLicense($request->input('purchase_code'), $request->input('buyer'));
+        if (filter_var($request->input('buyer'), FILTER_VALIDATE_URL)) {
+            $buyer = explode('/', $request->input('buyer'));
+            $username = end($buyer);
 
-        if (!$result['status']) {
-            return $response->setError()->setMessage($result['message']);
+            return $response
+                ->setError(true)
+                ->setMessage(__('Envato username must not a URL. Please try with username ":username"!', compact('username')));
         }
 
-        $this->settingStore
-            ->set(['licensed_to' => $request->input('buyer')])
-            ->save();
+        try {
+            $result = $coreApi->activateLicense($request->input('purchase_code'), $request->input('buyer'));
 
-        $activatedAt = Carbon::createFromTimestamp(filectime($coreApi->getLicenseFilePath()));
+            if (!$result['status']) {
+                return $response->setError()->setMessage($result['message']);
+            }
 
-        $data = [
-            'activated_at' => $activatedAt->format('M d Y'),
-            'licensed_to'  => $request->input('buyer'),
-        ];
+            setting()
+                ->set(['licensed_to' => $request->input('buyer')])
+                ->save();
 
-        return $response->setMessage($result['message'])->setData($data);
+            $activatedAt = Carbon::createFromTimestamp(filectime($coreApi->getLicenseFilePath()));
+
+            $data = [
+                'activated_at' => $activatedAt->format('M d Y'),
+                'licensed_to'  => $request->input('buyer'),
+            ];
+
+            return $response->setMessage($result['message'])->setData($data);
+        } catch (Exception $exception) {
+            return $response->setError(true)->setMessage($exception->getMessage());
+        }
     }
 
     /**
@@ -314,14 +330,18 @@ class SettingController extends BaseController
      */
     public function deactivateLicense(BaseHttpResponse $response, Core $coreApi)
     {
-        $result = $coreApi->deactivateLicense();
+        try {
+            $result = $coreApi->deactivateLicense();
 
-        if (!$result['status']) {
-            return $response->setError()->setMessage($result['message']);
+            if (!$result['status']) {
+                return $response->setError()->setMessage($result['message']);
+            }
+
+            $this->settingRepository->deleteBy(['key' => 'licensed_to']);
+
+            return $response->setMessage($result['message']);
+        } catch (Exception $exception) {
+            return $response->setError(true)->setMessage($exception->getMessage());
         }
-
-        $this->settingRepository->deleteBy(['key' => 'licensed_to']);
-
-        return $response->setMessage($result['message']);
     }
 }

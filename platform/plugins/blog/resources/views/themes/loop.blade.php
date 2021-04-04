@@ -10,5 +10,5 @@
 @endforeach
 
 <div class="pagination">
-    {!! $posts->appends(request()->query())->links() !!}
+    {!! $posts->withQueryString()->links() !!}
 </div>

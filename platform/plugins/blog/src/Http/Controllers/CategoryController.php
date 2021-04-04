@@ -2,21 +2,22 @@
 
 namespace Platform\Blog\Http\Controllers;
 
+use Platform\ACL\Models\User;
 use Platform\Base\Events\BeforeEditContentEvent;
+use Platform\Base\Events\CreatedContentEvent;
+use Platform\Base\Events\DeletedContentEvent;
+use Platform\Base\Events\UpdatedContentEvent;
 use Platform\Base\Forms\FormBuilder;
 use Platform\Base\Http\Controllers\BaseController;
 use Platform\Base\Http\Responses\BaseHttpResponse;
 use Platform\Blog\Forms\CategoryForm;
-use Platform\Blog\Tables\CategoryTable;
 use Platform\Blog\Http\Requests\CategoryRequest;
 use Platform\Blog\Repositories\Interfaces\CategoryInterface;
+use Platform\Blog\Tables\CategoryTable;
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Platform\Base\Events\CreatedContentEvent;
-use Platform\Base\Events\DeletedContentEvent;
-use Platform\Base\Events\UpdatedContentEvent;
 use Illuminate\View\View;
 use Throwable;
 
@@ -72,7 +73,8 @@ class CategoryController extends BaseController
         }
 
         $category = $this->categoryRepository->createOrUpdate(array_merge($request->input(), [
-            'author_id' => Auth::user()->getKey(),
+            'author_id'   => Auth::user()->getKey(),
+            'author_type' => User::class,
         ]));
 
         event(new CreatedContentEvent(CATEGORY_MODULE_SCREEN_NAME, $request, $category));
@@ -89,7 +91,7 @@ class CategoryController extends BaseController
      * @param FormBuilder $formBuilder
      * @return string
      */
-    public function edit(Request $request, $id, FormBuilder $formBuilder)
+    public function edit($id, FormBuilder $formBuilder, Request $request)
     {
         $category = $this->categoryRepository->findOrFail($id);
 

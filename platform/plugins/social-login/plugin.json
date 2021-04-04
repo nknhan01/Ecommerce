@@ -4,6 +4,6 @@
     "provider": "Platform\\SocialLogin\\Providers\\SocialLoginServiceProvider",
     "author": "Laravel Technologies",
     "url": "https://laravel-cms.gistensal.com",
-    "version": "5.8",
+    "version": "5.7",
     "description": "Easier and faster login with Facebook, LinkedIn, Github or Google."
 }

@@ -7,11 +7,9 @@ return [
     'success_header'         => 'Thành công!',
     'error_header'           => 'Lỗi!',
     'no_select'              => 'Chọn ít nhất 1 trường để thực hiện hành động này!',
+    'cannot_delete'          => 'Không thể xóa bản ghi này',
     'processing_request'     => 'Hệ thống đang xử lý yêu cầu.',
     'error'                  => 'Lỗi!',
     'success'                => 'Thành công!',
     'info'                   => 'Thông tin!',
-    'enum'                   => [
-        'validate_message' => 'Giá trị của :attribute không hợp lệ',
-    ],
 ];

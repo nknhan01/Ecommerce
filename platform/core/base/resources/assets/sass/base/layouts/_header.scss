@@ -12,6 +12,10 @@ Page Header
     filter: none;
     background-image: none;
 
+    .page-header-inner {
+        width: 100%;
+    }
+
     /* Fixed header */
     &.navbar-fixed-top {
         z-index: $zindex-header-fixed;
@@ -388,7 +392,6 @@ Page Header
 
                     > i {
                         display: inline-block;
-                        margin-top: 5px;
                         margin: 0;
                         font-size: $header-top-menu-user-font-size;
                     }
@@ -508,7 +511,6 @@ Horizontal Menu
 
     /* Page header */
     .page-header.navbar {
-        padding: 0 20px 0 20px;
         position: relative;
         clear: both;
 
@@ -517,8 +519,8 @@ Horizontal Menu
             width: auto;
             padding: 0;
             margin-right: 10px;
-            margin-left: 0px !important;
-            padding-left: 0px !important;
+            margin-left: 0 !important;
+            padding-left: 0 !important;
 
             img {
                 margin-left: 4px !important;
@@ -540,7 +542,6 @@ Horizontal Menu
         .top-menu {
             .navbar-nav {
                 display: inline-block;
-                margin: 0 10px 0 0;
 
                 > li {
                     float: left;
@@ -572,16 +573,35 @@ Horizontal Menu
 
     /* Page header */
     .page-header.navbar {
-        padding: 0 10px 0 10px;
+        .page-header-inner {
+            width: 100%;
+        }
 
         /* Header logo */
         .page-logo {
             width: auto;
+            margin-left: 15px !important;
+        }
+
+        .menu-toggler {
+            margin-right: 15px !important;
         }
 
         /* Top navigation menu*/
         .top-menu {
+            width: 100%;
+
+            .float-right {
+                float: none !important;
+            }
+
             .navbar-nav {
+
+                .dropdown-menu {
+                    &:before {
+                        width: 10px;
+                    }
+                }
 
                 > li.dropdown-extended {
                     > .dropdown-menu {
@@ -629,23 +649,20 @@ Horizontal Menu
 
 @media (max-width: 580px) {
 
-    /* Page header */
-    .page-header.navbar {
-        .top-menu {
-            .navbar-nav {
-                > li.dropdown-user {
-                    .dropdown-toggle {
-                        .username.username-hide-on-mobile {
-                            display: none;
-                        }
+    .top-menu {
+        .navbar-nav {
+            > li.dropdown-user {
+                .dropdown-toggle {
+                    .username.username-hide-on-mobile {
+                        display: none;
                     }
                 }
+            }
 
-                > li.dropdown-language {
-                    .dropdown-toggle {
-                        .langname {
-                            display: none;
-                        }
+            > li.dropdown-language {
+                .dropdown-toggle {
+                    .langname {
+                        display: none;
                     }
                 }
             }
@@ -662,33 +679,31 @@ Horizontal Menu
         }
     }
 
-    .page-header.navbar {
-        /* Top menu */
-        .top-menu {
-            display: block;
-            clear: both;
-            float: none;
-            margin: 0 -10px;
+    /* Top menu */
+    .top-menu {
+        display: block;
+        clear: both;
+        float: none;
+        margin: 0 -10px;
 
-            .navbar-nav {
-                margin-right: 0;
+        .navbar-nav {
+            margin-right: 0;
 
-                > li.dropdown {
-                    .dropdown-toggle {
-                        padding: $header-top-menu-general-item-padding-on-mobile;
-                    }
+            > li.dropdown {
+                .dropdown-toggle {
+                    padding: $header-top-menu-general-item-padding-on-mobile;
                 }
+            }
 
-                > li.dropdown-language {
-                    .dropdown-toggle {
-                        padding: $header-top-menu-language-item-padding-on-mobile;
-                    }
+            > li.dropdown-language {
+                .dropdown-toggle {
+                    padding: $header-top-menu-language-item-padding-on-mobile;
                 }
+            }
 
-                > li.dropdown-user {
-                    .dropdown-toggle {
-                        padding: $header-top-menu-user-item-padding-on-mobile;
-                    }
+            > li.dropdown-user {
+                .dropdown-toggle {
+                    padding: $header-top-menu-user-item-padding-on-mobile;
                 }
             }
         }

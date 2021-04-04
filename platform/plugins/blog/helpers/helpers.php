@@ -12,7 +12,7 @@ if (!function_exists('get_featured_posts')) {
     /**
      * @param int $limit
      * @param array $with
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     function get_featured_posts($limit, array $with = [])
     {
@@ -24,11 +24,11 @@ if (!function_exists('get_latest_posts')) {
     /**
      * @param int $limit
      * @param array $excepts
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    function get_latest_posts($limit, $excepts = [])
+    function get_latest_posts($limit, $excepts = [], array $with = [])
     {
-        return app(PostInterface::class)->getListPostNonInList($excepts, $limit);
+        return app(PostInterface::class)->getListPostNonInList($excepts, $limit, $with);
     }
 }
 
@@ -36,7 +36,7 @@ if (!function_exists('get_related_posts')) {
     /**
      * @param int $id
      * @param int $limit
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     function get_related_posts($id, $limit)
     {
@@ -49,7 +49,7 @@ if (!function_exists('get_posts_by_category')) {
      * @param int $categoryId
      * @param int $paginate
      * @param int $limit
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     function get_posts_by_category($categoryId, $paginate = 12, $limit = 0)
     {
@@ -61,7 +61,7 @@ if (!function_exists('get_posts_by_tag')) {
     /**
      * @param string $slug
      * @param int $paginate
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     function get_posts_by_tag($slug, $paginate = 12)
     {
@@ -71,9 +71,9 @@ if (!function_exists('get_posts_by_tag')) {
 
 if (!function_exists('get_posts_by_user')) {
     /**
-     * @param $authorId
+     * @param int $authorId
      * @param int $paginate
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     function get_posts_by_user($authorId, $paginate = 12)
     {
@@ -85,7 +85,7 @@ if (!function_exists('get_all_posts')) {
     /**
      * @param boolean $active
      * @param int $perPage
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     function get_all_posts($active = true, $perPage = 12)
     {
@@ -96,7 +96,7 @@ if (!function_exists('get_all_posts')) {
 if (!function_exists('get_recent_posts')) {
     /**
      * @param int $limit
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     function get_recent_posts($limit)
     {
@@ -108,7 +108,7 @@ if (!function_exists('get_featured_categories')) {
     /**
      * @param int $limit
      * @param array $with
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     function get_featured_categories($limit, array $with = [])
     {
@@ -120,7 +120,7 @@ if (!function_exists('get_all_categories')) {
     /**
      * @param array $condition
      * @param array $with
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     function get_all_categories(array $condition = [], $with = [])
     {
@@ -131,7 +131,7 @@ if (!function_exists('get_all_categories')) {
 if (!function_exists('get_all_tags')) {
     /**
      * @param boolean $active
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     function get_all_tags($active = true)
     {
@@ -142,7 +142,7 @@ if (!function_exists('get_all_tags')) {
 if (!function_exists('get_popular_tags')) {
     /**
      * @param integer $limit
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     function get_popular_tags($limit = 10)
     {
@@ -154,7 +154,7 @@ if (!function_exists('get_popular_posts')) {
     /**
      * @param integer $limit
      * @param array $args
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     function get_popular_posts($limit = 10, array $args = [])
     {
@@ -162,10 +162,21 @@ if (!function_exists('get_popular_posts')) {
     }
 }
 
+if (!function_exists('get_popular_categories')) {
+    /**
+     * @param integer $limit
+     * @return \Illuminate\Support\Collection
+     */
+    function get_popular_categories($limit = 10)
+    {
+        return app(CategoryInterface::class)->getPopularCategories($limit);
+    }
+}
+
 if (!function_exists('get_category_by_id')) {
     /**
      * @param integer $id
-     * @return array
+     * @return \Platform\Base\Models\BaseModel
      */
     function get_category_by_id($id)
     {
@@ -176,7 +187,7 @@ if (!function_exists('get_category_by_id')) {
 if (!function_exists('get_categories')) {
     /**
      * @param array $args
-     * @return array|mixed
+     * @return \Illuminate\Support\Collection|mixed
      */
     function get_categories(array $args = [])
     {
@@ -207,7 +218,7 @@ if (!function_exists('get_categories')) {
 
 if (!function_exists('get_categories_with_children')) {
     /**
-     * @return array
+     * @return \Illuminate\Support\Collection
      * @throws Exception
      */
     function get_categories_with_children()

@@ -6,14 +6,12 @@ use Platform\ACL\Models\User;
 use Platform\Base\Enums\BaseStatusEnum;
 use Platform\Base\Traits\EnumCastable;
 use Platform\Revision\RevisionableTrait;
-use Platform\Slug\Traits\SlugTrait;
 use Platform\Base\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Page extends BaseModel
 {
     use RevisionableTrait;
-    use SlugTrait;
     use EnumCastable;
 
     /**

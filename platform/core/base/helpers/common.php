@@ -28,7 +28,7 @@ if (!function_exists('language_flag')) {
      */
     function language_flag(string $flag, ?string $name = null): string
     {
-        return Html::image(url(BASE_LANGUAGE_FLAG_PATH . $flag . '.svg'), $name, ['title' => $name, 'width' => 16]);
+        return Html::image(asset(BASE_LANGUAGE_FLAG_PATH . $flag . '.svg'), $name, ['title' => $name, 'width' => 16]);
     }
 }
 
@@ -88,7 +88,7 @@ if (!function_exists('get_cms_version')) {
         try {
             return trim(get_file_data(core_path('VERSION'), false));
         } catch (Exception $exception) {
-            return '5.7';
+            return '5.9';
         }
     }
 }

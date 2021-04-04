@@ -6,7 +6,6 @@ use Platform\Theme\Contracts\Theme as ThemeContract;
 use Platform\Theme\Exceptions\UnknownLayoutFileException;
 use Platform\Theme\Exceptions\UnknownPartialFileException;
 use Platform\Theme\Exceptions\UnknownThemeException;
-use Platform\Widget\Repositories\Interfaces\WidgetInterface;
 use Closure;
 use Exception;
 use File;
@@ -17,10 +16,8 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\View\Factory;
-use Language;
 use SeoHelper;
 use Symfony\Component\HttpFoundation\Cookie;
-use WidgetGroup;
 
 class Theme implements ThemeContract
 {
@@ -394,7 +391,7 @@ class Theme implements ThemeContract
      * Fire event to config listener.
      *
      * @param string $event
-     * @param array $args
+     * @param mixed $args
      * @return void
      * @throws FileNotFoundException
      */
@@ -426,7 +423,7 @@ class Theme implements ThemeContract
      */
     public function append(string $region, $value): self
     {
-        return $this->appendOrPrepend($region, $value, 'append');
+        return $this->appendOrPrepend($region, $value);
     }
 
     /**
@@ -510,7 +507,7 @@ class Theme implements ThemeContract
 
         // Buffer processes to save request.
         return Arr::get($this->bindings, $name, function () use (&$events, &$bindings, $name) {
-            $response = current($events->fire($name));
+            $response = current($events->dispatch($name));
             Arr::set($bindings, $name, $response);
             return $response;
         });
@@ -864,9 +861,9 @@ class Theme implements ThemeContract
     protected function handleViewNotFound($path)
     {
         if (app()->isLocal()) {
-            dd('Theme is not support this view, please create file ' . theme_path() . '/' . str_replace($this->getThemeNamespace(),
-                    $this->getThemeName(),
-                    str_replace('::', '/', str_replace('.', '/', $path))) . '.blade.php" to render this page!');
+            $path = str_replace($this->getThemeNamespace(), $this->getThemeName(), $path);
+            $file = str_replace('::', '/', str_replace('.', '/', $path));
+            dd('This theme has not supported this view, please create file "' . theme_path($file) . '.blade.php" to render this page!');
         }
 
         abort(404);
@@ -942,6 +939,7 @@ class Theme implements ThemeContract
         if ($this->view->exists($this->content)) {
             return $realPath ? $this->view->getFinder()->find($this->content) : $this->content;
         }
+
         return null;
     }
 
@@ -982,7 +980,7 @@ class Theme implements ThemeContract
 
         $content->withHeaders([
             'Author'            => 'Laravel Technologies (contact@laravel-cms.gistensal.com)',
-            'Author-Team'       => 'https://laravel-cms.gistensal.com',
+            'Author-Team'       => 'mailto:get-quote@visualweber.com',
             'CMS'               => 'Laravel CMS',
             'CMS-Version'       => get_cms_version(),
             'Authorization-At'  => setting('membership_authorization_at'),
@@ -1035,33 +1033,5 @@ class Theme implements ThemeContract
     public function routes()
     {
         return File::requireOnce(package_path('theme/routes/public.php'));
-    }
-
-    /**
-     * @param string $sidebarId
-     * @return string
-     * @throws FileNotFoundException
-     */
-    public function renderWidgetGroup($sidebarId)
-    {
-        if (!$this->widgets) {
-            $languageCode = null;
-            if (is_plugin_active('language')) {
-                $currentLocale = is_in_admin() ? Language::getCurrentAdminLocaleCode() : Language::getCurrentLocaleCode();
-                $languageCode = $currentLocale && $currentLocale != Language::getDefaultLocaleCode() ? '-' . $currentLocale : null;
-            }
-
-            $widgets = app(WidgetInterface::class)->getByTheme(Theme::getThemeName() . $languageCode);
-
-            foreach ($widgets as $widget) {
-                WidgetGroup::group($widget->sidebar_id)
-                    ->position($widget->position)
-                    ->addWidget($widget->widget_id, $widget->data);
-            }
-
-            $this->widgets = $widgets;
-        }
-
-        return WidgetGroup::group($sidebarId)->display();
     }
 }

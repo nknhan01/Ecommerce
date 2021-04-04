@@ -1,0 +1,8 @@
+{
+    "name": "Shopwise",
+    "namespace": "Theme\\Shopwise\\",
+    "description": "Ecommerce shopping theme",
+    "author": "Laravel Technologies",
+    "version": "1.6",
+    "required_plugins": []
+}

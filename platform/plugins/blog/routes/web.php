@@ -4,7 +4,7 @@ use Platform\Blog\Models\Category;
 use Platform\Blog\Models\Post;
 use Platform\Blog\Models\Tag;
 
-Route::group(['namespace' => 'Platform\Blog\Http\Controllers', 'middleware' => 'web'], function () {
+Route::group(['namespace' => 'Platform\Blog\Http\Controllers', 'middleware' => ['web', 'core']], function () {
 
     Route::group(['prefix' => BaseHelper::getAdminPrefix(), 'middleware' => 'auth'], function () {
 

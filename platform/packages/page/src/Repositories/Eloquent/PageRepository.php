@@ -29,7 +29,7 @@ class PageRepository extends RepositoriesAbstract implements PageInterface
     {
         $data = $this->model
             ->where(['pages.status' => BaseStatusEnum::PUBLISHED, 'pages.is_featured' => 1])
-            ->orderBy('pages.created_at', 'asc')
+            ->orderBy('pages.created_at')
             ->select('pages.*')
             ->limit($limit)
             ->orderBy('pages.created_at', 'desc');
@@ -51,7 +51,7 @@ class PageRepository extends RepositoriesAbstract implements PageInterface
         }
         $data = $pages
             ->select($select)
-            ->orderBy('pages.created_at', 'ASC');
+            ->orderBy('pages.created_at');
 
         return $this->applyBeforeExecuteQuery($data)->get();
     }

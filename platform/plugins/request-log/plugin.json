@@ -1,9 +1,0 @@
-{
-    "name": "Request Log",
-    "namespace": "Platform\\RequestLog\\",
-    "provider": "Platform\\RequestLog\\Providers\\RequestLogServiceProvider",
-    "author": "Laravel Technologies",
-    "url": "https://laravel-cms.gistensal.com",
-    "version": "5.8",
-    "description": "Log error requests"
-}

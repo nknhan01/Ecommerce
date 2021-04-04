@@ -1,7 +1,7 @@
 @extends('core/base::layouts.base')
 
 @section('body-class') login @stop
-@section('body-style') background-image: url({{ url(Arr::random(config('core.acl.general.backgrounds', []))) }}); @stop
+@section('body-style') background-image: url({{ get_login_background() }}); @stop
 
 @push('header')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
@@ -15,21 +15,8 @@
                     <div class="col-sm-12 col-md-10 col-md-offset-2">
                         <div class="logo-title-container">
                             <div class="copy animated fadeIn">
-                                <h1>{{ setting('admin_title') }}</h1>
-                                <p>{!! clean(trans('core/base::layouts.copyright', ['year' => now(config('app.timezone'))->format('Y'), 'company' => setting('admin_title', config('core.base.general.base_name')), 'version' => get_cms_version()])) !!}</p>
-                                <div class="copyright">
-                                    @if (setting('enable_multi_language_in_admin') != false && count(Assets::getAdminLocales()) > 1)
-                                        <p> {{ trans('core/acl::auth.languages') }}:
-                                            @foreach (Assets::getAdminLocales() as $key => $value)
-                                                <span @if (app()->getLocale() == $key) class="active" @endif>
-                                                    <a href="{{ route('settings.language', $key) }}">
-                                                        {!! language_flag($value['flag'], $value['name']) !!} <span>{{ $value['name'] }}</span>
-                                                    </a>
-                                                </span>
-                                            @endforeach
-                                        </p>
-                                    @endif
-                                </div>
+                                <h1>{{ setting('admin_title', config('core.base.general.base_name')) }}</h1>
+                                <p>{!! clean(trans('core/base::layouts.copyright', ['year' => now()->format('Y'), 'company' => setting('admin_title', config('core.base.general.base_name')), 'version' => get_cms_version()])) !!}</p>
                             </div>
                         </div> <!-- .logo-title-container -->
                     </div>

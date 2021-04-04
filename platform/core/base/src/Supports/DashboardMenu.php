@@ -124,6 +124,8 @@ class DashboardMenu
      */
     public function getAll(): Collection
     {
+        do_action('render_dashboard_menu');
+
         $currentUrl = URL::full();
 
         $prefix = request()->route()->getPrefix();
@@ -152,8 +154,7 @@ class DashboardMenu
                 continue;
             }
 
-            $link['active'] = $currentUrl == $link['url'] || (Str::contains($link['url'],
-                        $routePrefix) && $routePrefix != '//');
+            $link['active'] = $currentUrl == $link['url'] || (Str::contains($link['url'], $routePrefix) && !in_array($routePrefix, ['//', '/' . BaseHelper::getAdminPrefix()]));
             if (!count($link['children'])) {
                 continue;
             }

@@ -4,7 +4,6 @@ namespace Platform\Page\Http\Controllers;
 
 use Platform\Page\Models\Page;
 use Platform\Page\Services\PageService;
-use Platform\Slug\Repositories\Interfaces\SlugInterface;
 use Illuminate\Routing\Controller;
 use Response;
 use SlugHelper;
@@ -13,36 +12,23 @@ use Theme;
 class PublicController extends Controller
 {
     /**
-     * @var SlugInterface
-     */
-    protected $slugRepository;
-
-    /**
-     * PublicController constructor.
-     * @param SlugInterface $slugRepository
-     */
-    public function __construct(SlugInterface $slugRepository)
-    {
-        $this->slugRepository = $slugRepository;
-    }
-
-    /**
      * @param string $slug
      * @param PageService $pageService
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|Response
      */
     public function getPage($slug, PageService $pageService)
     {
-        $slug = $this->slugRepository->getFirstBy([
-            'key'    => $slug,
-            'prefix' => SlugHelper::getPrefix(Page::class),
-        ]);
+        $slug = SlugHelper::getSlug($slug, SlugHelper::getPrefix(Page::class));
 
         if (!$slug) {
             abort(404);
         }
 
         $data = $pageService->handleFrontRoutes($slug);
+
+        if (isset($data['slug']) && $data['slug'] !== $slug->key) {
+            return redirect()->to(url(SlugHelper::getPrefix(Page::class) . '/' . $data['slug']));
+        }
 
         return Theme::scope($data['view'], $data['data'], $data['default_view'])->render();
     }

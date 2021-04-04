@@ -32,13 +32,13 @@ class PostRepository extends RepositoriesAbstract implements PostInterface
     /**
      * {@inheritDoc}
      */
-    public function getListPostNonInList(array $selected = [], $limit = 7)
+    public function getListPostNonInList(array $selected = [], $limit = 7, array $with = [])
     {
         $data = $this->model
             ->where('posts.status', BaseStatusEnum::PUBLISHED)
             ->whereNotIn('posts.id', $selected)
             ->limit($limit)
-            ->with('slugable')
+            ->with($with)
             ->orderBy('posts.created_at', 'desc');
 
         return $this->applyBeforeExecuteQuery($data)->get();
@@ -122,7 +122,7 @@ class PostRepository extends RepositoriesAbstract implements PostInterface
     public function getByTag($tag, $paginate = 12)
     {
         $data = $this->model
-            ->with('slugable')
+            ->with('slugable', 'categories', 'categories.slugable', 'author')
             ->where('posts.status', BaseStatusEnum::PUBLISHED)
             ->whereHas('tags', function ($query) use ($tag) {
                 /**
@@ -183,10 +183,10 @@ class PostRepository extends RepositoriesAbstract implements PostInterface
     /**
      * {@inheritDoc}
      */
-    public function getAllPosts($perPage = 12, $active = true)
+    public function getAllPosts($perPage = 12, $active = true, array $with = ['slugable'])
     {
         $data = $this->model->select('posts.*')
-            ->with('slugable')
+            ->with($with)
             ->orderBy('posts.created_at', 'desc');
 
         if ($active) {
@@ -237,33 +237,35 @@ class PostRepository extends RepositoriesAbstract implements PostInterface
         $this->model = $this->originalModel;
 
         if ($filters['categories'] !== null) {
-            $categories = $filters['categories'];
+            $categories = array_filter((array)$filters['categories']);
+
             $this->model = $this->model->whereHas('categories', function ($query) use ($categories) {
                 $query->whereIn('categories.id', $categories);
             });
         }
 
         if ($filters['categories_exclude'] !== null) {
-            $excludeCategories = $filters['categories_exclude'];
+            $excludeCategories = array_filter((array)$filters['categories_exclude']);
+
             $this->model = $this->model->whereHas('categories', function ($query) use ($excludeCategories) {
                 $query->whereNotIn('categories.id', $excludeCategories);
             });
         }
 
         if ($filters['exclude'] !== null) {
-            $this->model = $this->model->whereNotIn('posts.id', $filters['exclude']);
+            $this->model = $this->model->whereNotIn('posts.id', array_filter((array)$filters['exclude']));
         }
 
         if ($filters['include'] !== null) {
-            $this->model = $this->model->whereNotIn('posts.id', $filters['include']);
+            $this->model = $this->model->whereNotIn('posts.id', array_filter((array)$filters['include']));
         }
 
         if ($filters['author'] !== null) {
-            $this->model = $this->model->whereIn('posts.author_id', $filters['author']);
+            $this->model = $this->model->whereIn('posts.author_id', array_filter((array)$filters['author']));
         }
 
         if ($filters['author_exclude'] !== null) {
-            $this->model = $this->model->whereNotIn('posts.author_id', $filters['author_exclude']);
+            $this->model = $this->model->whereNotIn('posts.author_id', array_filter((array)$filters['author_exclude']));
         }
 
         if ($filters['featured'] !== null) {

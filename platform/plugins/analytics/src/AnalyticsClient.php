@@ -5,7 +5,6 @@ namespace Platform\Analytics;
 use DateTime;
 use Google_Service_Analytics;
 use Illuminate\Contracts\Cache\Repository;
-use stdClass;
 
 class AnalyticsClient
 {
@@ -44,7 +43,7 @@ class AnalyticsClient
      */
     public function setCacheLifeTimeInMinutes(int $cacheLifeTimeInMinutes)
     {
-        $this->cacheLifeTimeInMinutes = $cacheLifeTimeInMinutes;
+        $this->cacheLifeTimeInMinutes = $cacheLifeTimeInMinutes * 60;
 
         return $this;
     }
@@ -53,12 +52,12 @@ class AnalyticsClient
      * Query the Google Analytics Service with given parameters.
      *
      * @param string $viewId
-     * @param DateTime $startDate
-     * @param DateTime $endDate
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
      * @param string $metrics
      * @param array $others
      *
-     * @return stdClass|null
+     * @return array|null
      */
     public function performQuery(
         string $viewId,
@@ -75,31 +74,52 @@ class AnalyticsClient
 
         return $this->cache->remember($cacheName, $this->cacheLifeTimeInMinutes,
             function () use ($viewId, $startDate, $endDate, $metrics, $others) {
-                return $this->service->data_ga->get(
+                $result = $this->service->data_ga->get(
                     'ga:' . $viewId,
                     $startDate->format('Y-m-d'),
                     $endDate->format('Y-m-d'),
                     $metrics,
                     $others
                 );
+
+                while ($nextLink = $result->getNextLink()) {
+                    if (isset($others['max-results']) && count($result->rows) >= $others['max-results']) {
+                        break;
+                    }
+
+                    $options = [];
+
+                    parse_str(substr($nextLink, strpos($nextLink, '?') + 1), $options);
+
+                    $response = $this->service->data_ga->call('get', [$options], 'Google_Service_Analytics_GaData');
+
+                    if ($response->rows) {
+                        $result->rows = array_merge($result->rows, $response->rows);
+                    }
+
+                    $result->nextLink = $response->nextLink;
+                }
+
+                return $result;
             });
     }
 
     /**
-     * @return Google_Service_Analytics
-     */
-    public function getAnalyticsService(): Google_Service_Analytics
-    {
-        return $this->service;
-    }
-
-    /**
-     * Determine the cache name for the set of query properties given.
      * @param array $properties
      * @return string
      */
     protected function determineCacheName(array $properties): string
     {
         return 'analytics.' . md5(serialize($properties));
+    }
+
+    /**
+     * Determine the cache name for the set of query properties given.
+     *
+     * @return Google_Service_Analytics
+     */
+    public function getAnalyticsService(): Google_Service_Analytics
+    {
+        return $this->service;
     }
 }

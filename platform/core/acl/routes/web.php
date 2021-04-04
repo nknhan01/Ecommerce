@@ -5,12 +5,12 @@ use Platform\ACL\Http\Controllers\Auth\LoginController;
 use Platform\ACL\Http\Controllers\Auth\ResetPasswordController;
 use Platform\ACL\Http\Controllers\UserController;
 
-Route::group(['namespace' => 'Platform\ACL\Http\Controllers', 'middleware' => 'web'], function () {
+Route::group(['namespace' => 'Platform\ACL\Http\Controllers', 'middleware' => ['web', 'core']], function () {
     Route::group(['prefix' => BaseHelper::getAdminPrefix()], function () {
         Route::group(['middleware' => 'guest'], function () {
 
             Route::get('login', [LoginController::class, 'showLoginForm'])->name('access.login');
-            Route::post('login', [LoginController::class, 'login'])->name('access.login');
+            Route::post('login', [LoginController::class, 'login'])->name('access.login.post');
 
             Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])
                 ->name('access.password.request');
@@ -35,80 +35,81 @@ Route::group(['namespace' => 'Platform\ACL\Http\Controllers', 'middleware' => 'w
     Route::group(['prefix' => BaseHelper::getAdminPrefix(), 'middleware' => 'auth'], function () {
 
         Route::group(['prefix' => 'system'], function () {
-            Route::resource('users', 'UserController')->except(['edit', 'update']);
 
-            Route::group(['prefix' => 'users'], function () {
+            Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+
+                Route::resource('', 'UserController')->except(['edit', 'update'])->parameters(['' => 'users']);
 
                 Route::delete('items/destroy', [
-                    'as'         => 'users.deletes',
+                    'as'         => 'deletes',
                     'uses'       => 'UserController@deletes',
                     'permission' => 'users.destroy',
                     'middleware' => 'preventDemo',
                 ]);
 
                 Route::post('update-profile/{id}', [
-                    'as'         => 'users.update-profile',
+                    'as'         => 'update-profile',
                     'uses'       => 'UserController@postUpdateProfile',
                     'permission' => false,
                     'middleware' => 'preventDemo',
                 ]);
 
                 Route::post('modify-profile-image/{id}', [
-                    'as'         => 'users.profile.image',
+                    'as'         => 'profile.image',
                     'uses'       => 'UserController@postAvatar',
                     'permission' => false,
                 ]);
 
                 Route::post('change-password/{id}', [
-                    'as'         => 'users.change-password',
+                    'as'         => 'change-password',
                     'uses'       => 'UserController@postChangePassword',
                     'permission' => false,
                     'middleware' => 'preventDemo',
                 ]);
 
                 Route::get('profile/{id}', [
-                    'as'         => 'user.profile.view',
+                    'as'         => 'profile.view',
                     'uses'       => 'UserController@getUserProfile',
                     'permission' => false,
                 ]);
 
                 Route::get('make-super/{id}', [
-                    'as'         => 'users.make-super',
+                    'as'         => 'make-super',
                     'uses'       => 'UserController@makeSuper',
                     'permission' => ACL_ROLE_SUPER_USER,
                 ]);
 
                 Route::get('remove-super/{id}', [
-                    'as'         => 'users.remove-super',
+                    'as'         => 'remove-super',
                     'uses'       => 'UserController@removeSuper',
                     'permission' => ACL_ROLE_SUPER_USER,
                     'middleware' => 'preventDemo',
                 ]);
             });
 
-            Route::resource('roles', 'RoleController');
+            Route::group(['prefix' => 'roles', 'as' => 'roles.'], function () {
+                Route::resource('', 'RoleController')->parameters(['' => 'roles']);
 
-            Route::group(['prefix' => 'roles'], function () {
                 Route::delete('items/destroy', [
-                    'as'         => 'roles.deletes',
+                    'as'         => 'deletes',
                     'uses'       => 'RoleController@deletes',
                     'permission' => 'roles.destroy',
                 ]);
 
                 Route::get('duplicate/{id}', [
-                    'as'         => 'roles.duplicate',
+                    'as'         => 'duplicate',
                     'uses'       => 'RoleController@getDuplicate',
                     'permission' => 'roles.create',
                 ]);
 
                 Route::get('json', [
-                    'as'         => 'roles.list.json',
+                    'as'         => 'list.json',
                     'uses'       => 'RoleController@getJson',
                     'permission' => 'roles.index',
                 ]);
 
                 Route::post('assign', [
-                    'as'         => 'roles.assign',
+                    'as'         => 'assign',
                     'uses'       => 'RoleController@postAssignMember',
                     'permission' => 'roles.edit',
                 ]);

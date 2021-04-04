@@ -2,22 +2,23 @@
 
 namespace Platform\Blog\Http\Controllers;
 
+use Platform\ACL\Models\User;
 use Platform\Base\Events\BeforeEditContentEvent;
+use Platform\Base\Events\CreatedContentEvent;
+use Platform\Base\Events\DeletedContentEvent;
+use Platform\Base\Events\UpdatedContentEvent;
 use Platform\Base\Forms\FormBuilder;
 use Platform\Base\Http\Controllers\BaseController;
 use Platform\Base\Http\Responses\BaseHttpResponse;
 use Platform\Base\Traits\HasDeleteManyItemsTrait;
 use Platform\Blog\Forms\TagForm;
-use Platform\Blog\Tables\TagTable;
 use Platform\Blog\Http\Requests\TagRequest;
 use Platform\Blog\Repositories\Interfaces\TagInterface;
+use Platform\Blog\Tables\TagTable;
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Platform\Base\Events\CreatedContentEvent;
-use Platform\Base\Events\DeletedContentEvent;
-use Platform\Base\Events\UpdatedContentEvent;
 use Illuminate\View\View;
 use Throwable;
 
@@ -70,8 +71,10 @@ class TagController extends BaseController
      */
     public function store(TagRequest $request, BaseHttpResponse $response)
     {
-        $tag = $this->tagRepository->createOrUpdate(array_merge($request->input(),
-            ['author_id' => Auth::user()->getKey()]));
+        $tag = $this->tagRepository->createOrUpdate(array_merge($request->input(), [
+            'author_id'   => Auth::user()->getKey(),
+            'author_type' => User::class,
+        ]));
         event(new CreatedContentEvent(TAG_MODULE_SCREEN_NAME, $request, $tag));
 
         return $response
@@ -86,7 +89,7 @@ class TagController extends BaseController
      * @param FormBuilder $formBuilder
      * @return string
      */
-    public function edit($id, Request $request, FormBuilder $formBuilder)
+    public function edit($id, FormBuilder $formBuilder, Request $request)
     {
         $tag = $this->tagRepository->findOrFail($id);
 

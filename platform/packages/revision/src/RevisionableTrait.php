@@ -2,12 +2,16 @@
 
 namespace Platform\Revision;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
 use DB;
 use Exception;
 use Illuminate\Support\Arr;
 
+/**
+ * @mixin \Eloquent|SoftDeletes
+ */
 trait RevisionableTrait
 {
     /**

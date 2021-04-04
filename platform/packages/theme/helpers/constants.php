@@ -8,6 +8,10 @@ if (!defined('THEME_FRONT_HEADER')) {
     define('THEME_FRONT_HEADER', 'theme-front-header');
 }
 
+if (!defined('THEME_FRONT_BODY')) {
+    define('THEME_FRONT_BODY', 'theme-front-body');
+}
+
 if (!defined('THEME_MODULE_SCREEN_NAME')) {
     define('THEME_MODULE_SCREEN_NAME', 'theme');
 }

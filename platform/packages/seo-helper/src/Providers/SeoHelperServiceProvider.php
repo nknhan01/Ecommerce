@@ -39,7 +39,10 @@ class SeoHelperServiceProvider extends ServiceProvider
             ->loadAndPublishTranslations()
             ->publishAssets();
 
-        $this->app->register(HookServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
+
+        $this->app->booted(function () {
+            $this->app->register(HookServiceProvider::class);
+        });
     }
 }

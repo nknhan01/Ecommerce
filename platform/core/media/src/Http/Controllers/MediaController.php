@@ -19,7 +19,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Mimey\MimeTypes;
 use RvMedia;
 use Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -621,7 +620,7 @@ class MediaController extends Controller
                 ]);
             }
         } else {
-            $fileName = RvMedia::getRealPath('download-' . now(config('app.timezone'))->format('Y-m-d-h-i-s') . '.zip');
+            $fileName = RvMedia::getRealPath('download-' . now()->format('Y-m-d-h-i-s') . '.zip');
             $zip = new Zipper;
             $zip->make($fileName);
             foreach ($items as $item) {

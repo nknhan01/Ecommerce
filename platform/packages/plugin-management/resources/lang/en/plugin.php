@@ -18,4 +18,15 @@ return [
     'total_plugins'                 => 'Total plugins',
     'invalid_plugin'                => 'This plugin is not a valid plugin, please check it again!',
     'version'                       => 'Version',
+    'invalid_json'                  => 'Invalid plugin.json!',
+    'activate_success'              => 'Activate plugin successfully!',
+    'activated_already'             => 'This plugin is activated already!',
+    'plugin_not_exist'              => 'This plugin is not exists.',
+    'missing_json_file'             => 'Missing file plugin.json!',
+    'plugin_invalid'                => 'Plugin is valid!',
+    'published_assets_success'      => 'Publish assets for plugin :name successfully!',
+    'plugin_removed'                => 'Plugin is removed!',
+    'deactivated_success'           => 'Deactivate plugin successfully!',
+    'deactivated_already'           => 'This plugin is deactivated already!',
+
 ];

@@ -89,11 +89,24 @@
                             <input type="text" class="next-input" name="media_do_spaces_bucket" id="media_do_spaces_bucket"
                                    value="{{ config('filesystems.disks.do_spaces.bucket') }}" placeholder="Ex: your-key">
                         </div>
-                        <div class="form-group" style="margin-bottom: 1rem;">
+                        <div class="form-group">
                             <label class="text-title-field"
                                    for="media_do_spaces_endpoint">{{ trans('core/setting::setting.media.do_spaces_endpoint') }}</label>
                             <input type="text" class="next-input" name="media_do_spaces_endpoint" id="media_do_spaces_endpoint"
                                    value="{{ config('filesystems.disks.do_spaces.endpoint') }}" placeholder="Ex: https://sfo2.digitaloceanspaces.com">
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="media_do_spaces_cdn_enabled" value="0">
+                            <label>
+                                <input type="checkbox" class="hrv-checkbox" value="1" @if (setting('media_do_spaces_cdn_enabled')) checked @endif name="media_do_spaces_cdn_enabled">
+                                {{ trans('core/setting::setting.media.do_spaces_cdn_enabled') }}
+                            </label>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1rem;">
+                            <label class="text-title-field"
+                                   for="media_do_spaces_cdn_custom_domain">{{ trans('core/setting::setting.media.media_do_spaces_cdn_custom_domain') }}</label>
+                            <input type="text" class="next-input" name="media_do_spaces_cdn_custom_domain" id="media_do_spaces_cdn_custom_domain"
+                                   value="{{ setting('media_do_spaces_cdn_custom_domain') }}" placeholder="{{ trans('core/setting::setting.media.media_do_spaces_cdn_custom_domain_placeholder') }}">
                         </div>
                     </div>
 

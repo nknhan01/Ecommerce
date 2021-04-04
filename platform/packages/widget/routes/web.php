@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['namespace' => 'Platform\Widget\Http\Controllers', 'middleware' => 'web'], function () {
+Route::group(['namespace' => 'Platform\Widget\Http\Controllers', 'middleware' => ['web', 'core']], function () {
     Route::group(['prefix' => BaseHelper::getAdminPrefix(), 'middleware' => 'auth'], function () {
         Route::group(['prefix' => 'widgets'], function () {
             Route::get('load-widget', 'WidgetController@showWidget');

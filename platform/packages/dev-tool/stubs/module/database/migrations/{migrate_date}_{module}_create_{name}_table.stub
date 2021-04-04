@@ -13,8 +13,8 @@ class {Module}Create{Name}Table extends Migration
     public function up()
     {
         Schema::create('{names}', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 120);
+            $table->id();
+            $table->string('name', 255);
             $table->string('status', 60)->default('published');
             $table->timestamps();
         });

@@ -14,7 +14,6 @@ use Platform\Widget\WidgetGroupCollection;
 use Platform\Widget\Widgets\Text;
 use Event;
 use File;
-use Illuminate\Foundation\Application;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
 use Theme;
@@ -23,11 +22,6 @@ use WidgetGroup;
 class WidgetServiceProvider extends ServiceProvider
 {
     use LoadAndPublishDataTrait;
-
-    /**
-     * @var Application
-     */
-    protected $app;
 
     /**
      * Register the service provider.
@@ -70,8 +64,8 @@ class WidgetServiceProvider extends ServiceProvider
 
             WidgetGroup::setGroup([
                 'id'          => 'primary_sidebar',
-                'name'        => 'Primary sidebar',
-                'description' => 'This is primary sidebar section',
+                'name'        => trans('packages/widget::widget.primary_sidebar_name'),
+                'description' => trans('packages/widget::widget.primary_sidebar_description'),
             ]);
 
             register_widget(Text::class);
@@ -94,14 +88,14 @@ class WidgetServiceProvider extends ServiceProvider
                     'id'          => 'cms-core-widget',
                     'priority'    => 3,
                     'parent_id'   => 'cms-core-appearance',
-                    'name'        => 'core/base::layouts.widgets',
+                    'name'        => 'packages/widget::widget.name',
                     'icon'        => null,
                     'url'         => route('widgets.index'),
                     'permissions' => ['widgets.index'],
                 ]);
 
             if (function_exists('admin_bar')) {
-                admin_bar()->registerLink(trans('core/base::layouts.widgets'), route('widgets.index'), 'appearance');
+                admin_bar()->registerLink(trans('packages/widget::widget.name'), route('widgets.index'), 'appearance');
             }
         });
     }

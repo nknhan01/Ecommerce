@@ -1,7 +1,7 @@
 @if (setting('social_login_facebook_enable', false) || setting('social_login_google_enable', false) || setting('social_login_github_enable', false) || setting('social_login_linkedin_enable', false))
     <div class="login-options">
         <br>
-        <p style="font-size: 14px">{{ trans('core/acl::auth.login_via_social') }}</p>
+        <p style="font-size: 14px">{{ __('Login with social networks') }}</p>
         <ul class="social-icons">
             @if (setting('social_login_facebook_enable', false))
                 <li>

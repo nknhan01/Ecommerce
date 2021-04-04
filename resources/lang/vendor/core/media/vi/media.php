@@ -12,6 +12,11 @@ return [
     'recent'                        => 'Gần đây',
     'favorites'                     => 'Được gắn dấu sao',
     'upload'                        => 'Tải lên',
+    'add_from'                      => 'Thêm từ',
+    'youtube'                       => 'Youtube',
+    'vimeo'                         => 'Vimeo',
+    'vine'                          => 'Vine',
+    'daily_motion'                  => 'Dailymotion',
     'create_folder'                 => 'Tạo thư mục',
     'refresh'                       => 'Làm mới',
     'empty_trash'                   => 'Dọn thùng rác',
@@ -28,6 +33,10 @@ return [
     'actions'                       => 'Hành động',
     'nothing_is_selected'           => 'Không có tập tin nào được chọn',
     'insert'                        => 'Chèn',
+    'coming_soon'                   => 'Đang phát triển',
+    'add_from_youtube'              => 'Thêm từ youtube',
+    'playlist'                      => 'Playlist',
+    'add_url'                       => 'Thêm đường dẫn',
     'folder_name'                   => 'Tên thư mục',
     'create'                        => 'Tạo',
     'rename'                        => 'Đổi tên',
@@ -78,6 +87,16 @@ return [
             'updated_at'       => 'Được chỉnh sửa lúc',
             'nothing_selected' => 'Bạn chưa chọn tập tin nào',
             'visit_link'       => 'Mở liên kết',
+            'add_from'         =>
+                [
+                    'youtube' =>
+                        [
+                            'original_msg'    => 'Vui lòng nhập chính xác đường dẫn Youtube',
+                            'no_api_key_msg'  => 'Vui lòng khai báo API key của Youtube',
+                            'invalid_url_msg' => 'Liên kết này không dẫn đến Youtube',
+                            'error_msg'       => 'Có lỗi xảy ra trong tiến trình thực hiện...',
+                        ],
+                ],
             'no_item'          =>
                 [
                     'all_media' =>

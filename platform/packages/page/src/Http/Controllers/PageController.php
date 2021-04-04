@@ -87,7 +87,7 @@ class PageController extends BaseController
      * @param FormBuilder $formBuilder
      * @return string
      */
-    public function edit(Request $request, $id, FormBuilder $formBuilder)
+    public function edit($id, FormBuilder $formBuilder, Request $request)
     {
         $page = $this->pageRepository->findOrFail($id);
 

@@ -70,4 +70,12 @@ class CategoryCacheDecorator extends CacheAbstractDecorator implements CategoryI
     {
         return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPopularCategories(int $limit)
+    {
+        return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
+    }
 }

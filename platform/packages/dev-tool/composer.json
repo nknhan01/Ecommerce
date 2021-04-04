@@ -14,7 +14,7 @@
         "barryvdh/laravel-debugbar": "^3.2",
         "barryvdh/laravel-ide-helper": "^2.6",
         "phpmd/phpmd": "^2.8",
-        "doctrine/dbal": "^2.9",
+        "doctrine/dbal": "^3.0",
         "platform/git-commit-checker": "*@dev"
     },
     "extra": {

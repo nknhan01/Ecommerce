@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'name'            => 'Trình đơn',
+    'name'            => 'Menu',
     'cancel'          => 'Hủy bỏ',
     'add_link'        => 'Thêm liên kết',
     'add_to_menu'     => 'Thêm vào trình đơn',

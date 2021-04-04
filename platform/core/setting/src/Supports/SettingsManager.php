@@ -2,7 +2,6 @@
 
 namespace Platform\Setting\Supports;
 
-use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\Manager;
 
 class SettingsManager extends Manager
@@ -28,11 +27,6 @@ class SettingsManager extends Manager
      */
     public function createDatabaseDriver()
     {
-        $connection = app(DatabaseManager::class)->connection();
-        $table = 'settings';
-        $keyColumn = 'key';
-        $valueColumn = 'value';
-
-        return new DatabaseSettingStore($connection, $table, $keyColumn, $valueColumn);
+        return new DatabaseSettingStore;
     }
 }

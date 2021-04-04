@@ -2,6 +2,7 @@
 
 namespace Platform\PluginManagement\Providers;
 
+use Platform\PluginManagement\Commands\PluginActivateAllCommand;
 use Platform\PluginManagement\Commands\PluginActivateCommand;
 use Platform\PluginManagement\Commands\PluginAssetsPublishCommand;
 use Platform\PluginManagement\Commands\PluginDeactivateCommand;
@@ -22,6 +23,7 @@ class CommandServiceProvider extends ServiceProvider
             PluginActivateCommand::class,
             PluginDeactivateCommand::class,
             PluginRemoveCommand::class,
+            PluginActivateAllCommand::class,
         ]);
     }
 }

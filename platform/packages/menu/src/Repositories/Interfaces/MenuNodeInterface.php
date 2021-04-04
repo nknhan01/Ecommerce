@@ -14,5 +14,5 @@ interface MenuNodeInterface extends RepositoryInterface
      * @param array $with
      * @return array|Collection|static[]
      */
-    public function getByMenuId($menuId, $parentId, $select = ['*'], array $with = ['child', 'reference', 'reference.slugable']);
+    public function getByMenuId($menuId, $parentId, $select = ['*'], array $with = ['child']);
 }

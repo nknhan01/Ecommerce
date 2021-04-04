@@ -15,6 +15,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use RvMedia;
 
+/**
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable
 {
     use PermissionTrait;
@@ -36,7 +39,6 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'password',
-        'super_user',
         'avatar_id',
         'permissions',
     ];

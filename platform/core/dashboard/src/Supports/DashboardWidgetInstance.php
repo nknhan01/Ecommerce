@@ -2,9 +2,9 @@
 
 namespace Platform\Dashboard\Supports;
 
-use Illuminate\Support\Facades\Auth;
 use Platform\Dashboard\Repositories\Interfaces\DashboardWidgetInterface;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class DashboardWidgetInstance
@@ -298,7 +298,7 @@ class DashboardWidgetInstance
     }
 
     /**
-     * @param $widgets
+     * @param array $widgets
      * @param Collection $widgetSettings
      * @return array
      * @throws Throwable
@@ -327,6 +327,7 @@ class DashboardWidgetInstance
 
             $data = [
                 'id'   => $widget->id,
+                'type' => $this->type,
                 'view' => view('core/dashboard::widgets.base', compact('widget', 'widgetSetting'))->render(),
             ];
 
@@ -343,6 +344,7 @@ class DashboardWidgetInstance
 
         $widgets[$this->key] = [
             'id'   => $widget->id,
+            'type' => $this->type,
             'view' => view('core/dashboard::widgets.stats', compact('widget', 'widgetSetting'))->render(),
         ];
 

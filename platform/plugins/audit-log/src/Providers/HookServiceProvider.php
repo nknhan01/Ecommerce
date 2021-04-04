@@ -24,8 +24,8 @@ class HookServiceProvider extends ServiceProvider
         add_action(USER_ACTION_AFTER_UPDATE_PASSWORD, [$this, 'handleUpdateProfile'], 45, 3);
 
         if (defined('BACKUP_ACTION_AFTER_BACKUP')) {
-            add_action(BACKUP_ACTION_AFTER_BACKUP, [$this, 'handleBackup'], 45, 1);
-            add_action(BACKUP_ACTION_AFTER_RESTORE, [$this, 'handleRestore'], 45, 1);
+            add_action(BACKUP_ACTION_AFTER_BACKUP, [$this, 'handleBackup'], 45);
+            add_action(BACKUP_ACTION_AFTER_RESTORE, [$this, 'handleRestore'], 45);
         }
 
         add_filter(DASHBOARD_FILTER_ADMIN_LIST, [$this, 'registerDashboardWidgets'], 28, 2);

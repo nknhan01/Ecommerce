@@ -293,14 +293,14 @@ abstract class TableAbstract extends DataTable
                     'infoEmpty'         => trans('core/base::tables.no_record'),
                     'lengthMenu'        => Html::tag('span', '_MENU_', ['class' => 'dt-length-style'])->toHtml(),
                     'search'            => '',
-                    'searchPlaceholder' => trans('core/table::general.search'),
+                    'searchPlaceholder' => trans('core/table::table.search'),
                     'zeroRecords'       => trans('core/base::tables.no_record'),
                     'processing'        => Html::image(url('vendor/core/core/base/images/loading-spinner-blue.gif')),
                     'paginate'          => [
                         'next'     => trans('pagination.next'),
                         'previous' => trans('pagination.previous'),
                     ],
-                    'infoFiltered'      => trans('core/table::general.filtered'),
+                    'infoFiltered'      => trans('core/table::table.filtered'),
                 ],
                 'aaSorting'    => $this->useDefaultSorting ? [
                     [
@@ -308,6 +308,8 @@ abstract class TableAbstract extends DataTable
                         'desc',
                     ],
                 ] : [],
+                'responsive' => true,
+                'autoWidth'  => false,
             ]);
     }
 
@@ -583,23 +585,21 @@ abstract class TableAbstract extends DataTable
     public function htmlInitCompleteFunction(): ?string
     {
         return '
-                $(".dataTables_wrapper").css({"width": "100%"});
-
-                if (jQuery().select2) {
-                    $(document).find(".select-multiple").select2({
-                        width: "100%",
-                        allowClear: true,
-                        placeholder: $(this).data("placeholder")
-                    });
-                    $(document).find(".select-search-full").select2({
-                        width: "100%"
-                    });
-                    $(document).find(".select-full").select2({
-                        width: "100%",
-                        minimumResultsForSearch: -1
-                    });
-                }
-            ';
+            if (jQuery().select2) {
+                $(document).find(".select-multiple").select2({
+                    width: "100%",
+                    allowClear: true,
+                    placeholder: $(this).data("placeholder")
+                });
+                $(document).find(".select-search-full").select2({
+                    width: "100%"
+                });
+                $(document).find(".select-full").select2({
+                    width: "100%",
+                    minimumResultsForSearch: -1
+                });
+            }
+        ';
     }
 
     /**
@@ -811,19 +811,19 @@ abstract class TableAbstract extends DataTable
         }
         $attributes = [
             'class'        => 'form-control input-value filter-column-value',
-            'placeholder'  => trans('core/table::general.value'),
+            'placeholder'  => trans('core/table::table.value'),
             'autocomplete' => 'off',
         ];
 
         switch ($type) {
             case 'select':
                 $attributes['class'] = $attributes['class'] . ' select';
-                $attributes['placeholder'] = trans('core/table::general.select_option');
+                $attributes['placeholder'] = trans('core/table::table.select_option');
                 $html = Form::customSelect($inputName, $data, $value, $attributes)->toHtml();
                 break;
             case 'select-search':
                 $attributes['class'] = $attributes['class'] . ' select-search-full';
-                $attributes['placeholder'] = trans('core/table::general.select_option');
+                $attributes['placeholder'] = trans('core/table::table.select_option');
                 $html = Form::customSelect($inputName, $data, $value, $attributes)->toHtml();
                 break;
             case 'number':
@@ -935,18 +935,6 @@ abstract class TableAbstract extends DataTable
     public function getFilters(): array
     {
         return $this->getBulkChanges();
-    }
-
-    /**
-     * @return array
-     * @deprecated 5.3
-     */
-    protected function getYesNoSelect(): array
-    {
-        return [
-            0 => trans('core/base::base.no'),
-            1 => trans('core/base::base.yes'),
-        ];
     }
 
     /**

@@ -26,6 +26,7 @@ trait LoadAndPublishDataTrait
     public function setNamespace(string $namespace): self
     {
         $this->namespace = ltrim(rtrim($namespace, '/'), '/');
+
         return $this;
     }
 
@@ -76,6 +77,7 @@ trait LoadAndPublishDataTrait
     public function setBasePath($path): self
     {
         $this->basePath = $path;
+
         return $this;
     }
 
@@ -105,6 +107,7 @@ trait LoadAndPublishDataTrait
         if (!is_array($fileNames)) {
             $fileNames = [$fileNames];
         }
+
         foreach ($fileNames as $fileName) {
             $this->loadRoutesFrom($this->getRouteFilePath($fileName));
         }
@@ -169,6 +172,7 @@ trait LoadAndPublishDataTrait
     public function loadMigrations(): self
     {
         $this->loadMigrationsFrom($this->getMigrationsPath());
+
         return $this;
     }
 

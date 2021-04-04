@@ -106,6 +106,7 @@ class SystemManagement
             'pdo'                      => extension_loaded('pdo'),
             'fileinfo'                 => extension_loaded('fileinfo'),
             'tokenizer'                => extension_loaded('tokenizer'),
+            'imagick_or_gd'            => extension_loaded('imagick') || extension_loaded('gd'),
         ];
     }
 

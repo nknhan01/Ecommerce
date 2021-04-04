@@ -10,12 +10,12 @@ use Platform\Base\Forms\FormBuilder;
 use Platform\Base\Http\Controllers\BaseController;
 use Platform\Base\Http\Responses\BaseHttpResponse;
 use Platform\Menu\Forms\MenuForm;
-use Platform\Menu\Repositories\Interfaces\MenuLocationInterface;
-use Platform\Menu\Tables\MenuTable;
 use Platform\Menu\Http\Requests\MenuRequest;
 use Platform\Menu\Repositories\Eloquent\MenuRepository;
 use Platform\Menu\Repositories\Interfaces\MenuInterface;
+use Platform\Menu\Repositories\Interfaces\MenuLocationInterface;
 use Platform\Menu\Repositories\Interfaces\MenuNodeInterface;
+use Platform\Menu\Tables\MenuTable;
 use Platform\Support\Services\Cache\Cache;
 use Exception;
 use Illuminate\Cache\CacheManager;
@@ -128,11 +128,10 @@ class MenuController extends BaseController
     {
         $locations = $request->input('locations', []);
 
-        $this->menuLocationRepository
-            ->getModel()
-            ->where('menu_id', $menu->id)
-            ->whereNotIn('location', $locations)
-            ->delete();
+        $this->menuLocationRepository->deleteBy([
+            'menu_id' => $menu->id,
+            ['location', 'NOT_IN', $locations],
+        ]);
 
         foreach ($locations as $location) {
             $menuLocation = $this->menuLocationRepository->firstOrCreate([
@@ -152,7 +151,7 @@ class MenuController extends BaseController
      * @param FormBuilder $formBuilder
      * @return string
      */
-    public function edit($id, Request $request, FormBuilder $formBuilder)
+    public function edit($id, FormBuilder $formBuilder, Request $request)
     {
         page_title()->setTitle(trans('packages/menu::menu.edit'));
 
@@ -189,9 +188,10 @@ class MenuController extends BaseController
 
         $this->saveMenuLocations($menu, $request);
 
-        $deletedNodes = explode(' ', ltrim($request->input('deleted_nodes', '')));
+        $deletedNodes = ltrim($request->input('deleted_nodes', ''));
         if ($deletedNodes) {
-            $this->menuNodeRepository->getModel()->whereIn('id', $deletedNodes)->delete();
+            $deletedNodes = explode(' ', ltrim($request->input('deleted_nodes', '')));
+            $this->menuNodeRepository->deleteBy([['id', 'IN', $deletedNodes]]);
         }
         Menu::recursiveSaveMenu(json_decode($request->input('menu_nodes'), true), $menu->id, 0);
 

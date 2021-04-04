@@ -41,7 +41,7 @@ abstract class CacheAbstractDecorator implements RepositoryInterface
     }
 
     /**
-     * @param $function
+     * @param string $function
      * @param array $args
      * @return mixed
      */
@@ -79,7 +79,7 @@ abstract class CacheAbstractDecorator implements RepositoryInterface
     }
 
     /**
-     * @param $function
+     * @param string $function
      * @param array $args
      * @return mixed
      */
@@ -89,8 +89,8 @@ abstract class CacheAbstractDecorator implements RepositoryInterface
     }
 
     /**
-     * @param $function
-     * @param $args
+     * @param string $function
+     * @param array $args
      * @param boolean $flushCache
      * @return mixed
      */

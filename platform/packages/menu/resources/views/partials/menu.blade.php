@@ -7,7 +7,7 @@
             <div class="dd-handle dd3-handle"></div>
             <div class="dd3-content">
                 <span class="text float-left" data-update="title">{{ $row->title }}</span>
-                <span class="text float-right">{{ $row->reference_type ? $row->reference_type : __('Custom link') }}</span>
+                <span class="text float-right">{{ $row->reference_type ? $row->reference_type : trans('packages/menu::menu.custom_link') }}</span>
                 <a href="#" title="" class="show-item-details"><i class="fa fa-angle-down"></i></a>
                 <div class="clearfix"></div>
             </div>

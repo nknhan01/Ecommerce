@@ -7,21 +7,16 @@ use BaseHelper;
 use Platform\Base\Http\Responses\BaseHttpResponse;
 use EmailHandler;
 use Exception;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Concerns\InteractsWithContentTypes;
 use Illuminate\Http\Exceptions\PostTooLargeException;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Log;
 use RvMedia;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Theme;
 use Throwable;
 use URL;
 
@@ -38,86 +33,48 @@ class Handler extends ExceptionHandler
             ]));
         }
 
-        if ($exception instanceof ModelNotFoundException && $request->expectsJson()) {
-            return (new BaseHttpResponse)
-                ->setError()
-                ->setMessage('Not found')
-                ->setCode(404)
-                ->toResponse($request);
-        }
-
         if ($exception instanceof ModelNotFoundException || $exception instanceof MethodNotAllowedHttpException) {
             $exception = new NotFoundHttpException($exception->getMessage(), $exception);
         }
 
-        if ($exception instanceof AuthorizationException) {
-            $response = $this->handleResponseData(403, $request);
-            if ($response) {
-                return $response;
-            }
-        }
-
-        if ($this->isHttpException($exception) && !app()->isDownForMaintenance()) {
+        if ($this->isHttpException($exception)) {
             $code = $exception->getStatusCode();
 
-            do_action(BASE_ACTION_SITE_ERROR, $code);
+            if ($request->expectsJson()) {
+                if (function_exists('admin_bar')) {
+                    admin_bar()->setIsDisplay(false);
+                }
 
-            if (in_array($code, [401, 403, 404, 500, 503])) {
-                $response = $this->handleResponseData($code, $request);
-                if ($response) {
-                    return $response;
+                $response = new BaseHttpResponse;
+
+                switch ($code) {
+                    case 401:
+                        return $response
+                            ->setError()
+                            ->setMessage(trans('core/acl::permissions.access_denied_message'))
+                            ->setCode($code)
+                            ->toResponse($request);
+                    case 403:
+                        return $response
+                            ->setError()
+                            ->setMessage(trans('core/acl::permissions.action_unauthorized'))
+                            ->setCode($code)
+                            ->toResponse($request);
+                    case 404:
+                        return $response
+                            ->setError()
+                            ->setMessage(trans('core/base::errors.not_found'))
+                            ->setCode(404)
+                            ->toResponse($request);
                 }
             }
-        } elseif (class_exists('Theme') && app()->isDownForMaintenance() && view()->exists(Theme::getThemeNamespace() . '::views.503')) {
-            return response()->view(Theme::getThemeNamespace() . '::views.503', ['exception' => $exception], 503);
+
+            if (!app()->isDownForMaintenance()) {
+                do_action(BASE_ACTION_SITE_ERROR, $code);
+            }
         }
 
         return parent::render($request, $exception);
-    }
-
-    /**
-     * @param integer $code
-     * @param Request|InteractsWithContentTypes $request
-     * @return bool|BaseHttpResponse|RedirectResponse|Response
-     * @throws FileNotFoundException
-     */
-    protected function handleResponseData($code, $request)
-    {
-        if ($request->expectsJson()) {
-            if (function_exists('admin_bar')) {
-                admin_bar()->setIsDisplay(false);
-            }
-
-            if ($code == 401) {
-                return (new BaseHttpResponse)
-                    ->setError()
-                    ->setMessage(trans('core/acl::permissions.access_denied_message'))
-                    ->setCode($code)
-                    ->toResponse($request);
-            }
-
-            if ($code == 403) {
-                return (new BaseHttpResponse)
-                    ->setError()
-                    ->setMessage(trans('core/acl::permissions.action_unauthorized'))
-                    ->setCode($code)
-                    ->toResponse($request);
-            }
-        }
-
-        $code = (string)$code;
-        $code = $code == '403' ? '401' : $code;
-        $code = $code == '503' ? '500' : $code;
-
-        if ($request->is(BaseHelper::getAdminPrefix() . '/*') || $request->is(BaseHelper::getAdminPrefix())) {
-            return response()->view('core/base::errors.' . $code, [], $code);
-        }
-
-        if (class_exists('Theme') && view()->exists(Theme::getThemeNamespace() . '::views.' . $code)) {
-            return response()->view(Theme::getThemeNamespace() . '::views.' . $code, [], $code);
-        }
-
-        return false;
     }
 
     /**
@@ -134,8 +91,9 @@ class Handler extends ExceptionHandler
                     }
                 }
 
-                if (config('core.base.general.error_reporting.via_slack',
-                        false) == true && !$exception instanceof OAuthServerException) {
+                if (config('core.base.general.error_reporting.via_slack', false) == true &&
+                    !$exception instanceof OAuthServerException
+                ) {
                     Log::channel('slack')
                         ->critical(URL::full() . "\n" . $exception->getFile() . ':' . $exception->getLine() . "\n" . $exception->getMessage());
                 }
@@ -166,6 +124,33 @@ class Handler extends ExceptionHandler
         }
 
         return false;
+    }
+
+    /**
+     * Get the view used to render HTTP exceptions.
+     *
+     * @param \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface $exception
+     * @return string
+     */
+    protected function getHttpExceptionView(HttpExceptionInterface $exception)
+    {
+        $code = $exception->getStatusCode();
+
+        if (request()->is(BaseHelper::getAdminPrefix() . '/*') || request()->is(BaseHelper::getAdminPrefix())) {
+            return 'core/base::errors.' . $code;
+        }
+
+        if (class_exists('Theme')) {
+
+            $theme = setting('theme');
+            if (!$theme) {
+                $theme = Arr::first(scan_folder(theme_path()));
+            }
+
+            return 'theme.' . $theme . '::views.' . $code;
+        }
+
+        return parent::getHttpExceptionView($exception);
     }
 
     /**

@@ -11,6 +11,7 @@ use Platform\Page\Repositories\Interfaces\PageInterface;
 use Platform\Shortcode\View\View;
 use Event;
 use Illuminate\Routing\Events\RouteMatched;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -38,8 +39,6 @@ class PageServiceProvider extends ServiceProvider
             ->loadAndPublishTranslations()
             ->loadMigrations();
 
-        $this->app->register(HookServiceProvider::class);
-
         Event::listen(RouteMatched::class, function () {
             dashboard_menu()->registerItem([
                 'id'          => 'cms-core-page',
@@ -52,7 +51,7 @@ class PageServiceProvider extends ServiceProvider
             ]);
 
             if (function_exists('admin_bar')) {
-                admin_bar()->registerLink(trans('packages/page::pages.menu_name'), route('pages.index'), 'add-new');
+                admin_bar()->registerLink(trans('packages/page::pages.menu_name'), route('pages.create'), 'add-new');
             }
         });
 
@@ -61,5 +60,11 @@ class PageServiceProvider extends ServiceProvider
                 $view->withShortcodes();
             });
         }
+
+        $this->app->booted(function () {
+            $this->app->register(HookServiceProvider::class);
+        });
+
+        $this->app->register(EventServiceProvider::class);
     }
 }

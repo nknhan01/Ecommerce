@@ -2,7 +2,11 @@
 
 namespace Platform\Blog\Http\Controllers;
 
+use Platform\ACL\Models\User;
 use Platform\Base\Events\BeforeEditContentEvent;
+use Platform\Base\Events\CreatedContentEvent;
+use Platform\Base\Events\DeletedContentEvent;
+use Platform\Base\Events\UpdatedContentEvent;
 use Platform\Base\Forms\FormBuilder;
 use Platform\Base\Http\Controllers\BaseController;
 use Platform\Base\Http\Responses\BaseHttpResponse;
@@ -12,17 +16,14 @@ use Platform\Blog\Http\Requests\PostRequest;
 use Platform\Blog\Models\Post;
 use Platform\Blog\Repositories\Interfaces\CategoryInterface;
 use Platform\Blog\Repositories\Interfaces\PostInterface;
-use Platform\Blog\Tables\PostTable;
 use Platform\Blog\Repositories\Interfaces\TagInterface;
 use Platform\Blog\Services\StoreCategoryService;
 use Platform\Blog\Services\StoreTagService;
+use Platform\Blog\Tables\PostTable;
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Platform\Base\Events\CreatedContentEvent;
-use Platform\Base\Events\DeletedContentEvent;
-use Platform\Base\Events\UpdatedContentEvent;
 use Illuminate\View\View;
 use Throwable;
 
@@ -101,7 +102,8 @@ class PostController extends BaseController
          * @var Post $post
          */
         $post = $this->postRepository->createOrUpdate(array_merge($request->input(), [
-            'author_id' => Auth::user()->getKey(),
+            'author_id'   => Auth::user()->getKey(),
+            'author_type' => User::class,
         ]));
 
         event(new CreatedContentEvent(POST_MODULE_SCREEN_NAME, $request, $post));

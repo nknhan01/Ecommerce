@@ -32,4 +32,5 @@ return [
     'add_new_language'         => 'Add new language',
     'select_language'          => 'Select language',
     'flag'                     => 'Flag',
+    'confirm_delete_message'   => 'Do you really want to delete this locale? It will delete all files/folders for this local in /resources/lang!',
 ];

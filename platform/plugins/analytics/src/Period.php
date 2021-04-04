@@ -2,8 +2,8 @@
 
 namespace Platform\Analytics;
 
-use DateTime;
 use Carbon\Carbon;
+use DateTime;
 use Platform\Analytics\Exceptions\InvalidPeriod;
 
 class Period
@@ -24,7 +24,7 @@ class Period
      * @return Period
      * @throws InvalidPeriod
      */
-    public static function create(DateTime $startDate, $endDate): Period
+    public static function create(DateTime $startDate, DateTime $endDate): Period
     {
         return new static($startDate, $endDate);
     }
@@ -36,9 +36,9 @@ class Period
      */
     public static function days(int $numberOfDays): Period
     {
-        $endDate = Carbon::today(config('app.timezone'));
+        $endDate = Carbon::today();
 
-        $startDate = Carbon::today(config('app.timezone'))->subDays($numberOfDays)->startOfDay();
+        $startDate = Carbon::today()->subDays($numberOfDays)->startOfDay();
 
         return new static($startDate, $endDate);
     }
@@ -50,9 +50,9 @@ class Period
      */
     public static function months(int $numberOfMonths): Period
     {
-        $endDate = Carbon::today(config('app.timezone'));
+        $endDate = Carbon::today();
 
-        $startDate = Carbon::today(config('app.timezone'))->subMonths($numberOfMonths)->startOfDay();
+            $startDate = Carbon::today()->subMonths($numberOfMonths)->startOfDay();
 
         return new static($startDate, $endDate);
     }
@@ -64,9 +64,9 @@ class Period
      */
     public static function years(int $numberOfYears): Period
     {
-        $endDate = Carbon::today(config('app.timezone'));
+        $endDate = Carbon::today();
 
-        $startDate = Carbon::today(config('app.timezone'))->subYears($numberOfYears)->startOfDay();
+        $startDate = Carbon::today()->subYears($numberOfYears)->startOfDay();
 
         return new static($startDate, $endDate);
     }

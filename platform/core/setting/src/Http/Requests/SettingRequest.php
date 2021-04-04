@@ -2,7 +2,10 @@
 
 namespace Platform\Setting\Http\Requests;
 
+use Assets;
 use Platform\Support\Http\Requests\Request;
+use DateTimeZone;
+use Illuminate\Validation\Rule;
 
 class SettingRequest extends Request
 {
@@ -13,6 +16,10 @@ class SettingRequest extends Request
      */
     public function rules()
     {
-        return [];
+        return [
+            'admin_email'         => 'nullable|email',
+            'default_admin_theme' => Rule::in(array_keys(Assets::getThemes())),
+            'time_zone'           => Rule::in(DateTimeZone::listIdentifiers(DateTimeZone::ALL)),
+        ];
     }
 }

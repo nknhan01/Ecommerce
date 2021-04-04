@@ -13,7 +13,7 @@
             </div>
 
             <div class="modal-footer">
-                <button class="float-left btn btn-warning" data-dismiss="modal">{{ trans('core/table::general.cancel') }}</button>
+                <button class="float-left btn btn-warning" data-dismiss="modal">{{ trans('core/table::table.cancel') }}</button>
                 <button class="float-right btn btn-{{ $type }} {{ Arr::get($action_button_attributes, 'class') }}" {!! Html::attributes(Arr::except($action_button_attributes, 'class')) !!}>{{ $action_name }}</button>
             </div>
         </div>

@@ -10,7 +10,7 @@ class Editor
 {
     public function __construct()
     {
-        add_action(BASE_ACTION_ENQUEUE_SCRIPTS, [$this, 'registerAssets'], 12, 1);
+        add_action(BASE_ACTION_ENQUEUE_SCRIPTS, [$this, 'registerAssets'], 12);
     }
 
     public function registerAssets()

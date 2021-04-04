@@ -9,21 +9,7 @@ class AdminBar
     /**
      * @var array
      */
-    protected $groups = [
-        'appearance' => [
-            'link'  => 'javascript:;',
-            'title' => 'Appearance',
-            'items' => [
-
-            ],
-        ],
-        'add-new'    => [
-            'link'  => 'javascript:;',
-            'title' => 'Add new',
-            'items' => [
-            ],
-        ],
-    ];
+    protected $groups = [];
 
     /**
      * @var bool
@@ -40,13 +26,22 @@ class AdminBar
      */
     public function __construct()
     {
-        $this->groups['appearance']['items'] = [
-            __('Dashboard') => route('dashboard.index'),
-            __('Settings')  => route('settings.options'),
-        ];
-
-        $this->groups['add-new']['items'] = [
-            __('User') => route('users.create'),
+        $this->groups = [
+            'appearance' => [
+                'link'  => 'javascript:;',
+                'title' => trans('packages/theme::theme.appearance'),
+                'items' => [
+                    trans('core/base::layouts.dashboard') => route('dashboard.index'),
+                    trans('core/setting::setting.title')  => route('settings.options'),
+                ],
+            ],
+            'add-new'    => [
+                'link'  => 'javascript:;',
+                'title' => trans('packages/theme::theme.add_new'),
+                'items' => [
+                    trans('core/acl::users.users') => route('users.create'),
+                ],
+            ],
         ];
     }
 

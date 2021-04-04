@@ -5,7 +5,6 @@ namespace Platform\Widget\Http\Controllers;
 use Assets;
 use Platform\Base\Http\Controllers\BaseController;
 use Platform\Base\Http\Responses\BaseHttpResponse;
-use Platform\Setting\Supports\SettingStore;
 use Platform\Widget\Factories\AbstractWidgetFactory;
 use Platform\Widget\Repositories\Interfaces\WidgetInterface;
 use Platform\Widget\WidgetId;
@@ -29,7 +28,7 @@ class WidgetController extends BaseController
     protected $widgetRepository;
 
     /**
-     * @var null
+     * @var string|null
      */
     protected $theme = null;
 
@@ -52,7 +51,7 @@ class WidgetController extends BaseController
      */
     public function index()
     {
-        page_title()->setTitle(trans('core/base::layouts.widgets'));
+        page_title()->setTitle(trans('packages/widget::widget.name'));
 
         Assets::addScripts(['sortable'])
             ->addScriptsDirectly('vendor/core/packages/widget/js/widget.js');
@@ -77,13 +76,17 @@ class WidgetController extends BaseController
     public function postSaveWidgetToSidebar(Request $request, BaseHttpResponse $response)
     {
         try {
-            $sidebarId = $request->get('sidebar_id');
+            $sidebarId = $request->input('sidebar_id');
             $this->widgetRepository->deleteBy([
                 'sidebar_id' => $sidebarId,
                 'theme'      => $this->theme,
             ]);
-            foreach ($request->get('items', []) as $key => $item) {
+            foreach ($request->input('items', []) as $key => $item) {
                 parse_str($item, $data);
+                if (empty($data['id'])) {
+                    continue;
+                }
+
                 $args = [
                     'sidebar_id' => $sidebarId,
                     'widget_id'  => $data['id'],
@@ -94,13 +97,14 @@ class WidgetController extends BaseController
                 $this->widgetRepository->createOrUpdate($args);
             }
 
-            $widget_areas = $this->widgetRepository->allBy([
+            $widgetAreas = $this->widgetRepository->allBy([
                 'sidebar_id' => $sidebarId,
                 'theme'      => $this->theme,
             ]);
+
             return $response
-                ->setData(view('packages/widget::item', compact('widget_areas'))->render())
-                ->setMessage(trans('packages/widget::global.save_success'));
+                ->setData(view('packages/widget::item', compact('widgetAreas'))->render())
+                ->setMessage(trans('packages/widget::widget.save_success'));
         } catch (Exception $exception) {
             return $response
                 ->setError()
@@ -122,7 +126,7 @@ class WidgetController extends BaseController
                 'position'   => $request->get('position'),
                 'widget_id'  => $request->get('widget_id'),
             ]);
-            return $response->setMessage(trans('packages/widget::global.delete_success'));
+            return $response->setMessage(trans('packages/widget::widget.delete_success'));
         } catch (Exception $exception) {
             return $response
                 ->setError()

@@ -16,6 +16,12 @@ class FormServiceProvider extends ServiceProvider
             'attributes' => [],
         ]);
 
+        Form::component('mediaImages', 'core/base::forms.partials.images', [
+            'name',
+            'values'     => [],
+            'attributes' => [],
+        ]);
+
         Form::component('mediaFile', 'core/base::forms.partials.file', [
             'name',
             'value'      => null,
@@ -104,6 +110,15 @@ class FormServiceProvider extends ServiceProvider
         ]);
 
         Form::component('customSelect', 'core/base::forms.partials.custom-select', [
+            'name',
+            'list'                => [],
+            'selected'            => null,
+            'selectAttributes'    => [],
+            'optionsAttributes'   => [],
+            'optgroupsAttributes' => [],
+        ]);
+
+        Form::component('autocomplete', 'core/base::forms.partials.autocomplete', [
             'name',
             'list'                => [],
             'selected'            => null,

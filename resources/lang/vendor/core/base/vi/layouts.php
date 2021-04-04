@@ -6,6 +6,7 @@ return [
     'appearance'         => 'Hiển thị',
     'menu'               => 'Trình đơn',
     'widgets'            => 'Tiện ích',
+    'theme_options'      => 'Tuỳ chọn giao diện',
     'plugins'            => 'Tiện ích mở rộng',
     'settings'           => 'Cài đặt',
     'setting_general'    => 'Cơ bản',

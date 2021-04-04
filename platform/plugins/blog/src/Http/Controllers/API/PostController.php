@@ -8,12 +8,11 @@ use Platform\Blog\Http\Resources\PostResource;
 use Platform\Blog\Http\Resources\ListPostResource;
 use Platform\Blog\Repositories\Interfaces\PostInterface;
 use Platform\Blog\Supports\FilterPost;
-use Platform\Slug\Repositories\Interfaces\SlugInterface;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Platform\Blog\Models\Post;
+use SlugHelper;
 
 class PostController extends Controller
 {
@@ -24,19 +23,13 @@ class PostController extends Controller
     protected $postRepository;
 
     /**
-     * @var SlugInterface
-     */
-    protected $slugRepository;
-
-    /**
      * AuthenticationController constructor.
      *
      * @param PostInterface $postRepository
      */
-    public function __construct(PostInterface $postRepository, SlugInterface $slugRepository)
+    public function __construct(PostInterface $postRepository)
     {
         $this->postRepository = $postRepository;
-        $this->slugRepository = $slugRepository;
     }
 
     /**
@@ -66,7 +59,7 @@ class PostController extends Controller
                 'posts.author_id',
                 'posts.author_type',
             ])
-            ->paginate($request->input('per_page', 10));
+            ->paginate((int)$request->input('per_page', 10));
 
         return $response
             ->setData(ListPostResource::collection($data))
@@ -149,7 +142,8 @@ class PostController extends Controller
      */
     public function findBySlug(string $slug, BaseHttpResponse $response)
     {
-        $slug = $this->slugRepository->getFirstBy(['key' => $slug, 'reference_type' => Post::class]);
+        $slug = SlugHelper::getSlug($slug, SlugHelper::getPrefix(Post::class), Post::class);
+
         if (!$slug) {
             return $response->setError()->setCode(404)->setMessage('Not found');
         }

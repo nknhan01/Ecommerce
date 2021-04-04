@@ -48,6 +48,8 @@ class AnalyticsServiceProvider extends ServiceProvider
             ->loadAndPublishTranslations()
             ->publishAssets();
 
-        $this->app->register(HookServiceProvider::class);
+        $this->app->booted(function () {
+            $this->app->register(HookServiceProvider::class);
+        });
     }
 }
