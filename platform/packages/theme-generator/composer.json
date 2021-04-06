@@ -1,0 +1,21 @@
+{
+    "name": "platform/theme-generator",
+    "description": "Theme generator",
+    "type": "package",
+    "autoload": {
+        "psr-4": {
+            "Platform\\ThemeGenerator\\": "src"
+        }
+    },
+    "require": {
+        "platform/platform": "*@dev",
+        "platform/theme": "*@dev"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Platform\\ThemeGenerator\\Providers\\ThemeGeneratorServiceProvider"
+            ]
+        }
+    }
+}
