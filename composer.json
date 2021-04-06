@@ -12,18 +12,22 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-zip": "*",
-        "platform/menu": "*@dev",
-        "platform/page": "*@dev",
-        "platform/platform": "*@dev",
-        "platform/plugin-management": "*@dev",
-        "platform/shortcode": "*@dev",
-        "platform/theme": "*@dev",
+        "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "league/flysystem-aws-s3-v3": "^1.0",
-	"wikimedia/composer-merge-plugin": "^2.0"
+        "platform/api": "*@dev",
+        "platform/menu": "*@dev",
+        "platform/optimize": "*@dev",
+        "platform/page": "*@dev",
+        "platform/platform": "*@dev",
+        "platform/plugin-management": "*@dev",
+        "platform/shortcode": "*@dev",
+        "platform/theme": "*@dev",
+        "spatie/laravel-searchable": "^1.9",
+        "wikimedia/composer-merge-plugin": "dev-feature/composer-v2 as 1.5.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -33,8 +37,10 @@
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.3.3",
         "laravel/tinker": "^2.5",
-        "barryvdh/laravel-debugbar": "^3.2",
-        "barryvdh/laravel-ide-helper": "^2.6"
+        "platform/dev-tool": "*@dev",
+        "platform/plugin-generator": "*@dev",
+        "platform/theme-generator": "*@dev",
+        "platform/widget-generator": "*@dev"
     },
     "autoload": {
         "psr-4": {
@@ -94,6 +100,10 @@
         {
             "type": "path",
             "url": "./platform/packages/*"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/botble/composer-merge-plugin"
         }
     ]
 }
