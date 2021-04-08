@@ -11,6 +11,65 @@ register_sidebar([
 ]);
 
 theme_option()
+    ->setSection([ //Color-Management
+        'title' => 'Color',
+        'desc' => 'null',
+        'id' => 'opt-color-management',
+        'subsection' => true,
+        'icon' => 'fas fa-palette',
+        'fields' =>
+        [
+            [
+                'id' => 'primary_color',
+                'type' => 'customColor',
+                'label' => 'Primary color',
+                'attributes' => [
+                    'name' => 'primary_color',
+                    'value' => '#000000',
+                    'options' => [
+                        'class' => 'form-control'
+                    ]
+                ],
+            ],
+            [
+                'id' => 'primary_color_hover',
+                'type' => 'customColor',
+                'label' => 'Primary color hover',
+                'attributes' => [
+                    'name' => 'primary_color_hover',
+                    'value' => '#000000',
+                    'options' => [
+                        'class' => 'form-control'
+                    ]
+                ],
+            ],
+            [
+                'id' => 'primary_color_text',
+                'type' => 'customColor',
+                'label' => 'Primary color text',
+                'attributes' => [
+                    'name' => 'primary_color_text',
+                    'value' => '#000000',
+                    'options' => [
+                        'class' => 'form-control'
+                    ]
+                ],
+            ],
+            [
+                'id' => 'primary_color_text_hover',
+                'type' => 'customColor',
+                'label' => 'Primary color text hover',
+                'attributes' => [
+                    'name' => 'primary_color_text_hover',
+                    'value' => '#000000',
+                    'options' => [
+                        'class' => 'form-control'
+                    ]
+                ],
+            ],
+            
+        ],
+    ]) //end: Color-Managerment
     ->setField([
         'id'         => 'copyright',
         'section_id' => 'opt-text-subsection-general',
@@ -36,18 +95,7 @@ theme_option()
             'name'  => 'primary_font',
             'value' => 'Roboto',
         ],
-    ])
-    ->setField([
-        'id'         => 'primary_color',
-        'section_id' => 'opt-text-subsection-general',
-        'type'       => 'customColor',
-        'label'      => __('Primary color'),
-        'attributes' => [
-            'name'  => 'primary_color',
-            'value' => '#ff2b4a',
-        ],
-    ]);
-
+    ]); //end theme_option
 add_action('init', function () {
     config(['filesystems.disks.public.root' => public_path('storage')]);
 }, 124);

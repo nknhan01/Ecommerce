@@ -1,6 +1,6 @@
 @if ($cookieConsentConfig['enabled'] && !$alreadyConsentedWithCookies)
 
-    <div class="js-cookie-consent cookie-consent" style="background-color: {{ theme_option('cookie_consent_background_color', '#000') }} !important; color: {{ theme_option('cookie_consent_text_color', '#fff') }} !important;">
+    <div class="js-cookie-consent cookie-consent" style="display:none ;background-color: {{ theme_option('cookie_consent_background_color', '#000') }} !important; color: {{ theme_option('cookie_consent_text_color', '#fff') }} !important;">
         <div class="cookie-consent-body" style="max-width: {{ theme_option('cookie_consent_max_width', 1170) }}px;">
             <span class="cookie-consent__message">
                 {{ theme_option('cookie_consent_message', trans('plugins/cookie-consent::cookie-consent.message')) }}

@@ -1,5 +1,4 @@
 /**File sass css khai báo các mixin cho ứng dụng**/
-
 @mixin font-face($font-family, $url) {
     @font-face {
         font-family: "#{$font-family}";
@@ -260,4 +259,62 @@
     animation: $name;
     animation-duration: $duration;
     animation-iteration-count: $count;
+}
+
+//Font-Size-Manager:
+@mixin fontSizeManagement($value) {
+    @if $value=="REGULAR" {
+        @include fontSize(14);
+
+        @include maxWidth(991) {
+            @include fontSize(12);
+        }
+    }
+
+    @else if $value=="REGULAR-HIGHER" {
+        @include fontSize(17);
+
+        @include maxWidth(991) {
+            @include fontSize(14);
+        }
+    }
+
+    @else if $value=="MEDIUM" {
+        @include fontSize(20);
+
+        @include maxWidth(991) {
+            @include fontSize(17);
+        }
+    }
+
+    @else if $value=="MEDIUM-HIGHER" {
+        @include fontSize(25);
+
+        @include maxWidth(991) {
+            @include fontSize(20);
+        }
+    }
+
+    @else if $value=="BIG" {
+        @include fontSize(30);
+
+        @include maxWidth(991) {
+            @include fontSize(25);
+        }
+    }
+
+    @else if $value=="BIG-HIGHER" {
+        @include fontSize(36);
+
+        @include maxWidth(991) {
+            @include fontSize(30);
+        }
+    }
+    @else{
+        @include fontSize(14);
+
+        @include maxWidth(991) {
+            @include fontSize(12);
+        }
+    }
 }

@@ -1,7 +1,3 @@
 {!! Theme::partial('header') !!}
-
-<div class="container">
-    {!! Theme::content() !!}
-</div>
-
+{!! Theme::content() !!}
 {!! Theme::partial('footer') !!}
