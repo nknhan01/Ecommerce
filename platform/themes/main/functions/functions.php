@@ -70,6 +70,30 @@ theme_option()
             
         ],
     ]) //end: Color-Managerment
+
+    ->setSection([ //InforCompany
+        'title' => 'Company information',
+        'desc' => 'null',
+        'id' => 'opt-company-information',
+        'subsection' => true,
+        'icon' => 'fas fa-info-circle',
+        'fields' =>
+        [   
+            //Name of Company
+            [
+                'id' => 'company_name',
+                'type' => 'text',
+                'label' => 'Company name',
+                'attributes' => [
+                    'name' => 'company_name',
+                    'value' => 'Ecommerce',
+                    'options' => [
+                        'class' => 'form-control'
+                    ]
+                ],
+            ],
+        ],
+    ]) //end: Color-Managerment
     ->setField([
         'id'         => 'copyright',
         'section_id' => 'opt-text-subsection-general',

@@ -1,6 +1,5 @@
 .headerMain {
     background-color: $primary_color;
-
     .headerDesktop {
         @include maxWidth(991) {
             display: none;

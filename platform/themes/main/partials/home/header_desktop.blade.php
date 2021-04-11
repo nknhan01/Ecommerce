@@ -28,7 +28,7 @@
             <div class="headerDesktop__top-right--item">
                 <a href="#" class="headerDesktop__top-right--item---link">
                     <i class="headerDesktop__top-right--item---link----icon far fa-question-circle"></i>
-                    <span class="headerDesktop__top-right--item---link----text">Thông báo</span>
+                    <span class="headerDesktop__top-right--item---link----text">Hỗ trợ</span>
                 </a>
             </div>
             <div class="headerDesktop__top-right--item">
