@@ -35,37 +35,44 @@ return [
         // Listen on event before render a theme,
         // this event should call to assign some assets,
         // breadcrumb template.
-        'beforeRenderTheme' => function (Theme $theme) {
+        'beforeRenderTheme' => function (Theme $theme)
+        {
 
-            //CDN Bootstrap 4.5.3:
-            $theme->asset()->container('after_header')->add('bootstrap_css', 'https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css'); //bootstrap css 4.5.3
-            $theme->asset()->container('footer')->add('jqueryboostrap', 'https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js'); //bootstrap js
-            //CDN Animate:
-            $theme->asset()->container('after_header')->add('animate', 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css'); //aminate 4.1.1
-            //CDN Ionicons
-            $theme->asset()->container('after_header')->add('Ionicons', 'http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css');
-            //CDN Jquery 1.12.1
-            $theme->asset()->container('after_header')->add('jQueryUI', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css');
-            // CDN magnific-popup
-            $theme->asset()->container('footer')->add('magnific_popup', 'https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.0.0/jquery.magnific-popup.min.js');
-            // CDN simple-line-icons
-            $theme->asset()->container('footer')->add('simple_line_icons', 'https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.2.5/css/simple-line-icons.css');
-            //CDN CSS:
-            $theme->asset()->container('after_header')->add('uikit_js', 'https://getuikit.com/assets/uikit/dist/js/uikit.js'); //uikit css
-            $theme->asset()->add('aos_animation', 'https://unpkg.com/aos@next/dist/aos.css'); //aos css
-            $theme->asset()->add('fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css'); //fontawesome
-            $theme->asset()->add('swiper_css', 'https://unpkg.com/swiper/swiper-bundle.min.css'); //swiper css
-            $theme->asset()->add('swiper_codebean', 'https://use.fontawesome.com/releases/v5.5.0/css/all.css'); //swiper codebean
-            // CDN JS:
-            $theme->asset()->container('after_header')->add('uikit_icon_js', 'https://getuikit.com/assets/uikit/dist/js/uikit-icons.js'); //uikits js
-            $theme->asset()->container('footer')->add('aos.js', 'https://unpkg.com/aos@next/dist/aos.js'); //aos css
-            $theme->asset()->container('footer')->add('swiper_js', 'https://unpkg.com/swiper/swiper-bundle.min.js'); //swiper JS
-            $theme->asset()->container('footer')->add('jquery', 'https://code.jquery.com/jquery-3.5.1.min.js'); //j_query
-            $theme->asset()->container('footer')->add('cloudflare.js', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'); //cloudflare js
-            //Path CSS:
-            $theme->asset()->container('after_header')->usePath()->add('common', 'css/common.css'); //css
-            // Path JS:
-            $theme->asset()->container('footer')->usePath()->add('script', 'js/common.js'); //js
+            // You may use this event to set up your assets.
+            $theme->asset()->usePath()->add('animate', 'css/animate.css');
+            $theme->asset()->usePath()->add('bootstrap-css', 'bootstrap/css/bootstrap.min.css');
+            $theme->asset()->usePath()->add('ionicons', 'css/ionicons.min.css');
+            $theme->asset()->usePath()->add('themify-icons', 'css/themify-icons.css');
+            $theme->asset()->usePath()->add('linearicons', 'css/linearicons.css');
+            $theme->asset()->usePath()->add('flaticon', 'css/flaticon.css');
+            $theme->asset()->usePath()->add('simple-line-icons', 'css/simple-line-icons.css');
+            $theme->asset()->usePath()->add('owl.carousel', 'plugins/owlcarousel/css/owl.carousel.min.css');
+            $theme->asset()->usePath()->add('owl.theme', 'plugins/owlcarousel/css/owl.theme.css');
+            $theme->asset()->usePath()->add('owl.theme.default', 'plugins/owlcarousel/css/owl.theme.default.min.css');
+            $theme->asset()->usePath()->add('slick-theme-css', 'plugins/slick/slick-theme.css');
+            $theme->asset()->usePath()->add('slick-css', 'plugins/slick/slick.css');
+            $theme->asset()->usePath()->add('magnific-popup-css', 'css/magnific-popup.css');
+            $theme->asset()->usePath()->add('style', 'css/style.css', [], [], '1.0.17');
+
+            if (BaseHelper::siteLanguageDirection() == 'rtl') {
+                $theme->asset()->usePath()->add('rtl-style', 'css/rtl-style.css', [], [], '1.0.16');
+            }
+
+            $theme->asset()->container('header')->usePath()->add('jquery', 'js/jquery-3.5.1.min.js');
+            $theme->asset()->container('footer')->usePath()->add('popper', 'js/popper.min.js', ['jquery']);
+            $theme->asset()->container('footer')->usePath()->add('bootstrap-js', 'bootstrap/js/bootstrap.min.js', ['jquery']);
+            $theme->asset()->container('footer')->usePath()->add('magnific-popup-js', 'js/magnific-popup.min.js', ['jquery']);
+            $theme->asset()->container('footer')->usePath()->add('waypoints', 'js/waypoints.min.js', ['jquery'], [], '4.0.1');
+            $theme->asset()->container('footer')->usePath()->add('slick-js', 'plugins/slick/slick.min.js');
+            $theme->asset()->container('footer')->usePath()->add('carousel-js', 'plugins/owlcarousel/js/owl.carousel.min.js', ['jquery']);
+            $theme->asset()->container('footer')->usePath()->add('elevatezoom-js', 'js/jquery.elevatezoom.js', ['jquery']);
+            $theme->asset()->container('footer')->usePath()->add('scripts', 'js/scripts.js', ['jquery'], [], '1.0.16');
+            $theme->asset()->container('footer')->usePath()->add('backend-js', 'js/backend.js', ['jquery'], [], '1.0.16');
+            $theme->asset()->container('footer')->add('change-product-swatches', 'vendor/core/plugins/ecommerce/js/change-product-swatches.js', ['jquery']);
+
+            $theme->asset()->container('footer')->usePath()->add('countdown', 'js/jquery.countdown.min.js', ['jquery']);
+            /*$theme->asset()->container('footer')->usePath()->add('imagesloaded', 'js/imagesloaded.pkgd.min.js', ['jquery']);
+            $theme->asset()->container('footer')->usePath()->add('isotope', 'js/isotope.min.js', ['jquery']);*/
 
             if (function_exists('shortcode')) {
                 $theme->composer(['index', 'page', 'post', 'ecommerce.product'], function (\Platform\Shortcode\View\View $view) use ($theme) {
