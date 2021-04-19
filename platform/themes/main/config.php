@@ -3,7 +3,6 @@
 use Platform\Theme\Theme;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Inherit from another theme
@@ -15,9 +14,7 @@ return [
     | [Notice] assets cannot inherit.
     |
     */
-
     'inherit' => null, //default
-
     /*
     |--------------------------------------------------------------------------
     | Listener from events
@@ -29,29 +26,22 @@ return [
     | [Notice] these event can be override by package config.
     |
     */
-
     'events' => [
 
         // Before event inherit from package config and the theme that call before,
         // you can use this event to set meta, breadcrumb template or anything
         // you want inheriting.
-        'before' => function($theme)
-        {
+        'before' => function ($theme) {
             // You can remove this line anytime.
         },
 
         // Listen on event before render a theme,
         // this event should call to assign some assets,
         // breadcrumb template.
-        'beforeRenderTheme' => function (Theme $theme)
-        {
-            // Partial composer.
-            // $theme->partialComposer('header', function($view) {
-            //     $view->with('auth', \Auth::user());
-            // });
 
+        'beforeRenderTheme' => function (Theme $theme) {
             // You may use this event to set up your assets.
-            //CDN Css:
+            //CDN CSS:
             $theme->asset()->container('after_header')->add('bootstrap_css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css'); //bootstrap css
             $theme->asset()->container('after_header')->add('uikit_js', 'https://getuikit.com/assets/uikit/dist/js/uikit.js'); //uikit css
             $theme->asset()->add('aos_animation', 'https://unpkg.com/aos@next/dist/aos.css'); //aos css
@@ -82,8 +72,7 @@ return [
         // this should call to assign style, script for a layout.
         'beforeRenderLayout' => [
 
-            'default' => function ($theme)
-            {
+            'default' => function ($theme) {
                 // $theme->asset()->usePath()->add('ipad', 'css/layouts/ipad.css');
             }
         ]

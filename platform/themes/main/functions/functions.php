@@ -93,7 +93,7 @@ theme_option()
                 ],
             ],
         ],
-    ]) //end: Color-Managerment
+    ]) //end: InforCompany
     ->setField([
         'id'         => 'copyright',
         'section_id' => 'opt-text-subsection-general',

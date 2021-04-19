@@ -1,0 +1,9 @@
+{
+    "name": "DemoHomework",
+    "namespace": "Platform\\DemoHomework\\",
+    "provider": "Platform\\DemoHomework\\Providers\\DemoHomeworkServiceProvider",
+    "author": "N/A",
+    "url": "N/A",
+    "version": "1.0",
+    "description": "The description for module demo_homework"
+}
