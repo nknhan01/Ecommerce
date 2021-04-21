@@ -57,8 +57,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         },
         "merge-plugin": {
             "include": [
@@ -93,8 +92,7 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "repositories": [
-        {
+    "repositories": [{
             "type": "path",
             "url": "./platform/core"
         },
