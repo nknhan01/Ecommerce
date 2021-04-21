@@ -17,4 +17,88 @@
 @import "abstracts/components/slider";
 //-main:
 //-----------------------------------------------------partials sass:
-@import "partials/blog-sidebar";
+@import "partials/breadcumbs";
+@import "partials/cart";
+@import "partials/comment";
+@import "partials/flash-sale-product";
+@import "partials/footer";
+@import "partials/header";
+@import "partials/icons-field";
+@import "partials/menu";
+@import "partials/product-category-fields";
+@import "partials/product-item-grid";
+@import "partials/product-item";
+@import "partials/quick-view";
+//short codes
+@import "partials/short-codes/all-brands-admin-config";
+@import "partials/short-codes/all-brands";
+@import "partials/short-codes/all-products-admin-config";
+@import "partials/short-codes/all-products";
+@import "partials/short-codes/banners-admin-config";
+@import "partials/short-codes/banners";
+@import "partials/short-codes/contact-form";
+@import "partials/short-codes/feature-product-categories";
+@import "partials/short-codes/featured-brands-admin-config";
+@import "partials/short-codes/featured-news-admin-config";
+@import "partials/short-codes/featured-product-categories-admin-config";
+@import "partials/short-codes/featured-news";
+@import "partials/short-codes/featured_brands";
+@import "partials/short-codes/flash-sale-admin-config";
+@import "partials/short-codes/flash-sale";
+@import "partials/short-codes/newsletter-form-admin-config";
+@import "partials/short-codes/newsletter-form";
+@import "partials/short-codes/our-features-admin-config";
+@import "partials/short-codes/out-features";
+@import "partials/short-codes/product-blocks-admin-config";
+@import "partials/short-codes/product-blocks";
+@import "partials/short-codes/product-collections-admin-config";
+@import "partials/short-codes/product-collections";
+@import "partials/short-codes/sliders";
+@import "partials/short-codes/testimonials-admin-config";
+@import "partials/short-codes/testimonials";
+@import "partials/short-codes/trending-products-admin-config";
+@import "partials/short-codes/trending-products";
+//view
+@import "views/post";
+
+@import "views/ecommerce/attributes/attributes-fillter-renderer";
+@import "views/ecommerce/attributes/swatches-renderer";
+    //layouts-fillter
+@import "views/ecommerce/attributes/_layouts-fillter/dropdown";
+@import "views/ecommerce/attributes/_layouts-fillter/text";
+@import "views/ecommerce/attributes/_layouts-fillter/visual";
+    //layouts
+@import "views/ecommerce/attributes/_layouts/dropdown";
+@import "views/ecommerce/attributes/_layouts/text";
+
+@import "views/ecommerce/customers/change-password";
+@import "views/ecommerce/customers/edit-account";
+@import "views/ecommerce/customers/login";
+@import "views/ecommerce/customers/master";
+@import "views/ecommerce/customers/overview";
+@import "views/ecommerce/customers/register";
+
+@import "views/ecommerce/customers/address/create";
+@import "views/ecommerce/customers/address/edit";
+@import "views/ecommerce/customers/address/list";
+
+@import "views/ecommerce/customers/orders/list";
+@import "views/ecommerce/customers/orders/view";
+
+@import "views/ecommerce/customers/passwords/email";
+@import "views/ecommerce/customers/passwords/reset";
+
+@import "views/ecommerce/brand";
+@import "views/ecommerce/cart";
+@import "views/ecommerce/order-tracking";
+@import "views/ecommerce/product-category";
+@import "views/ecommerce/product-tag";
+@import "views/ecommerce/product";
+@import "views/ecommerce/products";
+@import "views/ecommerce/search";
+@import "views/ecommerce/wishlist";
+
+@import "views/ecommerce/includes/fillters";
+@import "views/ecommerce/includes/sort";
+
+@import "views/templates/posts";
