@@ -1,0 +1,20 @@
+//-----------------------------------------------------abstracts sass:
+//-main:
+@import "abstracts/variables"; //variable
+@import "abstracts/mixin"; //mixin
+@import "abstracts/config"; //config
+@import "abstracts/fonts"; //fonts Roboto
+@import "abstracts/transition"; //transition
+//-base:
+//_reset:
+@import "abstracts/base/reset";
+//_typography:
+@import "abstracts/base/typography";
+//-components:
+//_buttons:
+@import "abstracts/components/buttons";
+//_slider:
+@import "abstracts/components/slider";
+//-main:
+//-----------------------------------------------------partials sass:
+@import "partials/blog-sidebar";

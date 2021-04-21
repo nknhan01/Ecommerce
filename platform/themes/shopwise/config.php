@@ -35,8 +35,7 @@ return [
         // Listen on event before render a theme,
         // this event should call to assign some assets,
         // breadcrumb template.
-        'beforeRenderTheme' => function (Theme $theme)
-        {
+        'beforeRenderTheme' => function (Theme $theme) {
 
             // You may use this event to set up your assets.
             $theme->asset()->usePath()->add('animate', 'css/animate.css');
@@ -53,6 +52,7 @@ return [
             $theme->asset()->usePath()->add('slick-css', 'plugins/slick/slick.css');
             $theme->asset()->usePath()->add('magnific-popup-css', 'css/magnific-popup.css');
             $theme->asset()->usePath()->add('style', 'css/style.css', [], [], '1.0.17');
+            $theme->asset()->usePath()->add('commonCSS', 'css/common.css');
 
             if (BaseHelper::siteLanguageDirection() == 'rtl') {
                 $theme->asset()->usePath()->add('rtl-style', 'css/rtl-style.css', [], [], '1.0.16');
