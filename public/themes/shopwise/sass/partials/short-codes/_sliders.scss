@@ -1,0 +1,34 @@
+.banner_section {
+    &.slide_medium {
+        &.shop_banner_slider {
+            &.staggered-animation-wrap {
+                .container {
+                    .slide {
+                        &.light_arrow {
+                            .carousel-inner {
+                                .carousel-item {
+                                    .banner_slide_content {
+                                        &.banner_content_inner {
+                                            .col-lg-8 {
+                                                &.col-10 {
+                                                    .banner_content {
+                                                        &.overflow-hidden {
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            .carousel-indicators {
+                                li {
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

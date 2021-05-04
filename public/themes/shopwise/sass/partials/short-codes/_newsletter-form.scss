@@ -1,0 +1,49 @@
+.section{
+    &.bg_default{
+        &.small_pt{
+            &.small_pb{
+                .container{
+                    .row{
+                        &.align-items-center{
+                            .col-md-6{
+                                .newsletter_text{
+                                    &.text_white{
+                                        h3{
+
+                                        }
+                                        p{
+
+                                        }
+                                    }
+                                }
+                                .newsletter_form2{
+                                    &.rounded_input{
+                                        &.newsletter-form{
+                                            form{
+                                                input[name=email]{
+
+                                                }
+                                                .btn{
+                                                    &.btn-dark{
+                                                        &.btn-radius{
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            .newsletter-message{
+                                                &.newsletter-success-message{
+                                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

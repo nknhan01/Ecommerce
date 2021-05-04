@@ -1,0 +1,26 @@
+.section{
+    &.pb_20{
+        .container{
+            .row{
+                &.justify-content-center{
+                    .col-lg-6{
+                        &.col-md-8{
+                            .heading_s1{
+                                &.text-center{
+                                    h2{
+
+                                    }
+                                }
+                            }
+                            .leads{
+                                &.text-center{
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

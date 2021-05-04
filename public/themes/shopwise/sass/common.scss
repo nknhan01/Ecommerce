@@ -37,12 +37,12 @@
 @import "partials/short-codes/banners-admin-config";
 @import "partials/short-codes/banners";
 @import "partials/short-codes/contact-form";
-@import "partials/short-codes/feature-product-categories";
+@import "partials/short-codes/featured-product-categories";
 @import "partials/short-codes/featured-brands-admin-config";
 @import "partials/short-codes/featured-news-admin-config";
 @import "partials/short-codes/featured-product-categories-admin-config";
 @import "partials/short-codes/featured-news";
-@import "partials/short-codes/featured_brands";
+@import "partials/short-codes/featured-brands";
 @import "partials/short-codes/flash-sale-admin-config";
 @import "partials/short-codes/flash-sale";
 @import "partials/short-codes/newsletter-form-admin-config";
@@ -102,3 +102,19 @@
 @import "views/ecommerce/includes/sort";
 
 @import "views/templates/posts";
+
+@import "assets/js/components/FeaturedBrandsComponent.scss";
+@import "assets/js/components/FeaturedNewsComponent.scss";
+@import "assets/js/components/FeaturedProductCategoriesComponent.scss";
+@import "assets/js/components/FeaturedProductsComponent.scss";
+@import "assets/js/components/FlashSaleProductsComponent.scss";
+@import "assets/js/components/OnSaleProductsComponent.scss";
+@import "assets/js/components/ProductCollectionsComponent.scss";
+@import "assets/js/components/ProductReviewsComponent.scss";
+@import "assets/js/components/TestimonialsComponent.scss";
+@import "assets/js/components/TopRatedProductsComponent.scss";
+@import "assets/js/components/TrendingProductsComponent.scss";
+
+@import "assets/js/scss/custom";
+@import "assets/js/scss/responsive";
+@import "assets/js/scss/variables";

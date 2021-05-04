@@ -1,0 +1,115 @@
+
+.container{
+    .section{
+        &.pb_0{
+            .row{
+                .col-xl-4{
+                    &.col-md-6{
+                        .contact_wrap{
+                            &.contact_style3{
+                                .contact_icon{
+                                    i{
+    
+                                    }
+                                }
+                                .contact_text{
+                                    span{
+                         
+                                    }
+                                    p{
+    
+                                    }
+                                }
+                            }
+                        }
+                        &:nth-child(1){
+                        .contact_wrap{
+                            &.contact_style3{
+                                .contact_icon{
+                                    .linearicons-map2{
+                                        
+                                    }
+                                }
+                                .contact_text{
+                                    span{
+                                        
+                                    }
+                                    p{
+    
+                                    }
+                                }
+                            }
+                        }
+                        }
+                        &:nth-child(2){
+                            .contact_wrap{
+                                &.contact_style3{
+                                    .contact_icon{
+                                        .linearicons-envelope-open{
+                                            
+                                        }
+                                    }
+                                    .contact_text{
+                                        span{
+                                            
+                                        }
+                                        p{
+        
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        &:nth-child(3){
+                            .contact_wrap{
+                                &.contact_style3{
+                                    .contact_icon{
+                                        .linearicons-tablet2{
+                                            
+                                        }
+                                    }
+                                    .contact_text{
+                                        span{
+                                            
+                                        }
+                                        p{
+        
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.section{
+    &.pt-0{
+        .row{
+            .col-12{
+                .heading_s1{
+                    h2{
+    
+                    }
+                }
+                .field_form{
+                    .form--contact{
+                        &.contact-form{
+                            .row{
+                                .col-md-6{
+                                    .form-group{
+                                        label[for=contact_name]{
+                                            
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

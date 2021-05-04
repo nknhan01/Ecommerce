@@ -1,0 +1,20 @@
+section {
+    .container {
+        &.no-gutters {
+            .icon_box {
+                &.icon_box_style1 {
+                    .icon {
+                        i {
+                        }
+                    }
+                }
+                .icon_box_content {
+                    h5 {
+                    }
+                    p {
+                    }
+                }
+            }
+        }
+    }
+}

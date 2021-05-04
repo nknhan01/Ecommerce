@@ -1,0 +1,54 @@
+.product{
+    border-radius: 10px; 
+    &_img{
+        a{
+
+        }
+        .product_action_box{
+            ul{
+                
+                li{
+                    a{
+                        border-radius: 5px; 
+                    }
+                }
+            }
+        }
+    }
+    &_info{
+        .product_title{
+
+        }
+        .rating_wrap{
+            .rating{
+                .product_rate{
+                    &::before{
+
+                    }
+                }
+            }
+            .rating_num{
+
+            }
+        }
+        .pr_desc{
+            p{
+
+            }
+        }
+        .pr_switch_wrap{
+            .product_color_switch{
+                span{
+                   
+                }
+            }
+        }
+        .list_product_action_box{
+            ul{
+                li{
+
+                }
+            }
+        }
+    }
+}

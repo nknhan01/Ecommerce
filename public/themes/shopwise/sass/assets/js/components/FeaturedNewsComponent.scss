@@ -1,0 +1,42 @@
+
+.blog_post {
+    height: calc(100% - 20px);
+    &.blog_style2 {
+        .blog_img {
+            a {
+                img {
+                    filter: grayscale(100%) contrast(87%);
+                    -webkit-filter: grayscale(100%) contrast(87%);
+                    -moz-filter: grayscale(100%) contrast(87%);
+                }
+            }
+
+        }
+        &:hover{
+            .blog_img{
+                a{
+                    img{
+                        filter: brightness(120%) contrast(87%);
+                        -webkit-filter: brightness(120%) contrast(87%);
+                        -moz-filter: brightness(120%) contrast(87%);
+                    }
+                }
+            }
+        }
+        .blog_content {
+            .blog_text {
+                .blog_title {
+                }
+                ul {
+                    li {
+                        i {
+                        }
+                    }
+                }
+                p {
+               
+                }
+            }
+        }
+    }
+}

@@ -4,7 +4,7 @@
             <div class="circle circle-1"></div>
             <div class="circle circle-2"></div>
         </div>
-        <div class="col-lg-4 col-md-6" v-for="item in data" :key="item.id" v-if="!isLoading && data.length">
+        <div class="col-lg-4 col-md-6 small_pb" v-for="item in data" :key="item.id" v-if="!isLoading && data.length">
             <div class="blog_post blog_style2 box_shadow1">
                 <div class="blog_img">
                     <a :href="item.url">

@@ -1,0 +1,114 @@
+.header_wrap {
+    .top-header {
+        .container {
+            ul {
+                li {
+                    .i {
+                    }
+                    span {
+                    }
+                }
+            }
+            .choose-currency {
+                span {
+                }
+                a {
+                    span {
+                    }
+                }
+            }
+        }
+    }
+    .middle-header {
+        .container {
+            .nav_block {
+                .navbar-brand {
+                    img {
+                        i {
+                        }
+                        span {
+                        }
+                    }
+                    span {
+                    }
+                }
+                .contact_phone {
+                    i {
+                    }
+                    span {
+                    }
+                }
+                .product_search_form {
+                    form {
+                        .input-group {
+                            .input-group-prepend {
+                                .custom_select {
+                                    select {
+                                        option {
+                                        }
+                                    }
+                                }
+                            }
+                            .form-control {
+                            }
+                            .search_btn {
+                                i {
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .bottom_header {
+        .container {
+            .navbar-brand {
+                img {
+                }
+            }
+            .categories_wrap {
+                .categories_btn {
+                    i {
+                    }
+                    span {
+                    }
+                }
+                #navCatContent {
+                    ul {
+                        li {
+                            &.dropdown {
+                                &.dropdown-mega-menu {
+                                    .dropdown-item {
+                                        i{
+
+                                        }
+                                        span{
+
+                                        }
+                                        &::after{
+                                            
+                                        }
+                                    }
+                                    .dropdown-menu {
+                                        .mega-menu {
+                                            .mega-menu-col {
+                                                ul {
+                                                    li {
+                                                        a {
+                                                            
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
