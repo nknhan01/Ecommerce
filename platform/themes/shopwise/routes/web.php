@@ -62,3 +62,4 @@ Route::group(['namespace' => 'Theme\Shopwise\Http\Controllers', 'middleware' => 
     });
 
 });
+

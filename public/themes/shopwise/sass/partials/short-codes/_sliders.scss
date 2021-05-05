@@ -1,31 +1,24 @@
 .banner_section {
     &.slide_medium {
-        &.shop_banner_slider {
-            &.staggered-animation-wrap {
-                .container {
-                    .slide {
-                        &.light_arrow {
-                            .carousel-inner {
-                                .carousel-item {
-                                    .banner_slide_content {
-                                        &.banner_content_inner {
-                                            .col-lg-8 {
-                                                &.col-10 {
-                                                    .banner_content {
-                                                        &.overflow-hidden {
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
+        .container {
+            .slide {
+                .carousel-inner {
+                    .carousel-item {
+                        .banner_slide_content {
+                            &.banner_content_inner {
+                                .banner_content {
+                                    a {
+                                       &:hover{
+                                          
+                                       }
                                     }
                                 }
                             }
-                            .carousel-indicators {
-                                li {
-                                }
-                            }
                         }
+                    }
+                }
+                .carousel-indicators {
+                    li {
                     }
                 }
             }
