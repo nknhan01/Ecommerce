@@ -41,8 +41,14 @@ Route::group(['namespace' => 'Theme\Shopwise\Http\Controllers', 'middleware' => 
 
         Route::get('ajax/get-flash-sale/{id}', 'ShopwiseController@ajaxGetFlashSale')
             ->name('public.ajax.get-flash-sale');
-    });
 
+        Route::get('/saler-channel/login', 'ShopwiseController@loadSCLogin')
+            ->name('public.ajax.Saler-channel-login');
+        Route::get('/saler-channel/register', 'ShopwiseController@loadSCRegister')
+            ->name('public.ajax.Saler-channel-register');
+        
+        
+    });
 });
 
 Theme::routes();
@@ -58,8 +64,5 @@ Route::group(['namespace' => 'Theme\Shopwise\Http\Controllers', 'middleware' => 
 
         Route::get('{slug?}' . config('core.base.general.public_single_ending_url'), 'ShopwiseController@getView')
             ->name('public.single');
-
     });
-
 });
-

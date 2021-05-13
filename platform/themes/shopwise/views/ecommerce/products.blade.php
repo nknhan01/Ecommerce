@@ -1,4 +1,4 @@
-@php Theme::set('pageName', __('Products')) @endphp
+xa@php Theme::set('pageName', __('Products')) @endphp
 
 <div class="section">
     <form action="{{ URL::current() }}" method="GET">

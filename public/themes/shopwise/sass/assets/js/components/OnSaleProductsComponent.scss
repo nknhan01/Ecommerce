@@ -1,0 +1,12 @@
+.product_slider {
+    &.carousel_slider {
+        &.product_list {
+            &.owl-carousel owl-theme {
+                &.nav_style5 {
+                    .item {
+                    }
+                }
+            }
+        }
+    }
+}

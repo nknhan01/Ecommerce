@@ -22,7 +22,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                 </div>
                             @endforeach
                         </div>
                         <ol class="carousel-indicators indicators_style1">

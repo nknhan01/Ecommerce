@@ -111,7 +111,7 @@
                     <div class="col-md-6">
                         <div class="d-flex align-items-center justify-content-center justify-content-md-start">
                             <ul class="contact_detail text-center text-lg-left">
-                                <li><i class="ti-mobile"></i><span>{{ theme_option('hotline') }}</span></li>
+                                <li>  <a href="https://ecommerce.local/saler-channel/login" class="salerChannel" >Saler Channel</a></li>
                             </ul>
                         </div>
                     </div>

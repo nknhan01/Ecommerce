@@ -3,6 +3,11 @@
         .container {
             ul {
                 li {
+                    a{
+                        &:hover{
+                            color: var(--color-1st);
+                        }
+                    }
                     .i {
                     }
                     span {

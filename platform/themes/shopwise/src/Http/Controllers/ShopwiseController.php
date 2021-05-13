@@ -25,6 +25,16 @@ class ShopwiseController extends PublicController
      * @param BaseHttpResponse $response
      * @return BaseHttpResponse
      */
+    //kenh nguoi ban:
+    public function loadSCLogin()
+    {
+        return Theme::scope('saler-channel-login')->render();
+    }
+    public function loadSCRegister()
+    {
+        return Theme::scope('saler-channel-register')->render();
+    }
+    //end
     public function ajaxGetProducts(Request $request, BaseHttpResponse $response)
     {
         if (!$request->ajax() || !$request->wantsJson()) {
