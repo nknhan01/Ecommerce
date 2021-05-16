@@ -78,4 +78,8 @@ class CategoryCacheDecorator extends CacheAbstractDecorator implements CategoryI
     {
         return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
     }
+    public function getCategoryByPostEvents(int $id_post)
+    {
+        return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
+    }
 }

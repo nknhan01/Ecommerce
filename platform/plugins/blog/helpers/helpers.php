@@ -205,7 +205,7 @@ if (!function_exists('get_categories')) {
 
         foreach ($categories as $category) {
             $indentText = '';
-            $depth = (int)$category->depth;
+            $depth = (int) $category->depth;
             for ($index = 0; $index < $depth; $index++) {
                 $indentText .= $indent;
             }
@@ -253,5 +253,16 @@ if (!function_exists('get_post_formats')) {
     function get_post_formats($convertToList = false)
     {
         return PostFormat::getPostFormats($convertToList);
+    }
+}
+//get category_by_post
+if (!function_exists('get_category_by_post')) {
+    /**
+     * @param int $id_post
+     * @return array
+     */
+    function get_category_by_post(int $id_post)
+    {
+        return app(CategoryInterface::class)->getCategoryByPostEvents($id_post);
     }
 }

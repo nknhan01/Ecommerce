@@ -21,6 +21,10 @@ Route::group(['namespace' => 'Platform\Theme\Http\Controllers', 'middleware' => 
             'as'   => 'public.single',
             'uses' => 'PublicController@getView',
         ]);
+        
+        Route::get('{slugCategory}/{slugPosts}', 'PublicController@detailPost')->name('post.detail');
+
+        Route::post('login-guest', 'PublicController@loginGuest')->name('login.guest');
 
         event(new ThemeRoutingAfterEvent);
     });

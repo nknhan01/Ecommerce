@@ -146,7 +146,7 @@ class CategoryRepository extends RepositoriesAbstract implements CategoryInterfa
         $order = isset($filters['order']) ? $filters['order'] : 'desc';
         $this->model->where('status', BaseStatusEnum::PUBLISHED)->orderBy($orderBy, $order);
 
-        return $this->applyBeforeExecuteQuery($this->model)->paginate((int)$filters['per_page']);
+        return $this->applyBeforeExecuteQuery($this->model)->paginate((int) $filters['per_page']);
     }
 
     /**
@@ -161,6 +161,15 @@ class CategoryRepository extends RepositoriesAbstract implements CategoryInterfa
             ->where('categories.status', BaseStatusEnum::PUBLISHED)
             ->limit($limit);
 
+        return $this->applyBeforeExecuteQuery($data)->get();
+    }
+    public function getCategoryByPostEvents(int $id_post)
+    {
+        $data = $this->model
+            ->join('post_categories', 'post_categories.category_id', '=', 'categories.id')
+            ->where('post_categories.post_id', '=', $id_post)
+            ->select('categories.*')
+            ->with('slugable');
         return $this->applyBeforeExecuteQuery($data)->get();
     }
 }

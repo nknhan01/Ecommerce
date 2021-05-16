@@ -11,6 +11,13 @@ use Platform\Theme\Events\RenderingSiteMapEvent;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
+use Platform\Blog\Models\Post;
+use Platform\Blog\Repositories\Interfaces\PostInterface;
+use Platform\Slug\Repositories\Interfaces\SlugInterface;
+use Illuminate\Http\Request;
+use Platform\Blog\Models\Category;
+use Platform\Blog\Repositories\Interfaces\CategoryInterface;
+use Platform\Theme\Http\Requests\LoginRequest;
 use Response;
 use SeoHelper;
 use SiteMapManager;
@@ -31,7 +38,6 @@ class PublicController extends Controller
 
                 if ($slug) {
                     $data = (new PageService)->handleFrontRoutes($slug);
-
                     return Theme::scope($data['view'], $data['data'], $data['default_view'])->render();
                 }
             }
@@ -42,7 +48,6 @@ class PublicController extends Controller
         Theme::breadcrumb()->add(__('Home'), url('/'));
 
         event(RenderingHomePageEvent::class);
-
         return Theme::scope('index')->render();
     }
 
@@ -78,12 +83,20 @@ class PublicController extends Controller
         event(new RenderingSingleEvent($slug));
 
         if (!empty($result) && is_array($result)) {
-            return Theme::scope($result['view'], $result['data'], Arr::get($result, 'default_view'))->render();
+            // dd($result['data']);
+            return Theme::scope($result['view'], $result['data'], Arr::get($result, 'default_view'),)->render();
         }
 
         abort(404);
     }
-
+    public function detailPost($slugCategory, $slugPost, CategoryInterface $categoryInterface, SlugInterface $slugRepository, PostInterface $postInterface, Request $request)
+    {
+        //get Slug category
+        $slugCategory = $slugRepository->getFirstBy(['key' => $slugCategory, 'reference_type' => Category::class]);
+        $slugPost = $slugRepository->getFirstBy(['key' => $slugPost, 'reference_type' => Post::class]);
+        $data['post'] = $postInterface->getFirstBy(['id' => $slugPost->reference_id]);
+        return Theme::scope('post', $data)->render();
+    }
     /**
      * @return string
      */
@@ -93,5 +106,16 @@ class PublicController extends Controller
 
         // show your site map (options: 'xml' (default), 'html', 'txt', 'ror-rss', 'ror-rdf')
         return SiteMapManager::render('xml');
+    }
+
+    public function loginGuest(LoginRequest $request)
+    {
+        $auth = auth()->attempt(['email' => $request->email, 'password' => $request->password]);
+        if ($auth) {
+            return redirect()->route('dashboard.index');
+        }
+        return back()->withErrors([
+            'error' => 'Sai thông tin đăng nhập! Vui lòng thử lại'
+        ]);
     }
 }

@@ -1,7 +1,6 @@
 @extends('core/acl::auth.master')
-
 @section('content')
-    <p>{{ trans('core/acl::auth.sign_in_below') }}:</p>
+    <p>{{__('SIGN UP BELOW')}}:</p>
 
     {!! Form::open(['route' => 'access.login', 'class' => 'login-form']) !!}
         <div class="form-group" id="emailGroup">
@@ -27,8 +26,8 @@
         <div class="clearfix"></div>
 
         <br>
-        <p><a class="lost-pass-link" href="{{ route('access.password.request') }}" title="{{ trans('core/acl::auth.forgot_password.title') }}">{{ trans('core/acl::auth.lost_your_password') }}</a></p>
-        <p><a class="lost-pass-link" href="{{ route('access.password.create') }}" title="Create Account"> Create An Account For The Seller</a></p>
+        <p><a class="lost-pass-link" href="{{ route('access.login') }}" title="BACK TO LOGIN FORM">Back to login page</a></p>
+        <p><a class="lost-pass-link" href="{{ route('access.password.request') }}" title="Create Account">Lost your password?</a></p>
         {!! apply_filters(BASE_FILTER_AFTER_LOGIN_OR_REGISTER_FORM, null, \Platform\ACL\Models\User::class) !!}
 
     {!! Form::close() !!}

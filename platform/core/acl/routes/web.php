@@ -1,5 +1,6 @@
 <?php
 
+use Platform\ACL\Http\Controllers\Auth\createAccountSaller;
 use Platform\ACL\Http\Controllers\Auth\ForgotPasswordController;
 use Platform\ACL\Http\Controllers\Auth\LoginController;
 use Platform\ACL\Http\Controllers\Auth\ResetPasswordController;
@@ -14,6 +15,8 @@ Route::group(['namespace' => 'Platform\ACL\Http\Controllers', 'middleware' => ['
 
             Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])
                 ->name('access.password.request');
+            Route::get('password/create-account-for-seller', [createAccountSaller::class, 'showLinkCreateForm'])
+                ->name('access.password.create');
             Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])
                 ->name('access.password.email');
 
@@ -115,7 +118,6 @@ Route::group(['namespace' => 'Platform\ACL\Http\Controllers', 'middleware' => ['
                 ]);
             });
         });
-
     });
 
     Route::get('admin-theme/{theme}', [UserController::class, 'getTheme'])->name('admin.theme');

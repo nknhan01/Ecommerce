@@ -7,7 +7,7 @@
                          <div class="heading_s1">
                              <h3>{{ __('Login Salers Channel') }}</h3>
                          </div>
-                         <form method="POST" action="https://ecommerce.local/saler-channel/login">
+                         <form method="POST" action="{{ route('access.login.post') }}">
                              @csrf
                              <div class="form-group">
                                  <input class="form-control" name="email" id="txt-email" type="email" value="{{ old('email') }}" placeholder="{{ __('Your Email') }}">

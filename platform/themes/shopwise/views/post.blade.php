@@ -1,5 +1,4 @@
 @php Theme::set('pageName', __('Blog')) @endphp
-
 <div class="section">
     <div class="container">
         <div class="row">
@@ -57,14 +56,19 @@
                     </div>
                     <div class="row">
                         @foreach (get_related_posts($post->slug, 2) as $relatedItem)
+                            @php
+                                $category = get_category_by_post($post->id);
+                            @endphp
                             <div class="col-md-6">
                                 <div class="blog_post blog_style2 box_shadow1">
                                     <div class="blog_img">
-                                        <a href="{{ $relatedItem->url }}"><img src="{{ RvMedia::getImageUrl($relatedItem->image, 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $relatedItem->name }}"></a>
+                                        <a href="{{ route('post.detail', [$category[0]->slug, $relatedItem->slug]) }}">
+                                            <img src="{{ RvMedia::getImageUrl($relatedItem->image, 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $relatedItem->name }}">
+                                        </a>
                                     </div>
                                     <div class="blog_content bg-white">
                                         <div class="blog_text">
-                                            <h6 class="blog_title"><a href="{{ $relatedItem->url }}">{{ $relatedItem->name }}</a></h6>
+                                            <h6 class="blog_title"><a href="{{ route('post.detail', [$category[0]->slug, $relatedItem->slug]) }}   ">{{ $relatedItem->name }}</a></h6>
                                             <ul class="list_none blog_meta">
                                                 <li><i class="ti-calendar"></i> {{ $relatedItem->created_at->format('M d, Y') }}</li>
                                                 <li><i class="ti-eye"></i> {{ number_format($relatedItem->views) }} {{ __('Views') }}</li>
